@@ -306,6 +306,27 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 .fiber{display:grid;grid-template-columns:150px minmax(0,1fr);align-items:center;gap:8px;padding:6px 14px 14px;max-width:460px}
 .fiber label{font-weight:700;font-size:14.5px}
 
+/* ---------- plans bar and PDF dialog ---------- */
+.plans{flex:1 1 100%;display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;padding-top:9px;border-top:1px solid var(--green-line)}
+.ptabs{display:flex;flex-wrap:wrap;gap:6px;min-width:0}
+.ptab{font:inherit;font-size:13.5px;font-weight:700;color:var(--green-deep);background:#fff;border:1.5px solid var(--green-line);border-radius:999px;padding:5px 13px;max-width:170px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;cursor:pointer}
+.ptab:hover{background:var(--green-pale)}
+.ptab[aria-selected=true]{background:var(--green-deep);border-color:var(--green-deep);color:#fff}
+.pfld{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted)}
+.pfld input{font:inherit;font-size:14px;color:var(--ink);border:0;border-bottom:1.5px solid var(--green-line);background:transparent;padding:4px 2px;min-width:0}
+.pfld input:focus{outline:none;border-bottom-color:var(--green-deep)}
+#pname{width:170px}
+.plans .btn{padding:5px 11px;font-size:13px}
+.phint{flex:1 1 100%;margin:0;font-size:12.5px;color:var(--muted)}
+.dlg{position:fixed;inset:0;z-index:60;display:flex;align-items:center;justify-content:center;background:rgba(20,30,24,.45);padding:16px}
+.dlg[hidden]{display:none}
+.dlg-b{background:#fff;border-radius:12px;border:1.5px solid var(--green-deep);max-width:420px;width:100%;padding:16px 18px;display:grid;gap:10px}
+.dlg-b h3{margin:0;font-family:var(--font-display);color:var(--green-deep);font-size:18px}
+.dlg-b .chk{padding:3px 0}
+.dlg-a{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}
+#blk-planhead .card-h{font-size:15px}
+@media (max-width:640px){.bar{position:static}.phint{display:none}}
+
 /* ---------- export (PDF) state ---------- */
 .exporting{max-width:none;border-radius:0;box-shadow:none;background:#fff}
 .exporting .sheet-in{padding:0}
@@ -345,6 +366,24 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
     <button class="btn" id="btn-save" type="button">Save plan</button>
     <button class="btn primary" id="btn-pdf" type="button">Download PDF</button>
     <input type="file" id="file-open" accept=".json,application/json" hidden>
+  </div>
+
+  <div class="plans no-export" id="plans">
+    <div class="ptabs" id="ptabs" role="tablist" aria-label="Meal plans"></div>
+    <button class="btn" id="btn-pdup" type="button" title="Copy the current plan into a new one">+ Duplicate plan</button>
+    <button class="btn" id="btn-pnew" type="button" title="Start a new plan with an empty table">+ Blank plan</button>
+    <label class="pfld">Name <input id="pname" type="text" maxlength="60" autocomplete="off" aria-label="Plan name"></label>
+    <label class="pfld">Date <input id="pdate" type="date" aria-label="Plan date"></label>
+    <button class="btn" id="btn-pdel" type="button">Delete plan</button>
+    <p class="phint">Goal, meal table, energy, notes and recommendations belong to each plan. Patient details and progress records are shared.</p>
+  </div>
+</div>
+
+<div class="dlg" id="pdfdlg" hidden role="dialog" aria-modal="true" aria-labelledby="pdfdlg-h">
+  <div class="dlg-b">
+    <h3 id="pdfdlg-h">Download PDF</h3>
+    <div id="pdfdlg-list"></div>
+    <div class="dlg-a"><button class="btn" id="pdfdlg-cancel" type="button">Cancel</button><button class="btn primary" id="pdfdlg-go" type="button">Download PDF</button></div>
   </div>
 </div>
 
@@ -448,6 +487,8 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
           <p class="cnote" id="n-whtr" hidden></p>
         </section>
     </div>
+
+    <section class="card" id="blk-planhead" hidden><h2 class="card-h" id="ph-t"></h2></section>
 
     <section class="card" id="blk-energy" aria-labelledby="en-h">
       <h2 class="card-h" id="en-h">Energy expenditure calculations</h2>
@@ -946,44 +987,65 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 
   function hasText(id) { return !!document.getElementById(id).value.trim(); }
 
-  async function exportPDF() {
+  async function exportPDF(sel) {
     var btn = $('#btn-pdf');
     if (btn.disabled) return;
+    sel = (sel && sel.length ? sel : [PL.active]).slice().sort(function (a, b) { return a - b; });
+    var multi = sel.length > 1;
     setStatus('');
     closePops();
     if (!window.html2canvas || !window.jspdf) { setStatus('The PDF tools did not load. Check your connection and try again.', true); return; }
     btn.disabled = true; btn.textContent = 'Preparing PDF…';
+    var origActive = PL.active, origDirty = dirty, ph = $('#blk-planhead');
     try {
-      normalizeCells(); stamp();
+      PL.parts[PL.active] = captureParsed(); stamp();
       if (document.fonts && document.fonts.ready) await document.fonts.ready;
 
-      renderCharts(true);
-      var ec = updateEnergy();
-      var ids = ['blk-head'];
-      if (INC.progress && hasRecordData()) {
-        ids.push('blk-progress');
-        var vis = CHART_IDS.filter(function (id) { return !$('#c-' + id).hidden; });
-        var g1 = $('#blk-cg1'), g2 = $('#blk-cg2');
-        vis.forEach(function (id, n) { (n < 4 ? g1 : g2).appendChild($('#blk-chart-' + id)); });
-        CHART_IDS.forEach(function (id) { if (vis.indexOf(id) < 0) $('#blk-chart-' + id).style.display = 'none'; });
-        if (vis.length) ids.push('blk-cg1');
-        if (vis.length > 4) ids.push('blk-cg2');
-      }
-      if (INC.energy && ec.bmr !== null) {
-        ids.push('blk-energy');
-        if (ec.base !== null) ids.push('blk-meals', 'blk-macros');
-      }
-      ids.push('blk-table');
-      if (hasText('f-notes')) ids.push('blk-notes');
-      if (T.some(tipHasContent)) ids.push('blk-tips');
-      if (hasText('f-foot')) ids.push('blk-foot');
-
       var shots = [];
-      for (var i = 0; i < ids.length; i++) {
-        var node = document.getElementById(ids[i]), canvas, sc = 3;
-        try { canvas = await shoot(node, 3); }
-        catch (err) { sc = 2; canvas = await shoot(node, 2); }
-        shots.push({ canvas: canvas, h: canvas.height / sc });
+      async function snap(ids, brk) {
+        for (var i = 0; i < ids.length; i++) {
+          var node = document.getElementById(ids[i]), canvas, sc = 3;
+          try { canvas = await shoot(node, 3); }
+          catch (err) { sc = 2; canvas = await shoot(node, 2); }
+          shots.push({ canvas: canvas, h: canvas.height / sc, brk: !!(brk && i === 0) });
+        }
+      }
+
+      /* shared blocks: patient details, progress records, charts (4 per page) */
+      renderCharts(true);
+      var shared = ['blk-head'];
+      if (INC.progress && hasRecordData()) {
+        shared.push('blk-progress');
+        var vis = CHART_IDS.filter(function (id) { return !$('#c-' + id).hidden; });
+        vis.forEach(function (id, n) { (n < 4 ? $('#blk-cg1') : $('#blk-cg2')).appendChild($('#blk-chart-' + id)); });
+        CHART_IDS.forEach(function (id) { if (vis.indexOf(id) < 0) $('#blk-chart-' + id).style.display = 'none'; });
+        if (vis.length) shared.push('blk-cg1');
+        if (vis.length > 4) shared.push('blk-cg2');
+      }
+      await snap(shared, false);
+
+      /* each selected plan */
+      for (var n = 0; n < sel.length; n++) {
+        var idx = sel[n];
+        if (idx !== PL.active) { PL.active = idx; applyPart(PL.parts[idx]); }
+        normalizeCells(); stamp();
+        var ec = updateEnergy();
+        var ids = [];
+        if (multi) {
+          var p = PL.parts[idx];
+          $('#ph-t').textContent = planLabel(p, idx) + (p.date ? ' • ' + fmtDate(p.date) : '');
+          ph.hidden = false; ids.push('blk-planhead');
+        }
+        if (INC.energy && ec.bmr !== null) {
+          ids.push('blk-energy');
+          if (ec.base !== null) ids.push('blk-meals', 'blk-macros');
+        }
+        ids.push('blk-table');
+        if (hasText('f-notes')) ids.push('blk-notes');
+        if (T.some(tipHasContent)) ids.push('blk-tips');
+        if (hasText('f-foot')) ids.push('blk-foot');
+        await snap(ids, multi);
+        ph.hidden = true;
       }
 
       var jsPDF = window.jspdf.jsPDF;
@@ -998,10 +1060,10 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 
       bg();
       var fit = ch / total;
-      if (total <= ch) {
+      if (!multi && total <= ch) {
         var y0 = M;
         shots.forEach(function (s, i) { put(s, M, y0, cw, hs[i]); y0 += hs[i] + GAP; });
-      } else if (fit >= 0.78) {
+      } else if (!multi && fit >= 0.78) {
         var w = cw * fit, x0 = M + (cw - w) / 2, yy = M;
         shots.forEach(function (s, i) { var h = hs[i] * fit; put(s, x0, yy, w, h); yy += h + GAP * fit; });
       } else {
@@ -1009,7 +1071,7 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
         shots.forEach(function (s, i) {
           var h = hs[i], w2 = cw;
           if (h > ch) { var f = ch / h; h = ch; w2 = cw * f; }
-          if (y > M && y + h > M + ch) { pdf.addPage(); bg(); y = M; }
+          if (y > M && (s.brk || y + h > M + ch)) { pdf.addPage(); bg(); y = M; }
           put(s, M + (cw - w2) / 2, y, w2, h); y += h + GAP;
         });
       }
@@ -1022,11 +1084,16 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
       else if (code === 'rate_limited') setStatus('Another save prompt is open. Answer it, then try again.', true);
       else setStatus('Could not create the PDF. Try again.', true);
     } finally {
-      try { restoreCharts(); renderCharts(false); } catch (e2) { /* ignore */ }
+      ph.hidden = true;
+      try {
+        if (PL.active !== origActive) { PL.active = origActive; applyPart(PL.parts[origActive]); }
+        restoreCharts(); renderCharts(false);
+      } catch (e2) { /* ignore */ }
+      dirty = origDirty;
       btn.disabled = false; btn.textContent = 'Download PDF';
     }
   }
-  $('#btn-pdf').addEventListener('click', exportPDF);
+  $('#btn-pdf').addEventListener('click', choosePdf);
 
   /* ---------- numbers, dates, classification ---------- */
   var DAY = 86400000;
@@ -1635,7 +1702,7 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
   function hasRecordData() { return R.some(function (r) { return !recIsEmpty(r); }); }
 
   /* ---------- save, open and new plan ---------- */
-  var FORMAT = 'zohaib-khan-meal-plan', VERSION = 2;
+  var FORMAT = 'zohaib-khan-meal-plan', VERSION = 3;
   var dirty = false;
   function markDirty() { dirty = true; }
   $('#sheet').addEventListener('input', markDirty);
@@ -1652,8 +1719,60 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
   function str(v, max) { return typeof v === 'string' ? v.slice(0, max) : ''; }
   function inRange(v, lo, hi) { return typeof v === 'number' && isFinite(v) && v >= lo && v <= hi ? String(v) : ''; }
 
-  function serialize() {
+  /* ---------- plans: shared patient data + several meal plans ---------- */
+  var MAXPLANS = 10;
+  function todayISO() { var d = new Date(); return d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate()); }
+  var PL = { parts: [{ name: 'Plan 1', date: todayISO() }], active: 0 };
+
+  function copyMacros(m) {
+    return MACRO_DEFS.reduce(function (acc, d) { acc[d.key] = { min: m[d.key].min, max: m[d.key].max }; return acc; }, {});
+  }
+  /* the plan-specific part of the live page, in the same shape parseEntry returns */
+  function captureParsed() {
     normalizeCells();
+    var meta = PL.parts[PL.active] || {};
+    return {
+      name: meta.name || 'Plan ' + (PL.active + 1), date: meta.date || '',
+      goal: $('#f-goal').value,
+      title: $('#f-title').value, subtitle: $('#f-sub').value, corner: S.corner,
+      cols: S.cols.map(function (c) { return c.name; }),
+      rows: S.rows.map(function (r) { return { name: r.name, cells: S.cols.map(function (c) { return S.cells[r.id + ':' + c.id] || ''; }) }; }),
+      notes: $('#f-notes').value, footer: $('#f-foot').value,
+      energy: {
+        af: E.af, deficit: E.deficit, fiber: E.fiber,
+        meals: E.meals.map(function (m) { return { id: nid(), name: m.name, min: m.min, max: m.max }; }),
+        macros: copyMacros(E.macros)
+      },
+      tips: T.map(function (t) { return { rec: t.rec, icon: t.icon, text: t.rec === 'custom' ? (t.text || '') : '' }; })
+    };
+  }
+  function partToJson(p) {
+    return {
+      name: p.name, date: p.date, goal: p.goal,
+      energy: {
+        activityFactor: pnum(p.energy.af),
+        deficitKcal: pnum(p.energy.deficit) || 0,
+        meals: p.energy.meals.map(function (m) { return { name: m.name, minPct: pnum(m.min), maxPct: pnum(m.max) }; }),
+        macros: MACRO_DEFS.reduce(function (acc, d) {
+          acc[d.json] = { minPct: pnum(p.energy.macros[d.key].min), maxPct: pnum(p.energy.macros[d.key].max) }; return acc;
+        }, {}),
+        fiberGoal: p.energy.fiber
+      },
+      plan: {
+        title: p.title, subtitle: p.subtitle, cornerHeader: p.corner, columns: p.cols,
+        rows: p.rows.map(function (r) { return { name: r.name, cells: r.cells }; })
+      },
+      notes: p.notes,
+      recommendations: p.tips.map(function (t) {
+        var std = recById(t.rec);
+        return { recommendation: t.rec || '', text: t.rec === 'custom' ? (t.text || '') : (std ? std.text : ''), icon: t.icon };
+      }),
+      footer: p.footer
+    };
+  }
+
+  function serialize() {
+    PL.parts[PL.active] = captureParsed();
     var num = function (id) { return pnum($(id).value); };
     return {
       format: FORMAT,
@@ -1673,41 +1792,17 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
       records: R.filter(function (r) { return !recIsEmpty(r); }).map(function (r) {
         return { date: r.date || '', weightKg: pnum(r.w), waistCm: pnum(r.waist), hipCm: pnum(r.hip), armCm: pnum(r.arm), calfCm: pnum(r.calf) };
       }),
-      energy: {
-        activityFactor: pnum(E.af),
-        deficitKcal: pnum(E.deficit) || 0,
-        meals: E.meals.map(function (m) { return { name: m.name, minPct: pnum(m.min), maxPct: pnum(m.max) }; }),
-        macros: MACRO_DEFS.reduce(function (acc, d) {
-          acc[d.json] = { minPct: pnum(E.macros[d.key].min), maxPct: pnum(E.macros[d.key].max) }; return acc;
-        }, {}),
-        fiberGoal: E.fiber
-      },
       pdfInclude: { progress: INC.progress, energy: INC.energy },
-      plan: {
-        title: $('#f-title').value,
-        subtitle: $('#f-sub').value,
-        cornerHeader: S.corner,
-        columns: S.cols.map(function (c) { return c.name; }),
-        rows: S.rows.map(function (r) {
-          return { name: r.name, cells: S.cols.map(function (c) { return S.cells[r.id + ':' + c.id] || ''; }) };
-        })
-      },
-      notes: $('#f-notes').value,
-      recommendations: T.map(function (t) {
-        var std = recById(t.rec);
-        return { recommendation: t.rec || '', text: t.rec === 'custom' ? (t.text || '') : (std ? std.text : ''), icon: t.icon };
-      }),
-      footer: $('#f-foot').value
+      activePlan: PL.active,
+      plans: PL.parts.map(partToJson)
     };
   }
 
-  function parsePlan(text) {
-    var d;
-    try { d = JSON.parse(text); } catch (e) { throw new Error('format'); }
-    if (!d || typeof d !== 'object' || d.format !== FORMAT) throw new Error('format');
-    if (typeof d.version !== 'number' || d.version > VERSION) throw new Error('newer');
-    var pt = d.patient, pl = d.plan;
-    if (!pt || typeof pt !== 'object' || !pl || typeof pl !== 'object') throw new Error('invalid');
+  /* one plan entry from a file; v1/v2 files carry exactly one plan at the top level */
+  function parseEntry(src) {
+    if (!src || typeof src !== 'object') throw new Error('invalid');
+    var pl = src.plan;
+    if (!pl || typeof pl !== 'object') throw new Error('invalid');
     if (!Array.isArray(pl.columns) || !Array.isArray(pl.rows)) throw new Error('invalid');
     if (pl.columns.length < 1 || pl.columns.length > 20 || pl.rows.length < 1 || pl.rows.length > 60) throw new Error('invalid');
     var cols = pl.columns.map(function (c) { return str(c, 80); });
@@ -1716,16 +1811,8 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
       var cells = Array.isArray(r.cells) ? r.cells : [];
       return { name: str(r.name, 80), cells: cols.map(function (_, j) { return bulletize(str(cells[j], 2000)); }) };
     });
-    var recs = Array.isArray(d.recommendations) ? d.recommendations.slice(0, 30) : [];
-    var rec = (Array.isArray(d.records) ? d.records.slice(0, 300) : []).map(function (r) {
-      r = r && typeof r === 'object' ? r : {};
-      return {
-        id: nid(), date: typeof r.date === 'string' && dateTime(r.date) !== null ? r.date : '',
-        w: inRange(r.weightKg, 20, 400), waist: inRange(r.waistCm, 5, 300), hip: inRange(r.hipCm, 5, 300),
-        arm: inRange(r.armCm, 5, 300), calf: inRange(r.calfCm, 5, 300)
-      };
-    });
-    var en = d.energy && typeof d.energy === 'object' ? d.energy : {};
+    var recs = Array.isArray(src.recommendations) ? src.recommendations.slice(0, 30) : [];
+    var en = src.energy && typeof src.energy === 'object' ? src.energy : {};
     var meals = Array.isArray(en.meals) ? en.meals.slice(0, 20).map(function (m) {
       m = m && typeof m === 'object' ? m : {};
       return { id: nid(), name: str(m.name, 60), min: inRange(m.minPct, 0, 100), max: inRange(m.maxPct, 0, 100) };
@@ -1736,21 +1823,13 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
       var m = mac[def.json] && typeof mac[def.json] === 'object' ? mac[def.json] : {};
       macros[def.key] = { min: inRange(m.minPct, 0, 100), max: inRange(m.maxPct, 0, 100) };
     });
-    var inc = d.pdfInclude && typeof d.pdfInclude === 'object' ? d.pdfInclude : {};
     var def = typeof en.deficitKcal === 'number' && en.deficitKcal >= 0 && en.deficitKcal <= 1500 && en.deficitKcal % 100 === 0 ? String(en.deficitKcal) : '0';
     return {
-      patient: {
-        name: str(pt.name, 120),
-        dob: typeof pt.dateOfBirth === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(pt.dateOfBirth) ? pt.dateOfBirth : '',
-        gender: pt.gender, height: pt.heightCm, heightMm: pt.heightMm,
-        cw: inRange(pt.currentWeightKg, 20, 400), tw: inRange(pt.targetWeightKg, 20, 400),
-        goal: str(pt.goal, 80), conditions: str(pt.conditions, 3000)
-      },
+      name: str(src.name, 60), date: typeof src.date === 'string' && dateTime(src.date) !== null ? src.date : '',
+      goal: str(src.goal, 80),
       title: str(pl.title, 200), subtitle: str(pl.subtitle, 300), corner: str(pl.cornerHeader, 80),
-      cols: cols, rows: rows, notes: str(d.notes, 6000), footer: str(d.footer, 500),
-      records: rec.length ? rec : [newRec()],
+      cols: cols, rows: rows, notes: str(src.notes, 6000), footer: str(src.footer, 500),
       energy: { af: inRange(en.activityFactor, 0.5, 4), deficit: def, fiber: str(en.fiberGoal, 40), meals: meals && meals.length ? meals : null, macros: macros },
-      inc: { progress: inc.progress !== false, energy: inc.energy !== false },
       tips: recs.map(function (r) {
         r = r && typeof r === 'object' ? r : {};
         var id = typeof r.recommendation === 'string' ? r.recommendation : '';
@@ -1761,10 +1840,68 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
     };
   }
 
+  function parsePlan(text) {
+    var d;
+    try { d = JSON.parse(text); } catch (e) { throw new Error('format'); }
+    if (!d || typeof d !== 'object' || d.format !== FORMAT) throw new Error('format');
+    if (typeof d.version !== 'number' || d.version > VERSION) throw new Error('newer');
+    var pt = d.patient;
+    if (!pt || typeof pt !== 'object') throw new Error('invalid');
+    var parts, active = 0;
+    if (d.version >= 3) {
+      if (!Array.isArray(d.plans) || d.plans.length < 1 || d.plans.length > MAXPLANS) throw new Error('invalid');
+      parts = d.plans.map(parseEntry);
+      if (typeof d.activePlan === 'number' && d.activePlan >= 0 && d.activePlan < parts.length && d.activePlan % 1 === 0) active = d.activePlan;
+    } else {
+      var one = parseEntry(d);
+      one.goal = str(pt.goal, 80); one.date = todayISO();
+      parts = [one];
+    }
+    parts.forEach(function (p, i) { if (!p.name.trim()) p.name = 'Plan ' + (i + 1); });
+    var rec = (Array.isArray(d.records) ? d.records.slice(0, 300) : []).map(function (r) {
+      r = r && typeof r === 'object' ? r : {};
+      return {
+        id: nid(), date: typeof r.date === 'string' && dateTime(r.date) !== null ? r.date : '',
+        w: inRange(r.weightKg, 20, 400), waist: inRange(r.waistCm, 5, 300), hip: inRange(r.hipCm, 5, 300),
+        arm: inRange(r.armCm, 5, 300), calf: inRange(r.calfCm, 5, 300)
+      };
+    });
+    var inc = d.pdfInclude && typeof d.pdfInclude === 'object' ? d.pdfInclude : {};
+    return {
+      patient: {
+        name: str(pt.name, 120),
+        dob: typeof pt.dateOfBirth === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(pt.dateOfBirth) ? pt.dateOfBirth : '',
+        gender: pt.gender, height: pt.heightCm, heightMm: pt.heightMm,
+        cw: inRange(pt.currentWeightKg, 20, 400), tw: inRange(pt.targetWeightKg, 20, 400),
+        conditions: str(pt.conditions, 3000)
+      },
+      records: rec.length ? rec : [newRec()],
+      inc: { progress: inc.progress !== false, energy: inc.energy !== false },
+      parts: parts, active: active
+    };
+  }
+
   function setSelectValue(id, v) {
     var s = document.getElementById(id), val = (v === null || v === undefined) ? '' : String(v), ok = false;
     for (var i = 0; i < s.options.length; i++) if (s.options[i].value === val) ok = true;
     s.value = ok ? val : '';
+  }
+  /* show one plan part on the page (does not touch patient details or records) */
+  function applyPart(p) {
+    setSelectValue('f-goal', p.goal);
+    $('#f-title').value = p.title; $('#f-sub').value = p.subtitle;
+    $('#f-notes').value = p.notes; $('#f-foot').value = p.footer;
+    S = { corner: p.corner, cols: p.cols.map(function (n) { return { id: nid(), name: n }; }), rows: [], cells: {} };
+    p.rows.forEach(function (r) {
+      var row = { id: nid(), name: r.name }; S.rows.push(row);
+      r.cells.forEach(function (txt, j) { if (txt) S.cells[row.id + ':' + S.cols[j].id] = txt; });
+    });
+    T = p.tips.map(function (t) { return { id: nid(), rec: t.rec, icon: t.icon, text: t.text }; });
+    freshEnergy();
+    E.af = p.energy.af; E.deficit = p.energy.deficit; E.fiber = p.energy.fiber;
+    if (p.energy.meals) E.meals = p.energy.meals.map(function (m) { return { id: nid(), name: m.name, min: m.min, max: m.max }; });
+    E.macros = copyMacros(p.energy.macros);
+    renderTable(); renderTips(); renderNewSections(); agAll(); renderPlanBar();
   }
   function applyPlan(p) {
     $('#f-name').value = p.patient.name;
@@ -1774,23 +1911,11 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
     setSelectValue('f-height-mm', p.patient.heightMm === undefined ? 0 : p.patient.heightMm);
     if (!$('#f-height-mm').value) $('#f-height-mm').value = '0';
     $('#f-cw').value = p.patient.cw; $('#f-tw').value = p.patient.tw;
-    setSelectValue('f-goal', p.patient.goal);
     $('#f-cond').value = p.patient.conditions;
-    $('#f-title').value = p.title; $('#f-sub').value = p.subtitle;
-    $('#f-notes').value = p.notes; $('#f-foot').value = p.footer;
-    S = { corner: p.corner, cols: p.cols.map(function (n) { return { id: nid(), name: n }; }), rows: [], cells: {} };
-    p.rows.forEach(function (r) {
-      var row = { id: nid(), name: r.name }; S.rows.push(row);
-      r.cells.forEach(function (txt, j) { if (txt) S.cells[row.id + ':' + S.cols[j].id] = txt; });
-    });
-    T = p.tips.map(function (t) { return { id: nid(), rec: t.rec, icon: t.icon, text: t.text }; });
     R = p.records;
-    freshEnergy();
-    E.af = p.energy.af; E.deficit = p.energy.deficit; E.fiber = p.energy.fiber;
-    if (p.energy.meals) E.meals = p.energy.meals;
-    E.macros = p.energy.macros;
     INC = { progress: p.inc.progress, energy: p.inc.energy };
-    renderTable(); renderTips(); renderNewSections(); agAll();
+    PL = { parts: p.parts, active: p.active };
+    applyPart(PL.parts[PL.active]);
     dirty = false;
   }
   function planError(err) {
@@ -1834,12 +1959,18 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
   var openStep = twoStep($('#btn-open'), 'Open plan', 'Replace the current plan?');
   document.addEventListener('click', function (e) { steps.forEach(function (s) { if (s.btn !== e.target) s.reset(); }); });
 
+  function applyBlank() {
+    $('#f-goal').value = '';
+    $('#f-title').value = DEFAULT_TITLE; $('#f-sub').value = ''; $('#f-notes').value = ''; $('#f-foot').value = DEFAULT_FOOT;
+    freshTable(); freshTips(); freshEnergy();
+  }
   function resetAll() {
-    ['f-name', 'f-dob', 'f-age', 'f-gender', 'f-height', 'f-cw', 'f-tw', 'f-goal', 'f-cond', 'f-sub', 'f-notes'].forEach(function (id) { document.getElementById(id).value = ''; });
+    ['f-name', 'f-dob', 'f-age', 'f-gender', 'f-height', 'f-cw', 'f-tw', 'f-cond'].forEach(function (id) { document.getElementById(id).value = ''; });
     $('#f-height-mm').value = '0';
-    $('#f-title').value = DEFAULT_TITLE; $('#f-foot').value = DEFAULT_FOOT;
-    freshTable(); freshTips(); freshRecords(); freshEnergy(); INC = { progress: true, energy: true };
-    renderTable(); renderTips(); renderNewSections(); agAll();
+    freshRecords(); INC = { progress: true, energy: true };
+    applyBlank();
+    PL = { parts: [{ name: 'Plan 1', date: todayISO() }], active: 0 };
+    renderTable(); renderTips(); renderNewSections(); agAll(); renderPlanBar();
     dirty = false;
   }
   $('#btn-new').addEventListener('click', function () {
@@ -1865,13 +1996,95 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
     rd.readAsText(f);
   });
 
+  /* ---------- plan bar ---------- */
+  var delStep = twoStep($('#btn-pdel'), 'Delete plan', 'Click again to delete');
+  function planLabel(p, i) { return (p.name || '').trim() || 'Plan ' + (i + 1); }
+  function renderPlanBar() {
+    var box = $('#ptabs'); box.replaceChildren();
+    PL.parts.forEach(function (p, i) {
+      var b = el('button', 'ptab', { type: 'button', role: 'tab', 'aria-selected': i === PL.active ? 'true' : 'false' });
+      b.textContent = planLabel(p, i); b.title = planLabel(p, i);
+      b.addEventListener('click', function () { switchPlan(i); });
+      box.appendChild(b);
+    });
+    var cur = PL.parts[PL.active];
+    $('#pname').value = cur.name || ''; $('#pdate').value = cur.date || '';
+    $('#btn-pdel').disabled = PL.parts.length < 2;
+    $('#btn-pdup').disabled = $('#btn-pnew').disabled = PL.parts.length >= MAXPLANS;
+    delStep.reset();
+  }
+  function switchPlan(i) {
+    if (i === PL.active || !PL.parts[i]) return;
+    var keep = dirty;
+    PL.parts[PL.active] = captureParsed();
+    PL.active = i;
+    applyPart(PL.parts[i]);
+    dirty = keep;
+    setStatus('Showing ' + planLabel(PL.parts[i], i) + '.');
+  }
+  function nextPlanName() {
+    var n = PL.parts.length + 1, names = PL.parts.map(function (p) { return (p.name || '').trim().toLowerCase(); });
+    while (names.indexOf('plan ' + n) >= 0) n++;
+    return 'Plan ' + n;
+  }
+  function addPlan(blank) {
+    if (PL.parts.length >= MAXPLANS) { setStatus('A patient file can hold up to ' + MAXPLANS + ' plans.', true); return; }
+    var cur = captureParsed(); PL.parts[PL.active] = cur;
+    var np;
+    if (blank) { applyBlank(); np = captureParsed(); }
+    else np = JSON.parse(JSON.stringify(cur));
+    np.name = nextPlanName(); np.date = todayISO();
+    PL.parts.push(np); PL.active = PL.parts.length - 1;
+    applyPart(np); dirty = true;
+    setStatus((blank ? 'Blank plan added: ' : 'Plan duplicated: ') + np.name + '. Rename it above.');
+  }
+  $('#btn-pdup').addEventListener('click', function () { addPlan(false); });
+  $('#btn-pnew').addEventListener('click', function () { addPlan(true); });
+  $('#pname').addEventListener('input', function () {
+    PL.parts[PL.active].name = this.value; dirty = true;
+    var tab = $('#ptabs').children[PL.active]; if (tab) { tab.textContent = planLabel(PL.parts[PL.active], PL.active); tab.title = tab.textContent; }
+  });
+  $('#pdate').addEventListener('change', function () { PL.parts[PL.active].date = this.value; dirty = true; });
+  $('#btn-pdel').addEventListener('click', function () {
+    if (PL.parts.length < 2) return;
+    if (!delStep.isArmed()) { delStep.arm(); return; }
+    var gone = planLabel(PL.parts[PL.active], PL.active);
+    PL.parts.splice(PL.active, 1);
+    PL.active = Math.min(PL.active, PL.parts.length - 1);
+    applyPart(PL.parts[PL.active]); dirty = true;
+    setStatus('Deleted ' + gone + '.');
+  });
+
+  /* ---------- PDF: choose which plans to include ---------- */
+  function choosePdf() {
+    if ($('#btn-pdf').disabled) return;
+    if (PL.parts.length < 2) { exportPDF([PL.active]); return; }
+    PL.parts[PL.active] = captureParsed();
+    var list = $('#pdfdlg-list'); list.replaceChildren();
+    PL.parts.forEach(function (p, i) {
+      var lb = el('label', 'chk'), cb = el('input', null, { type: 'checkbox' });
+      cb.value = String(i); cb.checked = i === PL.active;
+      lb.appendChild(cb); lb.appendChild(document.createTextNode(' ' + planLabel(p, i) + (p.date ? ' (' + fmtDate(p.date) + ')' : '')));
+      list.appendChild(lb);
+    });
+    $('#pdfdlg').hidden = false;
+    var f = list.querySelector('input'); if (f) f.focus();
+  }
+  $('#pdfdlg-cancel').addEventListener('click', function () { $('#pdfdlg').hidden = true; });
+  $('#pdfdlg').addEventListener('click', function (e) { if (e.target === this) this.hidden = true; });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') $('#pdfdlg').hidden = true; });
+  $('#pdfdlg-go').addEventListener('click', function () {
+    var sel = [].slice.call($('#pdfdlg-list').querySelectorAll('input:checked')).map(function (c) { return +c.value; });
+    if (!sel.length) { setStatus('Select at least one plan to export.', true); return; }
+    $('#pdfdlg').hidden = true; exportPDF(sel);
+  });
   /* ---------- start ---------- */
-  freshTable(); freshTips(); freshRecords(); freshEnergy(); renderTable(); renderTips(); updateAge(); renderNewSections(); initChartTips(); agAll();
+  freshTable(); freshTips(); freshRecords(); freshEnergy(); renderTable(); renderTips(); updateAge(); renderNewSections(); renderPlanBar(); initChartTips(); agAll();
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { agSoon(); scheduleRecalc(); });
   window.addEventListener('resize', agSoon);
   window.addEventListener('load', agSoon);
 
-  window.__plan = { calcAge: calcAge, bulletize: bulletize, fmtDate: fmtDate, serialize: serialize, stamp: stamp, transformClone: transformClone, tipHasContent: tipHasContent, derive: derive, energyCalc: energyCalc, recalc: recalc, parsePlan: parsePlan, getR: function () { return R; }, getE: function () { return E; } };
+  window.__plan = { calcAge: calcAge, bulletize: bulletize, fmtDate: fmtDate, serialize: serialize, stamp: stamp, transformClone: transformClone, tipHasContent: tipHasContent, derive: derive, getPL: function () { return PL; }, captureParsed: captureParsed, energyCalc: energyCalc, recalc: recalc, parsePlan: parsePlan, getR: function () { return R; }, getE: function () { return E; } };
 })();
 </script>
 </body>
