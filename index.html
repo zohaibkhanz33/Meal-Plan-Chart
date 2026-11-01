@@ -273,6 +273,10 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 .mini .fld{text-align:center}
 
 /* ---------- charts ---------- */
+.cgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;align-items:stretch}
+@media (max-width:760px){.cgrid{grid-template-columns:minmax(0,1fr)}}
+.ccard .card-h{font-size:14px;padding:9px 12px}
+.ccard .legend{gap:5px 12px;padding:6px 12px 10px;font-size:12px}
 .cwrap{position:relative;padding:10px 12px 0}
 .ccanvas{display:block;width:100%;height:auto}
 .cempty{margin:0;padding:34px 16px 38px;text-align:center;color:var(--muted);font-size:14.5px;border:1.5px dashed var(--green-line);border-radius:10px}
@@ -403,40 +407,47 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
       <p class="hint pad no-export">BMI, WHR and WHtR are calculated automatically. BMI and WHtR use the height from Patient details.</p>
     </section>
 
-    <section class="card" id="blk-chart-weight" aria-labelledby="chw-h">
-      <h2 class="card-h" id="chw-h">Weight over time</h2>
-      <div class="cwrap"><canvas class="ccanvas" id="c-weight" role="img" aria-label="Line chart of weight in kilograms over time"></canvas><p class="cempty" id="e-weight" hidden></p><div class="ctip no-export" hidden></div></div>
-      <div class="legend" id="l-weight" hidden></div>
-      <p class="cnote" id="n-weight" hidden></p>
-    </section>
+    <div class="cgrid" id="blk-cg1">
+        <section class="card ccard" id="blk-chart-weight" aria-labelledby="ch-weight-h">
+          <h2 class="card-h" id="ch-weight-h">Weight over time</h2>
+          <div class="cwrap"><canvas class="ccanvas" id="c-weight" role="img" aria-label="Line chart of weight in kilograms over time"></canvas><p class="cempty" id="e-weight" hidden></p><div class="ctip no-export" hidden></div></div>
+          <div class="legend" id="l-weight" hidden></div>
+          <p class="cnote" id="n-weight" hidden></p>
+        </section>
+        <section class="card ccard" id="blk-chart-bmi" aria-labelledby="ch-bmi-h">
+          <h2 class="card-h" id="ch-bmi-h">BMI over time</h2>
+          <div class="cwrap"><canvas class="ccanvas" id="c-bmi" role="img" aria-label="Line chart of body mass index over time with colored BMI ranges"></canvas><p class="cempty" id="e-bmi" hidden></p><div class="ctip no-export" hidden></div></div>
+          <div class="legend" id="l-bmi" hidden></div>
+          <p class="cnote" id="n-bmi" hidden></p>
+        </section>
+        <section class="card ccard" id="blk-chart-waisthip" aria-labelledby="ch-waisthip-h">
+          <h2 class="card-h" id="ch-waisthip-h">Waist and hip over time</h2>
+          <div class="cwrap"><canvas class="ccanvas" id="c-waisthip" role="img" aria-label="Line chart of waist and hip measurements in centimeters over time"></canvas><p class="cempty" id="e-waisthip" hidden></p><div class="ctip no-export" hidden></div></div>
+          <div class="legend" id="l-waisthip" hidden></div>
+          <p class="cnote" id="n-waisthip" hidden></p>
+        </section>
+        <section class="card ccard" id="blk-chart-armcalf" aria-labelledby="ch-armcalf-h">
+          <h2 class="card-h" id="ch-armcalf-h">Arm and calf over time</h2>
+          <div class="cwrap"><canvas class="ccanvas" id="c-armcalf" role="img" aria-label="Line chart of arm and calf measurements in centimeters over time"></canvas><p class="cempty" id="e-armcalf" hidden></p><div class="ctip no-export" hidden></div></div>
+          <div class="legend" id="l-armcalf" hidden></div>
+          <p class="cnote" id="n-armcalf" hidden></p>
+        </section>
+    </div>
 
-    <section class="card" id="blk-chart-bmi" aria-labelledby="chb-h">
-      <h2 class="card-h" id="chb-h">BMI over time</h2>
-      <div class="cwrap"><canvas class="ccanvas" id="c-bmi" role="img" aria-label="Line chart of body mass index over time with colored BMI ranges"></canvas><p class="cempty" id="e-bmi" hidden></p><div class="ctip no-export" hidden></div></div>
-      <div class="legend" id="l-bmi" hidden></div>
-      <p class="cnote" id="n-bmi" hidden></p>
-    </section>
-
-    <section class="card" id="blk-chart-meas" aria-labelledby="chm-h">
-      <h2 class="card-h" id="chm-h">Body measurements over time</h2>
-      <div class="cwrap"><canvas class="ccanvas" id="c-meas" role="img" aria-label="Line chart of waist, hip, arm and calf measurements in centimeters over time"></canvas><p class="cempty" id="e-meas" hidden></p><div class="ctip no-export" hidden></div></div>
-      <div class="legend" id="l-meas" hidden></div>
-      <p class="cnote" id="n-meas" hidden></p>
-    </section>
-
-    <section class="card" id="blk-chart-whr" aria-labelledby="chr-h">
-      <h2 class="card-h" id="chr-h">Waist-to-hip ratio (WHR) over time</h2>
-      <div class="cwrap"><canvas class="ccanvas" id="c-whr" role="img" aria-label="Line chart of waist-to-hip ratio over time with colored risk ranges"></canvas><p class="cempty" id="e-whr" hidden></p><div class="ctip no-export" hidden></div></div>
-      <div class="legend" id="l-whr" hidden></div>
-      <p class="cnote" id="n-whr" hidden></p>
-    </section>
-
-    <section class="card" id="blk-chart-whtr" aria-labelledby="cht-h">
-      <h2 class="card-h" id="cht-h">Waist-to-height ratio (WHtR) over time</h2>
-      <div class="cwrap"><canvas class="ccanvas" id="c-whtr" role="img" aria-label="Line chart of waist-to-height ratio over time with colored risk ranges"></canvas><p class="cempty" id="e-whtr" hidden></p><div class="ctip no-export" hidden></div></div>
-      <div class="legend" id="l-whtr" hidden></div>
-      <p class="cnote" id="n-whtr" hidden></p>
-    </section>
+    <div class="cgrid" id="blk-cg2">
+        <section class="card ccard" id="blk-chart-whr" aria-labelledby="ch-whr-h">
+          <h2 class="card-h" id="ch-whr-h">Waist-to-hip ratio (WHR)</h2>
+          <div class="cwrap"><canvas class="ccanvas" id="c-whr" role="img" aria-label="Line chart of waist-to-hip ratio over time with colored risk ranges"></canvas><p class="cempty" id="e-whr" hidden></p><div class="ctip no-export" hidden></div></div>
+          <div class="legend" id="l-whr" hidden></div>
+          <p class="cnote" id="n-whr" hidden></p>
+        </section>
+        <section class="card ccard" id="blk-chart-whtr" aria-labelledby="ch-whtr-h">
+          <h2 class="card-h" id="ch-whtr-h">Waist-to-height ratio (WHtR)</h2>
+          <div class="cwrap"><canvas class="ccanvas" id="c-whtr" role="img" aria-label="Line chart of waist-to-height ratio over time with colored risk ranges"></canvas><p class="cempty" id="e-whtr" hidden></p><div class="ctip no-export" hidden></div></div>
+          <div class="legend" id="l-whtr" hidden></div>
+          <p class="cnote" id="n-whtr" hidden></p>
+        </section>
+    </div>
 
     <section class="card" id="blk-energy" aria-labelledby="en-h">
       <h2 class="card-h" id="en-h">Energy expenditure calculations</h2>
@@ -951,7 +962,12 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
       var ids = ['blk-head'];
       if (INC.progress && hasRecordData()) {
         ids.push('blk-progress');
-        CHART_IDS.forEach(function (id) { if (!$('#c-' + id).hidden) ids.push('blk-chart-' + id); });
+        var vis = CHART_IDS.filter(function (id) { return !$('#c-' + id).hidden; });
+        var g1 = $('#blk-cg1'), g2 = $('#blk-cg2');
+        vis.forEach(function (id, n) { (n < 4 ? g1 : g2).appendChild($('#blk-chart-' + id)); });
+        CHART_IDS.forEach(function (id) { if (vis.indexOf(id) < 0) $('#blk-chart-' + id).style.display = 'none'; });
+        if (vis.length) ids.push('blk-cg1');
+        if (vis.length > 4) ids.push('blk-cg2');
       }
       if (INC.energy && ec.bmr !== null) {
         ids.push('blk-energy');
@@ -1006,7 +1022,7 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
       else if (code === 'rate_limited') setStatus('Another save prompt is open. Answer it, then try again.', true);
       else setStatus('Could not create the PDF. Try again.', true);
     } finally {
-      try { renderCharts(false); } catch (e2) { /* ignore */ }
+      try { restoreCharts(); renderCharts(false); } catch (e2) { /* ignore */ }
       btn.disabled = false; btn.textContent = 'Download PDF';
     }
   }
@@ -1326,11 +1342,18 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
     };
   }
   function chartSize(canvas, forExport) {
-    if (forExport) return { W: 1200, H: 290, dpr: 2.5 };
-    var w = Math.max(280, Math.floor(canvas.parentNode.clientWidth - 24)) || 600;
-    return { W: w, H: Math.round(Math.min(360, Math.max(240, w * 0.34))), dpr: Math.min(window.devicePixelRatio || 1, 2.5) };
+    if (forExport) return { W: 560, H: 310, dpr: 3 };
+    var w = Math.max(260, Math.floor(canvas.parentNode.clientWidth - 24)) || 480;
+    return { W: w, H: Math.round(Math.min(340, Math.max(230, w * 0.55))), dpr: Math.min(window.devicePixelRatio || 1, 2.5) };
   }
-  var CHART_IDS = ['weight', 'bmi', 'meas', 'whr', 'whtr'];
+  var CHART_IDS = ['weight', 'bmi', 'waisthip', 'armcalf', 'whr', 'whtr'];
+  function restoreCharts() {
+    CHART_IDS.forEach(function (id, n) {
+      var card = $('#blk-chart-' + id);
+      $(n < 4 ? '#blk-cg1' : '#blk-cg2').appendChild(card);
+      card.style.display = '';
+    });
+  }
   function renderCharts(forExport) {
     var D = chartData(), g = genderVal(), h = heightCm();
     var S1 = function (name, pts) { return [{ name: name, color: INK, shape: 'circle', pts: pts }]; };
@@ -1339,14 +1362,18 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
         empty: 'Add a date and a weight in Progress records to see this chart.' },
       bmi: { series: S1('BMI', D.bmi), bands: BMI_BANDS, minSpan: 4, unit: 'BMI (kg/m²)', valUnit: 'kg/m²', fmt: function (v) { return v.toFixed(1); },
         empty: h ? 'Add a date and a weight in Progress records to see this chart.' : 'Select the patient’s height in Patient details to calculate BMI.' },
-      meas: { series: [
+      waisthip: { series: [
           { name: 'Waist', color: '#B92526', shape: 'circle', pts: D.waist },
-          { name: 'Hip', color: '#14532D', shape: 'square', pts: D.hip },
+          { name: 'Hip', color: '#14532D', shape: 'square', pts: D.hip }
+        ].filter(function (s) { return s.pts.length; }),
+        bands: null, minSpan: 10, unit: 'Measurement (cm)', valUnit: 'cm', fmt: function (v) { return String(round(v, 1)); },
+        empty: 'Add a date and a waist or hip measurement to see this chart.' },
+      armcalf: { series: [
           { name: 'Arm', color: '#D98A1C', shape: 'triangle', pts: D.arm },
           { name: 'Calf', color: '#4F6D8F', shape: 'diamond', pts: D.calf }
         ].filter(function (s) { return s.pts.length; }),
         bands: null, minSpan: 10, unit: 'Measurement (cm)', valUnit: 'cm', fmt: function (v) { return String(round(v, 1)); },
-        empty: 'Add a date and at least one measurement (waist, hip, arm or calf) to see this chart.' },
+        empty: 'Add a date and an arm or calf measurement to see this chart.' },
       whr: { series: S1('WHR', D.whr), bands: whrBands(g), minSpan: 0.1, unit: 'WHR', valUnit: '', fmt: function (v) { return v.toFixed(2); },
         empty: 'Add a date, a waist and a hip measurement in Progress records to see this chart.' },
       whtr: { series: S1('WHtR', D.whtr), bands: WHTR_BANDS, minSpan: 0.1, unit: 'WHtR', valUnit: '', fmt: function (v) { return v.toFixed(2); },
