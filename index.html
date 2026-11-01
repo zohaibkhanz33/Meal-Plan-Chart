@@ -232,6 +232,76 @@ textarea.fld.customtxt:focus-visible{border-color:var(--red)}
 .foot{background:var(--green-deep);color:#fff;border-radius:8px;padding:8px 14px}
 .foot .ag{text-align:center;font-size:13px}
 
+/* ---------- patient inputs: height pair and typed weights ---------- */
+.duo{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px}
+.unit{display:flex;align-items:center;gap:8px;min-width:0}
+.unit .fld{flex:1;min-width:0}
+.unit > span{flex:none;color:var(--muted);font-size:13.5px}
+
+/* ---------- data tables inside cards ---------- */
+.tw{overflow-x:auto;padding:12px 12px 6px}
+.dt{border-collapse:separate;border-spacing:0;width:100%;min-width:940px}
+.dt th{
+  background:var(--green-pale);color:var(--green-deep);
+  font-family:var(--font-display);font-weight:700;font-size:12px;letter-spacing:.06em;text-transform:uppercase;
+  padding:9px 6px;text-align:center;border-bottom:1.5px solid var(--green-deep);vertical-align:middle;
+}
+.dt th.grp{border-bottom:1px solid var(--green-line);background:#fff;font-size:12.5px;letter-spacing:.08em}
+.dt td{padding:3px 4px;border-bottom:1px solid var(--green-line);vertical-align:middle;text-align:center}
+.dt tbody tr:last-child td{border-bottom:0}
+.dt td.lft,.dt th.lft{text-align:left}
+.dt .fld{border-bottom:1px solid transparent;text-align:center;min-height:38px;padding:4px 4px}
+.dt td.lft .fld{text-align:left}
+.dt .fld:hover{border-bottom-color:var(--green-leaf)}
+.dt input[type=date].fld{min-width:132px}
+.dt select.fld{padding-right:20px;background-position:right 3px center;text-align-last:center}
+.dv{background:var(--green-pale);color:var(--green-deep);font-weight:700;min-width:128px}
+.dvv{display:block;font-size:15px;font-variant-numeric:tabular-nums}
+.chip{display:inline-flex;align-items:center;justify-content:center;gap:5px;font-size:11.5px;font-weight:700;color:var(--ink);line-height:1.2;white-space:nowrap}
+.chip i{flex:none;width:9px;height:9px;border-radius:50%}
+.dt tfoot td{background:var(--green-pale);border-top:1.5px solid var(--green-deep);border-bottom:0;font-weight:700;color:var(--green-deep);padding:9px 6px}
+.dt .kc{font-variant-numeric:tabular-nums;font-weight:700;white-space:nowrap}
+input[type=number]{-moz-appearance:textfield;appearance:textfield}
+input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+.pad{padding:0 12px 12px}
+.tact.pad{margin-top:0}
+.chk{display:inline-flex;align-items:center;gap:8px;font-size:13.5px;color:var(--muted);cursor:pointer}
+.chk input{width:17px;height:17px;accent-color:var(--green-deep);cursor:pointer}
+.warn{color:var(--red-dark);font-weight:700;font-size:13px;padding:0 14px 10px}
+.warn[hidden]{display:none}
+.mini{width:84px;margin:0 auto}
+.mini .fld{text-align:center}
+
+/* ---------- charts ---------- */
+.cwrap{position:relative;padding:10px 12px 0}
+.ccanvas{display:block;width:100%;height:auto}
+.cempty{margin:0;padding:34px 16px 38px;text-align:center;color:var(--muted);font-size:14.5px;border:1.5px dashed var(--green-line);border-radius:10px}
+.ctip{
+  position:absolute;z-index:5;pointer-events:none;max-width:240px;
+  background:var(--ink);color:#fff;font-size:12.5px;line-height:1.3;padding:6px 9px;border-radius:6px;
+}
+.legend{display:flex;flex-wrap:wrap;gap:6px 18px;padding:8px 14px 12px;font-size:13px;color:var(--ink)}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.legend i{flex:none;width:18px;height:12px;border-radius:3px}
+.cnote{margin:0;padding:0 14px 12px;font-size:13px;color:var(--red-dark);font-weight:700}
+.cnote[hidden]{display:none}
+
+/* ---------- energy ---------- */
+.eb{padding:14px;display:grid;gap:14px}
+.erow{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:8px 26px}
+.erow .pr{grid-template-columns:150px minmax(0,1fr)}
+.einfo{margin:0;font-size:13.5px;color:var(--muted)}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.tile{display:grid;gap:3px;align-content:start;padding:11px 13px;border:1.5px solid var(--green-line);border-radius:10px;background:#FAFCF8}
+.tile.hl{background:var(--green-deep);border-color:var(--green-deep);color:#fff}
+.tl{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.tv{font-family:var(--font-display);font-weight:700;font-size:25px;line-height:1.15;color:var(--green-deep);font-variant-numeric:tabular-nums}
+.tn{font-size:12.5px;color:var(--muted)}
+.tile.hl .tl,.tile.hl .tn{color:rgba(255,255,255,.88)}
+.tile.hl .tv{color:#fff}
+.fiber{display:grid;grid-template-columns:150px minmax(0,1fr);align-items:center;gap:8px;padding:6px 14px 14px;max-width:460px}
+.fiber label{font-weight:700;font-size:14.5px}
+
 /* ---------- export (PDF) state ---------- */
 .exporting{max-width:none;border-radius:0;box-shadow:none;background:#fff}
 .exporting .sheet-in{padding:0}
@@ -242,6 +312,10 @@ textarea.fld.customtxt:focus-visible{border-color:var(--red)}
 .exporting .recsel{background-color:#fff!important;border:1px solid var(--green-line)!important}
 .exporting .cell.ex{white-space:normal}
 .exporting .fld.ex{padding-right:2px}
+.exporting .dt{min-width:0!important}
+.exporting .tw{overflow:visible}
+.exporting .dt .fld.ex{padding:8px 4px;min-height:0}
+.exporting .legend,.exporting .cwrap{break-inside:avoid}
 .exporting .recsel.ex{padding:9px 10px}
 
 @media (max-width:640px){
@@ -282,9 +356,10 @@ textarea.fld.customtxt:focus-visible{border-color:var(--red)}
           <div class="pr"><label for="f-age">Age</label><input class="fld" id="f-age" type="text" readonly tabindex="-1" placeholder="Automatic"></div>
           <div class="pr"><label for="f-gender">Gender</label>
             <select class="fld" id="f-gender" required><option value="">Select</option><option value="male">Male</option><option value="female">Female</option></select></div>
-          <div class="pr"><label for="f-height">Height</label><select class="fld" id="f-height" required></select></div>
-          <div class="pr"><label for="f-cw">Current weight</label><select class="fld" id="f-cw" required></select></div>
-          <div class="pr"><label for="f-tw">Target weight</label><select class="fld" id="f-tw" required></select></div>
+          <div class="pr"><label for="f-height">Height</label>
+            <div class="duo"><select class="fld" id="f-height" required aria-label="Height, centimeters"></select><select class="fld" id="f-height-mm" aria-label="Height, additional millimeters"></select></div></div>
+          <div class="pr"><label for="f-cw">Current weight</label><div class="unit"><input class="fld" id="f-cw" type="number" inputmode="decimal" step="any" min="0" placeholder="e.g. 72.5"><span>kg</span></div></div>
+          <div class="pr"><label for="f-tw">Target weight</label><div class="unit"><input class="fld" id="f-tw" type="number" inputmode="decimal" step="any" min="0" placeholder="e.g. 65"><span>kg</span></div></div>
           <div class="pr"><label for="f-goal">Goal</label>
             <select class="fld" id="f-goal" required>
               <option value="">Select</option>
@@ -315,6 +390,84 @@ textarea.fld.customtxt:focus-visible{border-color:var(--red)}
           <textarea class="ag sub" id="f-sub" rows="1" aria-label="Plan subtitle" placeholder="Add a subtitle, for example the daily energy target"></textarea>
         </div>
       </div>
+    </section>
+
+    <section class="card" id="blk-progress" aria-labelledby="pg-h">
+      <h2 class="card-h" id="pg-h">Progress records</h2>
+      <div class="tw"><table class="dt" id="rec"></table></div>
+      <div class="tact pad no-export">
+        <button class="btn" id="btn-addrec" type="button">+ Add record</button>
+        <button class="btn" id="btn-sortrec" type="button">Sort by date</button>
+        <label class="chk"><input type="checkbox" id="inc-progress" checked> Include records and charts in the PDF</label>
+      </div>
+      <p class="hint pad no-export">BMI, WHR and WHtR are calculated automatically. BMI and WHtR use the height from Patient details.</p>
+    </section>
+
+    <section class="card" id="blk-chart-weight" aria-labelledby="chw-h">
+      <h2 class="card-h" id="chw-h">Weight over time</h2>
+      <div class="cwrap"><canvas class="ccanvas" id="c-weight" role="img" aria-label="Line chart of weight in kilograms over time"></canvas><p class="cempty" id="e-weight" hidden></p><div class="ctip no-export" hidden></div></div>
+      <div class="legend" id="l-weight" hidden></div>
+      <p class="cnote" id="n-weight" hidden></p>
+    </section>
+
+    <section class="card" id="blk-chart-bmi" aria-labelledby="chb-h">
+      <h2 class="card-h" id="chb-h">BMI over time</h2>
+      <div class="cwrap"><canvas class="ccanvas" id="c-bmi" role="img" aria-label="Line chart of body mass index over time with colored BMI ranges"></canvas><p class="cempty" id="e-bmi" hidden></p><div class="ctip no-export" hidden></div></div>
+      <div class="legend" id="l-bmi" hidden></div>
+      <p class="cnote" id="n-bmi" hidden></p>
+    </section>
+
+    <section class="card" id="blk-chart-meas" aria-labelledby="chm-h">
+      <h2 class="card-h" id="chm-h">Body measurements over time</h2>
+      <div class="cwrap"><canvas class="ccanvas" id="c-meas" role="img" aria-label="Line chart of waist, hip, arm and calf measurements in centimeters over time"></canvas><p class="cempty" id="e-meas" hidden></p><div class="ctip no-export" hidden></div></div>
+      <div class="legend" id="l-meas" hidden></div>
+      <p class="cnote" id="n-meas" hidden></p>
+    </section>
+
+    <section class="card" id="blk-chart-whr" aria-labelledby="chr-h">
+      <h2 class="card-h" id="chr-h">Waist-to-hip ratio (WHR) over time</h2>
+      <div class="cwrap"><canvas class="ccanvas" id="c-whr" role="img" aria-label="Line chart of waist-to-hip ratio over time with colored risk ranges"></canvas><p class="cempty" id="e-whr" hidden></p><div class="ctip no-export" hidden></div></div>
+      <div class="legend" id="l-whr" hidden></div>
+      <p class="cnote" id="n-whr" hidden></p>
+    </section>
+
+    <section class="card" id="blk-chart-whtr" aria-labelledby="cht-h">
+      <h2 class="card-h" id="cht-h">Waist-to-height ratio (WHtR) over time</h2>
+      <div class="cwrap"><canvas class="ccanvas" id="c-whtr" role="img" aria-label="Line chart of waist-to-height ratio over time with colored risk ranges"></canvas><p class="cempty" id="e-whtr" hidden></p><div class="ctip no-export" hidden></div></div>
+      <div class="legend" id="l-whtr" hidden></div>
+      <p class="cnote" id="n-whtr" hidden></p>
+    </section>
+
+    <section class="card" id="blk-energy" aria-labelledby="en-h">
+      <h2 class="card-h" id="en-h">Energy expenditure calculations</h2>
+      <div class="eb">
+        <div class="erow">
+          <div class="pr"><label for="e-af">Activity factor (AF)</label><input class="fld" id="e-af" type="number" inputmode="decimal" step="any" min="0" placeholder="e.g. 1.55"></div>
+          <div class="pr"><label for="e-def">Calorie deficit</label><select class="fld" id="e-def"></select></div>
+        </div>
+        <p class="einfo" id="e-info"></p>
+        <div class="tiles">
+          <div class="tile"><span class="tl">BMR</span><span class="tv" id="t-bmr">&ndash;</span><span class="tn" id="n-bmr">Harris-Benedict (1919)</span></div>
+          <div class="tile"><span class="tl">TEF</span><span class="tv" id="t-tef">&ndash;</span><span class="tn">10% of BMR</span></div>
+          <div class="tile"><span class="tl">TDEE</span><span class="tv" id="t-tdee">&ndash;</span><span class="tn">BMR &times; AF + TEF</span></div>
+          <div class="tile hl"><span class="tl" id="tl-def">TDEE with 0 kcal deficit</span><span class="tv" id="t-def">&ndash;</span><span class="tn">kcal per day</span></div>
+        </div>
+        <label class="chk no-export"><input type="checkbox" id="inc-energy" checked> Include energy calculations in the PDF</label>
+      </div>
+    </section>
+
+    <section class="card" id="blk-meals" aria-labelledby="ml-h">
+      <h2 class="card-h" id="ml-h">Energy distribution by meals</h2>
+      <div class="tw"><table class="dt" id="meals" style="min-width:560px"></table></div>
+      <p class="warn" id="meals-note" hidden></p>
+      <div class="tact pad no-export"><button class="btn" id="btn-addmeal" type="button">+ Add meal</button><span class="hint">Type the minimum and maximum percentage for each meal.</span></div>
+    </section>
+
+    <section class="card" id="blk-macros" aria-labelledby="mc-h">
+      <h2 class="card-h" id="mc-h">Energy distribution by macros</h2>
+      <div class="tw"><table class="dt" id="macros" style="min-width:640px"></table></div>
+      <p class="warn" id="macros-note" hidden></p>
+      <div class="fiber"><label for="e-fiber">Fiber goal (g/day)</label><input class="fld" id="e-fiber" type="text" maxlength="40" autocomplete="off" placeholder="e.g. 25-30 g"></div>
     </section>
 
     <section id="blk-table" aria-label="Meal plan table">
@@ -446,8 +599,11 @@ textarea.fld.customtxt:focus-visible{border-color:var(--red)}
     }
   }
   fillSelect($('#f-height'), 120, 220, 1, 'cm');
-  fillSelect($('#f-cw'), 30, 200, 0.5, 'kg');
-  fillSelect($('#f-tw'), 30, 200, 0.5, 'kg');
+  (function () {
+    var mm = $('#f-height-mm');
+    for (var i = 0; i <= 9; i++) { var o = el('option'); o.value = String(i); o.textContent = i + ' mm'; mm.appendChild(o); }
+    mm.value = '0';
+  })();
 
   var dob = $('#f-dob');
   var todayD = new Date();
@@ -790,7 +946,18 @@ textarea.fld.customtxt:focus-visible{border-color:var(--red)}
       normalizeCells(); stamp();
       if (document.fonts && document.fonts.ready) await document.fonts.ready;
 
-      var ids = ['blk-head', 'blk-table'];
+      renderCharts(true);
+      var ec = updateEnergy();
+      var ids = ['blk-head'];
+      if (INC.progress && hasRecordData()) {
+        ids.push('blk-progress');
+        CHART_IDS.forEach(function (id) { if (!$('#c-' + id).hidden) ids.push('blk-chart-' + id); });
+      }
+      if (INC.energy && ec.bmr !== null) {
+        ids.push('blk-energy');
+        if (ec.base !== null) ids.push('blk-meals', 'blk-macros');
+      }
+      ids.push('blk-table');
       if (hasText('f-notes')) ids.push('blk-notes');
       if (T.some(tipHasContent)) ids.push('blk-tips');
       if (hasText('f-foot')) ids.push('blk-foot');
@@ -839,13 +1006,609 @@ textarea.fld.customtxt:focus-visible{border-color:var(--red)}
       else if (code === 'rate_limited') setStatus('Another save prompt is open. Answer it, then try again.', true);
       else setStatus('Could not create the PDF. Try again.', true);
     } finally {
+      try { renderCharts(false); } catch (e2) { /* ignore */ }
       btn.disabled = false; btn.textContent = 'Download PDF';
     }
   }
   $('#btn-pdf').addEventListener('click', exportPDF);
 
+  /* ---------- numbers, dates, classification ---------- */
+  var DAY = 86400000;
+  var INK = '#1D2A21';
+  var FONT = 'Calibri, Carlito, "Segoe UI", Arial, sans-serif';
+  var MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  var R = [];
+  var E = {};
+  var INC = { progress: true, energy: true };
+
+  function pnum(v) {
+    if (v === null || v === undefined) return null;
+    var s = String(v).trim().replace(',', '.');
+    if (s === '') return null;
+    var n = Number(s);
+    return isFinite(n) ? n : null;
+  }
+  function round(n, d) { var f = Math.pow(10, d); return Math.round(n * f) / f; }
+  function pos(n) { return n !== null && n > 0 ? n : null; }
+  function dateTime(iso) {
+    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso || '');
+    if (!m) return null;
+    var y = +m[1], mo = +m[2], d = +m[3];
+    if (y < 1900 || y > 2200) return null;
+    var t = Date.UTC(y, mo - 1, d);
+    return new Date(t).getUTCMonth() === mo - 1 ? t : null;
+  }
+  function axisDate(t) {
+    var d = new Date(t);
+    return d.getUTCDate() + ' ' + MON[d.getUTCMonth()] + ' ' + String(d.getUTCFullYear()).slice(2);
+  }
+  function ageYears(iso, now) {
+    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso || '');
+    if (!m) return null;
+    now = now || new Date();
+    var y = +m[1], mo = +m[2] - 1, d = +m[3];
+    if (new Date(y, mo, d) > now) return null;
+    var a = now.getFullYear() - y;
+    if (now.getMonth() < mo || (now.getMonth() === mo && now.getDate() < d)) a -= 1;
+    return a;
+  }
+  function heightCm() {
+    var cm = pnum($('#f-height').value);
+    if (!cm) return null;
+    return cm + (pnum($('#f-height-mm').value) || 0) / 10;
+  }
+  function genderVal() { var g = $('#f-gender').value; return g === 'male' || g === 'female' ? g : ''; }
+  function fmtN(n) { return Number(n).toLocaleString('en-US', { maximumFractionDigits: 0 }); }
+  function fmtRange(lo, hi, f) { return round(lo, 6) === round(hi, 6) ? f(lo) : f(lo) + '–' + f(hi); }
+
+  function mk(id, name, from, to, lo, hi, range, dot) {
+    return { id: id, name: name, from: from, to: to, lo: lo, hi: hi, range: range, dot: dot || lo };
+  }
+  var GREEN = '#43A25A', ORANGE = '#F08A24', RED = '#D2352D';
+  var BMI_BANDS = [
+    mk('under', 'Underweight', 0, 18.5, '#EE8420', '#F6AE55', '< 18.5', '#F08A24'),
+    mk('normal', 'Normal weight', 18.5, 25, '#3FA356', '#7DBF56', '18.5–24.9', '#3FA356'),
+    mk('over', 'Overweight', 25, 30, '#F3AC3E', '#EE7B22', '25.0–29.9', '#EE8A24'),
+    mk('ob1', 'Obesity grade 1', 30, 35, '#E9592C', '#D2352D', '30.0–34.9', '#D2352D'),
+    mk('ob2', 'Obesity grade 2', 35, 40, '#B7242F', '#8A1530', '35.0–39.9', '#8A1530'),
+    mk('ob3', 'Obesity grade 3', 40, Infinity, '#5E0F1F', '#1F0509', '≥ 40.0', '#2A0A10')
+  ];
+  var WHR_M = [
+    mk('low', 'Low risk', 0, 0.9, GREEN, GREEN, '< 0.90'),
+    mk('mod', 'Moderate risk', 0.9, 1, ORANGE, ORANGE, '0.90–0.99'),
+    mk('high', 'High risk', 1, Infinity, RED, RED, '≥ 1.00')
+  ];
+  var WHR_F = [
+    mk('low', 'Low risk', 0, 0.85, GREEN, GREEN, '< 0.85'),
+    mk('mod', 'Moderate risk', 0.85, 0.9, ORANGE, ORANGE, '0.85–0.89'),
+    mk('high', 'High risk', 0.9, Infinity, RED, RED, '≥ 0.90')
+  ];
+  var WHTR_BANDS = [
+    mk('low', 'No increased risk', 0, 0.5, GREEN, GREEN, '< 0.5'),
+    mk('mod', 'Increased risk', 0.5, 0.6, ORANGE, ORANGE, '0.5–0.59'),
+    mk('high', 'High risk', 0.6, Infinity, RED, RED, '≥ 0.6')
+  ];
+  function classify(bands, v) {
+    for (var i = 0; i < bands.length; i++) if (v < bands[i].to) return bands[i];
+    return bands[bands.length - 1];
+  }
+  function whrBands(g) { return g === 'male' ? WHR_M : g === 'female' ? WHR_F : null; }
+
+  function derive(r) {
+    var h = heightCm(), g = genderVal(), w = pos(pnum(r.w)), wa = pos(pnum(r.waist)), hi = pos(pnum(r.hip)), o = {};
+    if (w && h) { o.bmi = w / Math.pow(h / 100, 2); o.bmiBand = classify(BMI_BANDS, round(o.bmi, 1)); }
+    if (wa && hi) { o.whr = wa / hi; var wb = whrBands(g); if (wb) o.whrBand = classify(wb, round(o.whr, 2)); }
+    if (wa && h) { o.whtr = wa / h; o.whtrBand = classify(WHTR_BANDS, round(o.whtr, 2)); }
+    return o;
+  }
+
+  /* ---------- progress records table ---------- */
+  function freshRecords() { R = [newRec(), newRec(), newRec()]; }
+  function newRec() { return { id: nid(), date: '', w: '', waist: '', hip: '', arm: '', calf: '' }; }
+  function recIsEmpty(r) { return !r.date && !r.w && !r.waist && !r.hip && !r.arm && !r.calf; }
+
+  function cellInput(r, key, type, label, ph) {
+    var td = el('td');
+    var i = el('input', 'fld', { type: type, 'aria-label': label });
+    if (type === 'number') { i.setAttribute('inputmode', 'decimal'); i.step = 'any'; i.min = '0'; if (ph) i.placeholder = ph; }
+    i.value = r[key] || '';
+    i.addEventListener('input', function () { r[key] = i.value; });
+    td.appendChild(i);
+    return td;
+  }
+  function derivedCell(key) {
+    var td = el('td', 'dv'); td.dataset.k = key;
+    td.appendChild(el('span', 'dvv'));
+    td.appendChild(el('span', 'chip'));
+    return td;
+  }
+  function renderRecords(focusId) {
+    var tb = $('#rec'); tb.replaceChildren();
+    var thead = el('thead'), hr = el('tr');
+    ['Date', 'Weight (kg)', 'BMI', 'Waist (cm)', 'Hip (cm)', 'Arm (cm)', 'Calf (cm)', 'WHR', 'WHtR', ''].forEach(function (h, i) {
+      var th = el('th', i === 9 ? 'no-export' : null, { scope: 'col' }); th.textContent = h; hr.appendChild(th);
+    });
+    thead.appendChild(hr); tb.appendChild(thead);
+    var body = el('tbody');
+    R.forEach(function (r) {
+      var tr = el('tr'); tr.dataset.id = r.id;
+      tr.appendChild(cellInput(r, 'date', 'date', 'Record date'));
+      tr.appendChild(cellInput(r, 'w', 'number', 'Weight in kilograms', 'kg'));
+      tr.appendChild(derivedCell('bmi'));
+      tr.appendChild(cellInput(r, 'waist', 'number', 'Waist in centimeters', 'cm'));
+      tr.appendChild(cellInput(r, 'hip', 'number', 'Hip in centimeters', 'cm'));
+      tr.appendChild(cellInput(r, 'arm', 'number', 'Arm in centimeters', 'cm'));
+      tr.appendChild(cellInput(r, 'calf', 'number', 'Calf in centimeters', 'cm'));
+      tr.appendChild(derivedCell('whr'));
+      tr.appendChild(derivedCell('whtr'));
+      var td = el('td', 'no-export');
+      var rm = el('button', 'rmt', { type: 'button', 'aria-label': 'Remove this record', title: 'Remove' });
+      rm.textContent = '×'; rm.disabled = R.length <= 1;
+      rm.addEventListener('click', function () {
+        R = R.filter(function (x) { return x.id !== r.id; });
+        markDirty(); renderRecords(); recalc(); setStatus('Record removed.');
+      });
+      td.appendChild(rm); tr.appendChild(td);
+      body.appendChild(tr);
+    });
+    tb.appendChild(body);
+    if (focusId) {
+      var f = tb.querySelector('tr[data-id="' + focusId + '"] input'); if (f) f.focus();
+    }
+  }
+  function setDerived(td, text, band) {
+    td.querySelector('.dvv').textContent = text;
+    var chip = td.querySelector('.chip'); chip.replaceChildren();
+    if (band) {
+      var dot = el('i'); dot.style.background = band.dot;
+      chip.appendChild(dot); chip.appendChild(document.createTextNode(band.name));
+    }
+  }
+  function updateRecDerived() {
+    $$('#rec tbody tr').forEach(function (tr) {
+      var r = R.filter(function (x) { return x.id === tr.dataset.id; })[0]; if (!r) return;
+      var d = derive(r);
+      setDerived(tr.querySelector('[data-k=bmi]'), d.bmi !== undefined ? d.bmi.toFixed(1) : '–', d.bmiBand);
+      setDerived(tr.querySelector('[data-k=whr]'), d.whr !== undefined ? d.whr.toFixed(2) : '–', d.whrBand);
+      setDerived(tr.querySelector('[data-k=whtr]'), d.whtr !== undefined ? d.whtr.toFixed(2) : '–', d.whtrBand);
+    });
+  }
+  $('#btn-addrec').addEventListener('click', function () {
+    var r = newRec(); R.push(r); markDirty(); renderRecords(r.id); recalc(); setStatus('');
+  });
+  $('#btn-sortrec').addEventListener('click', function () {
+    R.sort(function (a, b) {
+      var x = dateTime(a.date), y = dateTime(b.date);
+      if (x === null && y === null) return 0; if (x === null) return 1; if (y === null) return -1; return x - y;
+    });
+    markDirty(); renderRecords(); recalc(); setStatus('Records sorted by date.');
+  });
+
+  /* ---------- charts (canvas, true time scale) ---------- */
+  function niceStep(raw) {
+    var e = Math.floor(Math.log10(raw)), f = raw / Math.pow(10, e);
+    return (f < 1.5 ? 1 : f < 3 ? 2 : f < 7 ? 5 : 10) * Math.pow(10, e);
+  }
+  function drawMarker(ctx, shape, x, y, r) {
+    ctx.beginPath();
+    if (shape === 'square') ctx.rect(x - r, y - r, 2 * r, 2 * r);
+    else if (shape === 'triangle') { ctx.moveTo(x, y - r - 1); ctx.lineTo(x + r + 1, y + r); ctx.lineTo(x - r - 1, y + r); ctx.closePath(); }
+    else if (shape === 'diamond') { ctx.moveTo(x, y - r - 1.5); ctx.lineTo(x + r + 1.5, y); ctx.lineTo(x, y + r + 1.5); ctx.lineTo(x - r - 1.5, y); ctx.closePath(); }
+    else ctx.arc(x, y, r, 0, Math.PI * 2);
+  }
+  function drawChart(canvas, o) {
+    var W = o.W, H = o.H, dpr = o.dpr;
+    canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
+    canvas.__W = W; canvas.__H = H; canvas.__hits = [];
+    var ctx = canvas.getContext('2d');
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, W, H);
+    var all = [];
+    o.series.forEach(function (s) { s.pts.forEach(function (p) { all.push(p); }); });
+    if (!all.length) return false;
+
+    var small = W < 520, fs = small ? 11 : 12.5, multi = o.series.length > 1;
+    var m = { l: small ? 46 : 58, r: small ? 14 : 24, t: multi ? 42 : 24, b: 52 };
+    var pw = W - m.l - m.r, ph = H - m.t - m.b;
+    var tMin = Infinity, tMax = -Infinity, vMin = Infinity, vMax = -Infinity, seen = {}, times = [];
+    all.forEach(function (p) {
+      if (p.t < tMin) tMin = p.t; if (p.t > tMax) tMax = p.t;
+      if (p.v < vMin) vMin = p.v; if (p.v > vMax) vMax = p.v;
+      if (!seen[p.t]) { seen[p.t] = 1; times.push(p.t); }
+    });
+    times.sort(function (a, b) { return a - b; });
+    if (tMax === tMin) { tMin -= 7 * DAY; tMax += 7 * DAY; }
+    else { var padT = Math.max((tMax - tMin) * 0.05, 0.5 * DAY); tMin -= padT; tMax += padT; }
+    var span = vMax - vMin;
+    if (span < o.minSpan) { var mid = (vMax + vMin) / 2; vMin = mid - o.minSpan / 2; vMax = mid + o.minSpan / 2; span = o.minSpan; }
+    var padV = span * 0.14, y0 = Math.max(vMin - padV, 0), y1 = vMax + padV;
+    function X(t) { return m.l + (t - tMin) / (tMax - tMin) * pw; }
+    function Y(v) { return m.t + (1 - (v - y0) / (y1 - y0)) * ph; }
+
+    if (o.bands) {
+      o.bands.forEach(function (b) {
+        var lo = Math.max(b.from, y0), hi = Math.min(b.to, y1);
+        if (hi <= lo) return;
+        var yt = Y(hi), yb = Y(lo), gr = ctx.createLinearGradient(0, yb, 0, yt);
+        gr.addColorStop(0, b.lo); gr.addColorStop(1, b.hi);
+        ctx.save(); ctx.globalAlpha = 0.66; ctx.fillStyle = gr; ctx.fillRect(m.l, yt, pw, yb - yt); ctx.restore();
+      });
+      ctx.save(); ctx.strokeStyle = 'rgba(29,42,33,.40)'; ctx.lineWidth = 1; ctx.setLineDash([5, 4]);
+      o.bands.forEach(function (b) {
+        if (b.from > y0 && b.from < y1) { var yy = Math.round(Y(b.from)) + 0.5; ctx.beginPath(); ctx.moveTo(m.l, yy); ctx.lineTo(m.l + pw, yy); ctx.stroke(); }
+      });
+      ctx.restore();
+    }
+
+    var step = niceStep((y1 - y0) / (small ? 4 : 5)), dec = Math.max(0, -Math.floor(Math.log10(step) + 1e-9));
+    ctx.font = fs + 'px ' + FONT; ctx.textBaseline = 'middle'; ctx.textAlign = 'right';
+    for (var k = Math.ceil(y0 / step - 1e-9), k1 = Math.floor(y1 / step + 1e-9); k <= k1; k++) {
+      var v = k * step, yy2 = Math.round(Y(v)) + 0.5;
+      ctx.strokeStyle = 'rgba(20,40,25,.13)'; ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(m.l, yy2); ctx.lineTo(m.l + pw, yy2); ctx.stroke();
+      ctx.fillStyle = '#5B685F'; ctx.fillText(v.toFixed(dec), m.l - 8, yy2);
+    }
+    ctx.strokeStyle = 'rgba(20,40,25,.55)'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(m.l + 0.5, m.t); ctx.lineTo(m.l + 0.5, m.t + ph + 0.5); ctx.lineTo(m.l + pw, m.t + ph + 0.5); ctx.stroke();
+    ctx.save(); ctx.translate(small ? 11 : 14, m.t + ph / 2); ctx.rotate(-Math.PI / 2);
+    ctx.textAlign = 'center'; ctx.fillStyle = '#5B685F'; ctx.font = '600 ' + fs + 'px ' + FONT; ctx.fillText(o.unit, 0, 0); ctx.restore();
+
+    /* x axis: one tick per collection date, labels skipped only where they would collide */
+    ctx.font = fs + 'px ' + FONT; ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+    var order = [], placed = [];
+    times.forEach(function (t, i) { order.push({ t: t, p: i === 0 ? 0 : i === times.length - 1 ? 1 : 2 + i }); });
+    order.sort(function (a, b) { return a.p - b.p; });
+    times.forEach(function (t) {
+      var x = Math.round(X(t)) + 0.5;
+      ctx.strokeStyle = 'rgba(20,40,25,.07)'; ctx.beginPath(); ctx.moveTo(x, m.t); ctx.lineTo(x, m.t + ph); ctx.stroke();
+      ctx.strokeStyle = 'rgba(20,40,25,.55)'; ctx.beginPath(); ctx.moveTo(x, m.t + ph); ctx.lineTo(x, m.t + ph + 5); ctx.stroke();
+    });
+    order.forEach(function (it) {
+      var txt = axisDate(it.t), w = ctx.measureText(txt).width, x = X(it.t), a = x - w / 2, b = x + w / 2;
+      if (a < 2) { a = 2; b = 2 + w; x = 2 + w / 2; }
+      if (b > W - 2) { b = W - 2; a = b - w; x = a + w / 2; }
+      for (var i = 0; i < placed.length; i++) if (a < placed[i][1] + 8 && b > placed[i][0] - 8) return;
+      placed.push([a, b]); ctx.fillStyle = '#1D2A21'; ctx.fillText(txt, x, m.t + ph + 9);
+    });
+
+    o.series.forEach(function (s, si) {
+      if (!s.pts.length) return;
+      var pts = s.pts.slice().sort(function (a, b) { return a.t - b.t; });
+      ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+      ctx.strokeStyle = 'rgba(255,255,255,.9)'; ctx.lineWidth = 5.5;
+      ctx.beginPath(); pts.forEach(function (p, i) { if (i) ctx.lineTo(X(p.t), Y(p.v)); else ctx.moveTo(X(p.t), Y(p.v)); }); ctx.stroke();
+      ctx.strokeStyle = s.color; ctx.lineWidth = 2.6;
+      ctx.beginPath(); pts.forEach(function (p, i) { if (i) ctx.lineTo(X(p.t), Y(p.v)); else ctx.moveTo(X(p.t), Y(p.v)); }); ctx.stroke();
+      pts.forEach(function (p) {
+        drawMarker(ctx, s.shape, X(p.t), Y(p.v), 4.6);
+        ctx.fillStyle = '#ffffff'; ctx.fill(); ctx.lineWidth = 2.4; ctx.strokeStyle = s.color; ctx.stroke();
+        canvas.__hits.push({ x: X(p.t), y: Y(p.v), t: p.t, name: s.name, text: o.fmt(p.v) + ' ' + o.valUnit });
+      });
+      if (!multi) {
+        var lastR = -Infinity;
+        ctx.font = '700 ' + fs + 'px ' + FONT; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        pts.forEach(function (p) {
+          var txt = o.fmt(p.v), w = ctx.measureText(txt).width, x = X(p.t), a = x - w / 2;
+          if (a < lastR + 6 || a < 2 || a + w > W - 2) return;
+          var ly = Y(p.v) - 14; if (ly < m.t - 6) ly = Y(p.v) + 16;
+          ctx.lineWidth = 3.5; ctx.strokeStyle = 'rgba(255,255,255,.95)'; ctx.strokeText(txt, x, ly);
+          ctx.fillStyle = INK; ctx.fillText(txt, x, ly); lastR = a + w;
+        });
+      }
+    });
+
+    if (multi) {
+      var lx = m.l; ctx.font = fs + 'px ' + FONT; ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+      o.series.forEach(function (s) {
+        drawMarker(ctx, s.shape, lx + 6, 15, 4.6); ctx.fillStyle = '#fff'; ctx.fill(); ctx.lineWidth = 2.4; ctx.strokeStyle = s.color; ctx.stroke();
+        ctx.fillStyle = INK; ctx.fillText(s.name, lx + 16, 15); lx += 16 + ctx.measureText(s.name).width + 22;
+      });
+    }
+    return true;
+  }
+
+  function chartData() {
+    var recs = [];
+    R.forEach(function (r) { var t = dateTime(r.date); if (t !== null) recs.push({ r: r, t: t, d: derive(r) }); });
+    recs.sort(function (a, b) { return a.t - b.t; });
+    function pts(fn) {
+      var out = []; recs.forEach(function (x) { var v = fn(x); if (v !== null && v !== undefined && isFinite(v)) out.push({ t: x.t, v: v }); }); return out;
+    }
+    return {
+      weight: pts(function (x) { return pos(pnum(x.r.w)); }),
+      bmi: pts(function (x) { return x.d.bmi; }),
+      waist: pts(function (x) { return pos(pnum(x.r.waist)); }),
+      hip: pts(function (x) { return pos(pnum(x.r.hip)); }),
+      arm: pts(function (x) { return pos(pnum(x.r.arm)); }),
+      calf: pts(function (x) { return pos(pnum(x.r.calf)); }),
+      whr: pts(function (x) { return x.d.whr; }),
+      whtr: pts(function (x) { return x.d.whtr; })
+    };
+  }
+  function chartSize(canvas, forExport) {
+    if (forExport) return { W: 1200, H: 290, dpr: 2.5 };
+    var w = Math.max(280, Math.floor(canvas.parentNode.clientWidth - 24)) || 600;
+    return { W: w, H: Math.round(Math.min(360, Math.max(240, w * 0.34))), dpr: Math.min(window.devicePixelRatio || 1, 2.5) };
+  }
+  var CHART_IDS = ['weight', 'bmi', 'meas', 'whr', 'whtr'];
+  function renderCharts(forExport) {
+    var D = chartData(), g = genderVal(), h = heightCm();
+    var S1 = function (name, pts) { return [{ name: name, color: INK, shape: 'circle', pts: pts }]; };
+    var cfg = {
+      weight: { series: S1('Weight', D.weight), bands: null, minSpan: 4, unit: 'Weight (kg)', valUnit: 'kg', fmt: function (v) { return String(round(v, 1)); },
+        empty: 'Add a date and a weight in Progress records to see this chart.' },
+      bmi: { series: S1('BMI', D.bmi), bands: BMI_BANDS, minSpan: 4, unit: 'BMI (kg/m²)', valUnit: 'kg/m²', fmt: function (v) { return v.toFixed(1); },
+        empty: h ? 'Add a date and a weight in Progress records to see this chart.' : 'Select the patient’s height in Patient details to calculate BMI.' },
+      meas: { series: [
+          { name: 'Waist', color: '#B92526', shape: 'circle', pts: D.waist },
+          { name: 'Hip', color: '#14532D', shape: 'square', pts: D.hip },
+          { name: 'Arm', color: '#D98A1C', shape: 'triangle', pts: D.arm },
+          { name: 'Calf', color: '#4F6D8F', shape: 'diamond', pts: D.calf }
+        ].filter(function (s) { return s.pts.length; }),
+        bands: null, minSpan: 10, unit: 'Measurement (cm)', valUnit: 'cm', fmt: function (v) { return String(round(v, 1)); },
+        empty: 'Add a date and at least one measurement (waist, hip, arm or calf) to see this chart.' },
+      whr: { series: S1('WHR', D.whr), bands: whrBands(g), minSpan: 0.1, unit: 'WHR', valUnit: '', fmt: function (v) { return v.toFixed(2); },
+        empty: 'Add a date, a waist and a hip measurement in Progress records to see this chart.' },
+      whtr: { series: S1('WHtR', D.whtr), bands: WHTR_BANDS, minSpan: 0.1, unit: 'WHtR', valUnit: '', fmt: function (v) { return v.toFixed(2); },
+        empty: h ? 'Add a date and a waist measurement in Progress records to see this chart.' : 'Select the patient’s height in Patient details to calculate WHtR.' }
+    };
+    CHART_IDS.forEach(function (id) {
+      var c = cfg[id], canvas = $('#c-' + id), empty = $('#e-' + id), leg = $('#l-' + id), note = $('#n-' + id);
+      var has = c.series.some(function (s) { return s.pts.length; });
+      canvas.hidden = !has; empty.hidden = has; empty.textContent = c.empty;
+      leg.replaceChildren();
+      if (has && c.bands) {
+        c.bands.forEach(function (b) {
+          var sp = el('span'), sw = el('i');
+          sw.style.background = 'linear-gradient(to bottom,' + b.hi + ',' + b.lo + ')';
+          sp.appendChild(sw); sp.appendChild(document.createTextNode(b.name + ' ' + b.range)); leg.appendChild(sp);
+        });
+      }
+      leg.hidden = !(has && c.bands);
+      var msg = '';
+      if (id === 'whr' && has && !g) msg = 'Select the patient’s gender in Patient details to show the WHR risk ranges.';
+      note.textContent = msg; note.hidden = !msg;
+      if (has) {
+        var sz = chartSize(canvas, forExport);
+        drawChart(canvas, { W: sz.W, H: sz.H, dpr: sz.dpr, series: c.series, bands: c.bands, minSpan: c.minSpan, unit: c.unit, valUnit: c.valUnit, fmt: c.fmt });
+      }
+    });
+  }
+  function initChartTips() {
+    CHART_IDS.forEach(function (id) {
+      var canvas = $('#c-' + id), tip = canvas.parentNode.querySelector('.ctip');
+      canvas.addEventListener('pointermove', function (e) {
+        var hits = canvas.__hits || []; if (!hits.length) return;
+        var r = canvas.getBoundingClientRect(), k = (canvas.__W || r.width) / r.width;
+        var x = (e.clientX - r.left) * k, y = (e.clientY - r.top) * k, best = null, bd = 24 * 24;
+        hits.forEach(function (p) { var d = (p.x - x) * (p.x - x) + (p.y - y) * (p.y - y); if (d < bd) { bd = d; best = p; } });
+        if (!best) { tip.hidden = true; return; }
+        tip.textContent = axisDate(best.t) + ' · ' + best.name + ': ' + best.text;
+        tip.hidden = false;
+        var s = 1 / k;
+        tip.style.left = Math.max(0, Math.min(canvas.offsetLeft + best.x * s + 12, canvas.offsetLeft + r.width - 200)) + 'px';
+        tip.style.top = Math.max(0, canvas.offsetTop + best.y * s - 40) + 'px';
+      });
+      canvas.addEventListener('pointerleave', function () { tip.hidden = true; });
+    });
+  }
+
+  /* ---------- energy: BMR, TEF, TDEE, deficit, meals, macros ---------- */
+  var MACRO_DEFS = [
+    { key: 'carbs', name: 'Carbohydrates', json: 'carbohydrates', factor: 4 },
+    { key: 'protein', name: 'Protein', json: 'protein', factor: 4 },
+    { key: 'fat', name: 'Lipids', json: 'lipids', factor: 9 }
+  ];
+  function freshEnergy() {
+    E = {
+      af: '', deficit: '0', fiber: '',
+      meals: [
+        { id: nid(), name: 'Breakfast', min: '20', max: '25' },
+        { id: nid(), name: 'Mid-morning snack', min: '10', max: '10' },
+        { id: nid(), name: 'Lunch', min: '30', max: '35' },
+        { id: nid(), name: 'Evening snack', min: '10', max: '10' },
+        { id: nid(), name: 'Dinner', min: '25', max: '30' }
+      ],
+      macros: { carbs: { min: '40', max: '50' }, protein: { min: '15', max: '25' }, fat: { min: '20', max: '25' } }
+    };
+  }
+  function weightForCalc() {
+    var best = null;
+    R.forEach(function (r) {
+      var t = dateTime(r.date), w = pos(pnum(r.w));
+      if (t !== null && w && (!best || t >= best.t)) best = { t: t, kg: w, date: r.date };
+    });
+    if (best) return { kg: best.kg, src: 'latest record, ' + fmtDate(best.date) };
+    var cw = pos(pnum($('#f-cw').value));
+    return cw ? { kg: cw, src: 'current weight' } : null;
+  }
+  function energyCalc() {
+    var g = genderVal(), age = ageYears(dob.value), h = heightCm(), w = weightForCalc(), af = pos(pnum(E.af)), missing = [];
+    if (!g) missing.push('gender');
+    if (age === null) missing.push('date of birth');
+    if (!h) missing.push('height');
+    if (!w) missing.push('weight');
+    var out = { missing: missing, g: g, age: age, h: h, w: w, af: af, bmr: null, tef: null, tdee: null, deficit: pnum(E.deficit) || 0, tdeeDef: null, base: null };
+    if (!missing.length) {
+      out.bmr = g === 'male'
+        ? 66.473 + 13.7516 * w.kg + 5.0033 * h - 6.755 * age
+        : 655.0955 + 9.5634 * w.kg + 1.8496 * h - 4.6756 * age;
+      out.tef = 0.1 * out.bmr;
+      if (af) {
+        out.tdee = out.bmr * af + out.tef;
+        out.tdeeDef = Math.max(0, out.tdee - out.deficit);
+        out.base = Math.round(out.tdeeDef);
+      }
+    }
+    return out;
+  }
+  function pair(a, b) {
+    var x = pnum(a), y = pnum(b);
+    if (x === null && y === null) return null;
+    if (x === null) x = y; if (y === null) y = x;
+    return { min: Math.min(x, y), max: Math.max(x, y), bad: x > y };
+  }
+  function pctText(n) { return String(round(n, 2)); }
+
+  function renderEnergyInputs() {
+    var sel = $('#e-def');
+    if (!sel.options.length) {
+      for (var d = 0; d <= 1500; d += 100) { var o = el('option'); o.value = String(d); o.textContent = d + ' kcal'; sel.appendChild(o); }
+    }
+    sel.value = E.deficit; $('#e-af').value = E.af; $('#e-fiber').value = E.fiber;
+    $('#inc-progress').checked = INC.progress; $('#inc-energy').checked = INC.energy;
+  }
+  function renderMeals(focusId) {
+    var tb = $('#meals'); tb.replaceChildren();
+    var thead = el('thead'), hr = el('tr');
+    ['Meal', 'Min %', 'Max %', 'Energy (kcal)', ''].forEach(function (h, i) {
+      var th = el('th', i === 0 ? 'lft' : i === 4 ? 'no-export' : null, { scope: 'col' }); th.textContent = h; hr.appendChild(th);
+    });
+    thead.appendChild(hr); tb.appendChild(thead);
+    var body = el('tbody');
+    E.meals.forEach(function (m) {
+      var tr = el('tr'); tr.dataset.id = m.id;
+      var tdn = el('td', 'lft'), ni = el('input', 'fld', { type: 'text', maxlength: '60', 'aria-label': 'Meal name', autocomplete: 'off' });
+      ni.value = m.name; ni.addEventListener('input', function () { m.name = ni.value; }); tdn.appendChild(ni); tr.appendChild(tdn);
+      ['min', 'max'].forEach(function (k) {
+        var td = el('td'), box = el('div', 'mini'), i = el('input', 'fld', { type: 'number', inputmode: 'decimal', step: 'any', min: '0', max: '100', 'aria-label': (k === 'min' ? 'Minimum' : 'Maximum') + ' percentage for ' + (m.name || 'meal') });
+        i.value = m[k]; i.addEventListener('input', function () { m[k] = i.value; });
+        box.appendChild(i); td.appendChild(box); tr.appendChild(td);
+      });
+      var tk = el('td', 'kc'); tk.dataset.k = 'kcal'; tr.appendChild(tk);
+      var tr2 = el('td', 'no-export'), rm = el('button', 'rmt', { type: 'button', 'aria-label': 'Remove this meal', title: 'Remove' });
+      rm.textContent = '×'; rm.disabled = E.meals.length <= 1;
+      rm.addEventListener('click', function () {
+        E.meals = E.meals.filter(function (x) { return x.id !== m.id; }); markDirty(); renderMeals(); recalc(); setStatus('Meal removed.');
+      });
+      tr2.appendChild(rm); tr.appendChild(tr2); body.appendChild(tr);
+    });
+    tb.appendChild(body);
+    var foot = el('tfoot'), fr = el('tr');
+    var a = el('td', 'lft'); a.textContent = 'TOTAL'; fr.appendChild(a);
+    var b = el('td'); b.colSpan = 2; b.id = 'mt-pct'; fr.appendChild(b);
+    var c = el('td', 'kc'); c.id = 'mt-kcal'; fr.appendChild(c);
+    var d2 = el('td', 'no-export'); fr.appendChild(d2);
+    foot.appendChild(fr); tb.appendChild(foot);
+    if (focusId) { var f = tb.querySelector('tr[data-id="' + focusId + '"] input'); if (f) { f.focus(); f.select(); } }
+  }
+  function renderMacros() {
+    var tb = $('#macros'); tb.replaceChildren();
+    var thead = el('thead'), g1 = el('tr'), g2 = el('tr');
+    var h1 = el('th', 'grp', { colSpan: 4, scope: 'colgroup' }); h1.textContent = 'Energy distribution by macros'; g1.appendChild(h1);
+    var h2 = el('th', 'grp', { scope: 'col' }); h2.textContent = 'Macros in grams'; g1.appendChild(h2);
+    ['Macro', 'Min %', 'Max %', 'Energy (kcal)', 'Grams (g)'].forEach(function (h, i) {
+      var th = el('th', i === 0 ? 'lft' : null, { scope: 'col' }); th.textContent = h; g2.appendChild(th);
+    });
+    thead.appendChild(g1); thead.appendChild(g2); tb.appendChild(thead);
+    var body = el('tbody');
+    MACRO_DEFS.forEach(function (d) {
+      var tr = el('tr'); tr.dataset.key = d.key;
+      var tn = el('td', 'lft'); tn.textContent = d.name; tn.style.fontWeight = '700'; tr.appendChild(tn);
+      ['min', 'max'].forEach(function (k) {
+        var td = el('td'), s = el('select', 'fld', { 'aria-label': (k === 'min' ? 'Minimum' : 'Maximum') + ' percentage of ' + d.name });
+        for (var p = 0; p <= 100; p++) { var o = el('option'); o.value = String(p); o.textContent = p + '%'; s.appendChild(o); }
+        s.value = E.macros[d.key][k];
+        s.addEventListener('change', function () { E.macros[d.key][k] = s.value; });
+        td.appendChild(s); tr.appendChild(td);
+      });
+      var tk = el('td', 'kc'); tk.dataset.k = 'kcal'; tr.appendChild(tk);
+      var tg = el('td', 'kc'); tg.dataset.k = 'g'; tr.appendChild(tg);
+      body.appendChild(tr);
+    });
+    tb.appendChild(body);
+    var foot = el('tfoot'), fr = el('tr');
+    var a = el('td', 'lft'); a.textContent = 'TOTAL'; fr.appendChild(a);
+    var b = el('td'); b.colSpan = 2; b.id = 'xt-pct'; fr.appendChild(b);
+    var c = el('td', 'kc'); c.id = 'xt-kcal'; fr.appendChild(c);
+    var d3 = el('td', 'kc'); d3.id = 'xt-g'; fr.appendChild(d3);
+    foot.appendChild(fr); tb.appendChild(foot);
+  }
+  function setWarn(id, items) { var n = $(id); n.textContent = items.join(' '); n.hidden = !items.length; }
+
+  function updateEnergy() {
+    var ec = energyCalc();
+    $('#t-bmr').textContent = ec.bmr !== null ? fmtN(ec.bmr) + ' kcal' : '–';
+    $('#t-tef').textContent = ec.tef !== null ? fmtN(ec.tef) + ' kcal' : '–';
+    $('#t-tdee').textContent = ec.tdee !== null ? fmtN(ec.tdee) + ' kcal' : '–';
+    $('#t-def').textContent = ec.base !== null ? fmtN(ec.base) + ' kcal' : '–';
+    $('#tl-def').textContent = 'TDEE with ' + fmtN(ec.deficit) + ' kcal deficit';
+    $('#n-bmr').textContent = 'Harris-Benedict (1919)' + (ec.g ? ', ' + ec.g : '');
+    var info = '';
+    if (ec.missing.length) info = 'Missing for the calculation: ' + ec.missing.join(', ') + '.';
+    else {
+      info = 'Based on ' + round(ec.w.kg, 1) + ' kg (' + ec.w.src + '), ' + round(ec.h, 1) + ' cm, ' + ec.age + ' years, ' + ec.g + '.';
+      if (!ec.af) info += ' Enter the activity factor (AF) to calculate TDEE.';
+    }
+    $('#e-info').textContent = info;
+
+    var base = ec.base, kc = function (a, b) { return base === null ? '–' : fmtRange(Math.round(base * a / 100), Math.round(base * b / 100), fmtN); };
+    var rows = $$('#meals tbody tr'), sMin = 0, sMax = 0, any = false, warns = [], bad = [];
+    E.meals.forEach(function (m, i) {
+      var p = pair(m.min, m.max), cell = rows[i] && rows[i].querySelector('[data-k=kcal]');
+      if (!cell) return;
+      if (!p) { cell.textContent = '–'; return; }
+      any = true; sMin += p.min; sMax += p.max; if (p.bad) bad.push(m.name || 'Meal');
+      cell.textContent = base === null ? '–' : kc(p.min, p.max) + ' kcal';
+    });
+    $('#mt-pct').textContent = any ? fmtRange(sMin, sMax, pctText) + '%' : '–';
+    $('#mt-kcal').textContent = any && base !== null ? kc(sMin, sMax) + ' kcal' : '–';
+    if (any && (sMax < 100 || sMin > 100)) warns.push('These ranges cannot add up to 100% of the energy target.');
+    if (bad.length) warns.push('Minimum is higher than maximum for: ' + bad.join(', ') + '.');
+    setWarn('#meals-note', warns);
+
+    var mrows = $$('#macros tbody tr'), xMin = 0, xMax = 0, gMin = 0, gMax = 0, anyM = false, mw = [], mbad = [];
+    MACRO_DEFS.forEach(function (d, i) {
+      var p = pair(E.macros[d.key].min, E.macros[d.key].max), r = mrows[i];
+      if (!r) return;
+      var ck = r.querySelector('[data-k=kcal]'), cg = r.querySelector('[data-k=g]');
+      if (!p) { ck.textContent = '–'; cg.textContent = '–'; return; }
+      anyM = true; xMin += p.min; xMax += p.max; if (p.bad) mbad.push(d.name);
+      if (base === null) { ck.textContent = '–'; cg.textContent = '–'; return; }
+      var kLo = base * p.min / 100, kHi = base * p.max / 100;
+      ck.textContent = fmtRange(Math.round(kLo), Math.round(kHi), fmtN) + ' kcal';
+      var gLo = Math.round(kLo / d.factor), gHi = Math.round(kHi / d.factor);
+      gMin += gLo; gMax += gHi; cg.textContent = fmtRange(gLo, gHi, fmtN) + ' g';
+    });
+    $('#xt-pct').textContent = anyM ? fmtRange(xMin, xMax, pctText) + '%' : '–';
+    $('#xt-kcal').textContent = anyM && base !== null ? kc(xMin, xMax) + ' kcal' : '–';
+    $('#xt-g').textContent = anyM && base !== null ? fmtRange(gMin, gMax, fmtN) + ' g' : '–';
+    if (anyM && (xMax < 100 || xMin > 100)) mw.push('These ranges cannot add up to 100% of the energy target.');
+    if (mbad.length) mw.push('Minimum is higher than maximum for: ' + mbad.join(', ') + '.');
+    setWarn('#macros-note', mw);
+    return ec;
+  }
+
+  $('#e-af').addEventListener('input', function () { E.af = this.value; });
+  $('#e-def').addEventListener('change', function () { E.deficit = this.value; });
+  $('#e-fiber').addEventListener('input', function () { E.fiber = this.value; });
+  $('#inc-progress').addEventListener('change', function () { INC.progress = this.checked; });
+  $('#inc-energy').addEventListener('change', function () { INC.energy = this.checked; });
+  $('#btn-addmeal').addEventListener('click', function () {
+    var m = { id: nid(), name: 'Meal ' + (E.meals.length + 1), min: '', max: '' };
+    E.meals.push(m); markDirty(); renderMeals(m.id); recalc(); setStatus('');
+  });
+
+  var recalcQueued = false;
+  function recalc() {
+    updateRecDerived();
+    renderCharts(false);
+    updateEnergy();
+  }
+  function scheduleRecalc() {
+    if (recalcQueued) return; recalcQueued = true;
+    requestAnimationFrame(function () { recalcQueued = false; recalc(); });
+  }
+  $('#sheet').addEventListener('input', scheduleRecalc);
+  $('#sheet').addEventListener('change', scheduleRecalc);
+  window.addEventListener('resize', scheduleRecalc);
+  function renderNewSections() {
+    renderRecords(); renderEnergyInputs(); renderMeals(); renderMacros(); recalc();
+  }
+  function hasRecordData() { return R.some(function (r) { return !recIsEmpty(r); }); }
+
   /* ---------- save, open and new plan ---------- */
-  var FORMAT = 'zohaib-khan-meal-plan', VERSION = 1;
+  var FORMAT = 'zohaib-khan-meal-plan', VERSION = 2;
   var dirty = false;
   function markDirty() { dirty = true; }
   $('#sheet').addEventListener('input', markDirty);
@@ -860,10 +1623,11 @@ textarea.fld.customtxt:focus-visible{border-color:var(--red)}
   }
   function hasIcon(k) { return typeof k === 'string' && Object.prototype.hasOwnProperty.call(ICONS, k); }
   function str(v, max) { return typeof v === 'string' ? v.slice(0, max) : ''; }
+  function inRange(v, lo, hi) { return typeof v === 'number' && isFinite(v) && v >= lo && v <= hi ? String(v) : ''; }
 
   function serialize() {
     normalizeCells();
-    var num = function (id) { var v = $(id).value; return v === '' ? null : Number(v); };
+    var num = function (id) { return pnum($(id).value); };
     return {
       format: FORMAT,
       version: VERSION,
@@ -873,11 +1637,25 @@ textarea.fld.customtxt:focus-visible{border-color:var(--red)}
         dateOfBirth: $('#f-dob').value,
         gender: $('#f-gender').value,
         heightCm: num('#f-height'),
+        heightMm: num('#f-height-mm') || 0,
         currentWeightKg: num('#f-cw'),
         targetWeightKg: num('#f-tw'),
         goal: $('#f-goal').value,
         conditions: $('#f-cond').value
       },
+      records: R.filter(function (r) { return !recIsEmpty(r); }).map(function (r) {
+        return { date: r.date || '', weightKg: pnum(r.w), waistCm: pnum(r.waist), hipCm: pnum(r.hip), armCm: pnum(r.arm), calfCm: pnum(r.calf) };
+      }),
+      energy: {
+        activityFactor: pnum(E.af),
+        deficitKcal: pnum(E.deficit) || 0,
+        meals: E.meals.map(function (m) { return { name: m.name, minPct: pnum(m.min), maxPct: pnum(m.max) }; }),
+        macros: MACRO_DEFS.reduce(function (acc, d) {
+          acc[d.json] = { minPct: pnum(E.macros[d.key].min), maxPct: pnum(E.macros[d.key].max) }; return acc;
+        }, {}),
+        fiberGoal: E.fiber
+      },
+      pdfInclude: { progress: INC.progress, energy: INC.energy },
       plan: {
         title: $('#f-title').value,
         subtitle: $('#f-sub').value,
@@ -912,15 +1690,40 @@ textarea.fld.customtxt:focus-visible{border-color:var(--red)}
       return { name: str(r.name, 80), cells: cols.map(function (_, j) { return bulletize(str(cells[j], 2000)); }) };
     });
     var recs = Array.isArray(d.recommendations) ? d.recommendations.slice(0, 30) : [];
+    var rec = (Array.isArray(d.records) ? d.records.slice(0, 300) : []).map(function (r) {
+      r = r && typeof r === 'object' ? r : {};
+      return {
+        id: nid(), date: typeof r.date === 'string' && dateTime(r.date) !== null ? r.date : '',
+        w: inRange(r.weightKg, 20, 400), waist: inRange(r.waistCm, 5, 300), hip: inRange(r.hipCm, 5, 300),
+        arm: inRange(r.armCm, 5, 300), calf: inRange(r.calfCm, 5, 300)
+      };
+    });
+    var en = d.energy && typeof d.energy === 'object' ? d.energy : {};
+    var meals = Array.isArray(en.meals) ? en.meals.slice(0, 20).map(function (m) {
+      m = m && typeof m === 'object' ? m : {};
+      return { id: nid(), name: str(m.name, 60), min: inRange(m.minPct, 0, 100), max: inRange(m.maxPct, 0, 100) };
+    }) : null;
+    var mac = en.macros && typeof en.macros === 'object' ? en.macros : {};
+    var macros = {};
+    MACRO_DEFS.forEach(function (def) {
+      var m = mac[def.json] && typeof mac[def.json] === 'object' ? mac[def.json] : {};
+      macros[def.key] = { min: inRange(m.minPct, 0, 100), max: inRange(m.maxPct, 0, 100) };
+    });
+    var inc = d.pdfInclude && typeof d.pdfInclude === 'object' ? d.pdfInclude : {};
+    var def = typeof en.deficitKcal === 'number' && en.deficitKcal >= 0 && en.deficitKcal <= 1500 && en.deficitKcal % 100 === 0 ? String(en.deficitKcal) : '0';
     return {
       patient: {
         name: str(pt.name, 120),
         dob: typeof pt.dateOfBirth === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(pt.dateOfBirth) ? pt.dateOfBirth : '',
-        gender: pt.gender, height: pt.heightCm, cw: pt.currentWeightKg, tw: pt.targetWeightKg,
+        gender: pt.gender, height: pt.heightCm, heightMm: pt.heightMm,
+        cw: inRange(pt.currentWeightKg, 20, 400), tw: inRange(pt.targetWeightKg, 20, 400),
         goal: str(pt.goal, 80), conditions: str(pt.conditions, 3000)
       },
       title: str(pl.title, 200), subtitle: str(pl.subtitle, 300), corner: str(pl.cornerHeader, 80),
       cols: cols, rows: rows, notes: str(d.notes, 6000), footer: str(d.footer, 500),
+      records: rec.length ? rec : [newRec()],
+      energy: { af: inRange(en.activityFactor, 0.5, 4), deficit: def, fiber: str(en.fiberGoal, 40), meals: meals && meals.length ? meals : null, macros: macros },
+      inc: { progress: inc.progress !== false, energy: inc.energy !== false },
       tips: recs.map(function (r) {
         r = r && typeof r === 'object' ? r : {};
         var id = typeof r.recommendation === 'string' ? r.recommendation : '';
@@ -941,8 +1744,9 @@ textarea.fld.customtxt:focus-visible{border-color:var(--red)}
     dob.value = p.patient.dob; updateAge();
     setSelectValue('f-gender', p.patient.gender);
     setSelectValue('f-height', p.patient.height);
-    setSelectValue('f-cw', p.patient.cw);
-    setSelectValue('f-tw', p.patient.tw);
+    setSelectValue('f-height-mm', p.patient.heightMm === undefined ? 0 : p.patient.heightMm);
+    if (!$('#f-height-mm').value) $('#f-height-mm').value = '0';
+    $('#f-cw').value = p.patient.cw; $('#f-tw').value = p.patient.tw;
     setSelectValue('f-goal', p.patient.goal);
     $('#f-cond').value = p.patient.conditions;
     $('#f-title').value = p.title; $('#f-sub').value = p.subtitle;
@@ -953,7 +1757,13 @@ textarea.fld.customtxt:focus-visible{border-color:var(--red)}
       r.cells.forEach(function (txt, j) { if (txt) S.cells[row.id + ':' + S.cols[j].id] = txt; });
     });
     T = p.tips.map(function (t) { return { id: nid(), rec: t.rec, icon: t.icon, text: t.text }; });
-    renderTable(); renderTips(); agAll();
+    R = p.records;
+    freshEnergy();
+    E.af = p.energy.af; E.deficit = p.energy.deficit; E.fiber = p.energy.fiber;
+    if (p.energy.meals) E.meals = p.energy.meals;
+    E.macros = p.energy.macros;
+    INC = { progress: p.inc.progress, energy: p.inc.energy };
+    renderTable(); renderTips(); renderNewSections(); agAll();
     dirty = false;
   }
   function planError(err) {
@@ -999,8 +1809,10 @@ textarea.fld.customtxt:focus-visible{border-color:var(--red)}
 
   function resetAll() {
     ['f-name', 'f-dob', 'f-age', 'f-gender', 'f-height', 'f-cw', 'f-tw', 'f-goal', 'f-cond', 'f-sub', 'f-notes'].forEach(function (id) { document.getElementById(id).value = ''; });
+    $('#f-height-mm').value = '0';
     $('#f-title').value = DEFAULT_TITLE; $('#f-foot').value = DEFAULT_FOOT;
-    freshTable(); freshTips(); renderTable(); renderTips(); agAll();
+    freshTable(); freshTips(); freshRecords(); freshEnergy(); INC = { progress: true, energy: true };
+    renderTable(); renderTips(); renderNewSections(); agAll();
     dirty = false;
   }
   $('#btn-new').addEventListener('click', function () {
@@ -1027,12 +1839,12 @@ textarea.fld.customtxt:focus-visible{border-color:var(--red)}
   });
 
   /* ---------- start ---------- */
-  freshTable(); freshTips(); renderTable(); renderTips(); updateAge(); agAll();
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(agSoon);
+  freshTable(); freshTips(); freshRecords(); freshEnergy(); renderTable(); renderTips(); updateAge(); renderNewSections(); initChartTips(); agAll();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { agSoon(); scheduleRecalc(); });
   window.addEventListener('resize', agSoon);
   window.addEventListener('load', agSoon);
 
-  window.__plan = { calcAge: calcAge, bulletize: bulletize, fmtDate: fmtDate, serialize: serialize, stamp: stamp, transformClone: transformClone, tipHasContent: tipHasContent };
+  window.__plan = { calcAge: calcAge, bulletize: bulletize, fmtDate: fmtDate, serialize: serialize, stamp: stamp, transformClone: transformClone, tipHasContent: tipHasContent, derive: derive, energyCalc: energyCalc, recalc: recalc, parsePlan: parsePlan, getR: function () { return R; }, getE: function () { return E; } };
 })();
 </script>
 </body>
