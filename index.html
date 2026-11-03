@@ -466,6 +466,17 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 .exporting .mealc{overflow:hidden}
 .exporting .ft{min-width:0}
 
+/* habits: one box per date */
+.habs{padding:12px 14px 6px;display:grid;gap:12px}
+.habc{border:1.5px solid var(--green-line);border-radius:10px;overflow:hidden;background:#fff}
+.habh{display:flex;align-items:center;gap:10px;background:var(--green-pale);border-bottom:1.5px solid var(--green-deep);padding:6px 12px}
+.habl{font-family:var(--font-display);font-weight:700;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--green-deep)}
+.habh .fld{width:auto;flex:0 1 170px;font-weight:700;color:var(--green-deep)}
+.habh .rmt{margin-left:auto}
+.habg{padding:10px 14px 12px;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:6px 22px}
+.exporting .habg{grid-template-columns:repeat(3,minmax(0,1fr))}
+.exporting .habs{padding:12px 14px 14px}
+
 /* ---------- export (PDF) state ---------- */
 .exporting{max-width:none;border-radius:0;box-shadow:none;background:#fff}
 .exporting .sheet-in{padding:0}
@@ -515,7 +526,7 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 <div class="app">
   <nav class="side" id="side" aria-label="Sections">
     <div class="side-h">Sections</div>
-    <div class="sidei"><input type="checkbox" data-inc="sec1" aria-label="Include section 1 in the PDF"><button class="sidebtn" type="button" data-view="1" aria-current="page"><span class="sn">1</span><span>Logo, intro &amp; clinical history</span></button><button class="sidepdf" type="button" data-pdf="1" title="Download this section as a PDF">PDF</button></div>
+    <div class="sidei"><input type="checkbox" data-inc="sec1" aria-label="Include section 1 in the PDF"><button class="sidebtn" type="button" data-view="1" aria-current="page"><span class="sn">1</span><span>Clinical History</span></button><button class="sidepdf" type="button" data-pdf="1" title="Download this section as a PDF">PDF</button></div>
     <div class="sidei"><input type="checkbox" data-inc="sec2" aria-label="Include section 2 in the PDF"><button class="sidebtn" type="button" data-view="2" aria-current="false"><span class="sn">2</span><span>Progress records</span></button><button class="sidepdf" type="button" data-pdf="2" title="Download this section as a PDF">PDF</button></div>
     <div class="sidei"><input type="checkbox" data-inc="sec3" aria-label="Include section 3 in the PDF"><button class="sidebtn" type="button" data-view="3" aria-current="false"><span class="sn">3</span><span>Energy &amp; meal plan</span></button><button class="sidepdf" type="button" data-pdf="3" title="Download this section as a PDF">PDF</button></div>
     <p class="side-n">Tick a section or a box to include it in the PDF. The PDF button next to a section downloads only that section.</p>
@@ -580,12 +591,12 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 
     <section class="card" id="blk-habits" aria-labelledby="hb-h">
       <h2 class="card-h" id="hb-h">Habits &amp; lifestyle log</h2>
-      <div class="tw"><table class="dt hab-t" id="hab"></table></div>
+      <div class="habs" id="hab"></div>
       <div class="tact pad no-export">
-        <button class="btn" id="btn-addhab" type="button">+ Add entry</button>
+        <button class="btn" id="btn-addhab" type="button">+ Add date</button>
         <button class="btn" id="btn-sorthab" type="button">Sort by date</button>
       </div>
-      <p class="hint pad no-export">Add dated entries for habits, exercise (type and frequency), walking (daily steps), sleep hours, work schedule and anything else relevant.</p>
+      <p class="hint pad no-export">Each date has its own box: note habits, exercise (type and frequency), walking (daily steps), sleep hours, work schedule and anything else relevant.</p>
     </section>
     </div>
 
@@ -1820,7 +1831,7 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 
   /* ---------- sections: sidebar views and PDF-include ticks ---------- */
   var VIEW = 1;
-  var SECS = { 1: 'Logo, intro & clinical history', 2: 'Progress records', 3: 'Energy & meal plan' };
+  var SECS = { 1: 'Clinical History', 2: 'Progress records', 3: 'Energy & meal plan' };
   var BLOCKS = [
     { sec: 1, id: 'blk-head', name: 'Logo & patient details' },
     { sec: 1, id: 'blk-medp', name: 'Medical history: personal' },
@@ -1918,41 +1929,36 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
   function historyHas(prefix, defs) { return defs.some(function (d) { return $('#' + prefix + d[0]).value.trim(); }); }
   function weightsHas() { return ['#f-cw', '#w-high', '#w-low', '#w-diets'].some(function (s) { return $(s).value.trim(); }); }
 
-  /* ---------- habits and lifestyle log (dated entries) ---------- */
-  var HAB_TYPES = ['Habits', 'Exercise (type and frequency)', 'Walking (daily steps)', 'Sleep hours', 'Work schedule', 'Other'];
+  /* ---------- habits and lifestyle log: one box per date ---------- */
+  var HAB_FIELDS = [
+    ['habits', 'Habits'], ['exercise', 'Exercise (type and frequency)'], ['walking', 'Walking (daily steps)'],
+    ['sleep', 'Sleep hours'], ['work', 'Work schedule'], ['other', 'Other']
+  ];
   var HB = [];
-  function newHab() { return { id: nid(), date: '', type: 'Habits', text: '' }; }
-  function habEmpty(h) { return !h.date && !h.text.trim(); }
+  function newHab() { var o = { id: nid(), date: '' }; HAB_FIELDS.forEach(function (f) { o[f[0]] = ''; }); return o; }
+  function habEmpty(h) { return !h.date && HAB_FIELDS.every(function (f) { return !String(h[f[0]]).trim(); }); }
   function freshHabits() { HB = [newHab()]; }
   function renderHabits(focusId) {
-    var tb = $('#hab'); tb.replaceChildren();
-    var thead = el('thead'), hr = el('tr');
-    ['Date', 'Type', 'Details', ''].forEach(function (h, i) {
-      var th = el('th', i === 3 ? 'no-export' : (i === 2 ? 'lft' : null), { scope: 'col' }); th.textContent = h; hr.appendChild(th);
-    });
-    thead.appendChild(hr); tb.appendChild(thead);
-    var body = el('tbody');
+    var box = $('#hab'); box.replaceChildren();
     HB.forEach(function (h) {
-      var tr = el('tr'); tr.dataset.id = h.id;
-      var td = el('td'); td.style.width = '150px';
+      var c = el('div', 'habc'); c.dataset.id = h.id;
+      var head = el('div', 'habh'), lb = el('span', 'habl'); lb.textContent = 'Date';
       var d = el('input', 'fld', { type: 'date', 'aria-label': 'Entry date' }); d.value = h.date;
-      d.addEventListener('input', function () { h.date = d.value; }); td.appendChild(d); tr.appendChild(td);
-      td = el('td'); td.style.width = '230px';
-      var s = el('select', 'fld lftsel', { 'aria-label': 'Entry type' });
-      HAB_TYPES.forEach(function (t) { var o = el('option'); o.value = t; o.textContent = t; s.appendChild(o); });
-      s.value = HAB_TYPES.indexOf(h.type) >= 0 ? h.type : 'Other';
-      s.addEventListener('change', function () { h.type = s.value; }); td.appendChild(s); tr.appendChild(td);
-      td = el('td', 'lft');
-      var ta = el('textarea', 'fld ag', { rows: '1', 'aria-label': 'Entry details', placeholder: 'e.g. 3 x 45 min gym per week' }); ta.value = h.text;
-      ta.addEventListener('input', function () { h.text = ta.value; }); td.appendChild(ta); tr.appendChild(td);
-      td = el('td', 'no-export');
-      var rm = el('button', 'rmt', { type: 'button', 'aria-label': 'Remove this entry', title: 'Remove' }); rm.textContent = '×'; rm.disabled = HB.length <= 1;
+      d.addEventListener('input', function () { h.date = d.value; });
+      var rm = el('button', 'rmt no-export', { type: 'button', 'aria-label': 'Remove this date', title: 'Remove this date' }); rm.textContent = '×'; rm.disabled = HB.length <= 1;
       rm.addEventListener('click', function () { HB = HB.filter(function (x) { return x.id !== h.id; }); markDirty(); renderHabits(); setStatus('Entry removed.'); });
-      td.appendChild(rm); tr.appendChild(td); body.appendChild(tr);
+      head.appendChild(lb); head.appendChild(d); head.appendChild(rm); c.appendChild(head);
+      var g = el('div', 'habg');
+      HAB_FIELDS.forEach(function (f) {
+        var row = el('div', 'pr stack'), l = el('label'); l.textContent = f[1];
+        var ta = el('textarea', 'fld ag', { rows: '1', 'aria-label': f[1] }); ta.value = h[f[0]];
+        ta.addEventListener('input', function () { h[f[0]] = ta.value; });
+        row.appendChild(l); row.appendChild(ta); g.appendChild(row);
+      });
+      c.appendChild(g); box.appendChild(c);
     });
-    tb.appendChild(body);
     agSoon();
-    if (focusId) { var f = tb.querySelector('tr[data-id="' + focusId + '"] input'); if (f) f.focus(); }
+    if (focusId) { var f = box.querySelector('.habc[data-id="' + focusId + '"] input'); if (f) f.focus(); }
   }
   $('#btn-addhab').addEventListener('click', function () { var h = newHab(); HB.push(h); markDirty(); renderHabits(h.id); setStatus(''); });
   $('#btn-sorthab').addEventListener('click', function () {
@@ -1960,7 +1966,7 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
       var x = dateTime(a.date), y = dateTime(b.date);
       if (x === null && y === null) return 0; if (x === null) return 1; if (y === null) return -1; return x - y;
     });
-    markDirty(); renderHabits(); setStatus('Entries sorted by date.');
+    markDirty(); renderHabits(); setStatus('Dates sorted.');
   });
 
   /* ---------- food database (built in, hidden; user additions are kept) ---------- */
@@ -2366,7 +2372,7 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
   });
 
   /* ---------- save, open and new plan ---------- */
-  var FORMAT = 'zohaib-khan-meal-plan', VERSION = 4;
+  var FORMAT = 'zohaib-khan-meal-plan', VERSION = 5;
   var dirty = false;
   function markDirty() { dirty = true; }
   $('#sheet').addEventListener('input', markDirty);
@@ -2469,7 +2475,9 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
       },
       history: readHistory(),
       weights: { highestKg: num('#w-high'), lowestKg: num('#w-low'), previousDiets: $('#w-diets').value },
-      habits: HB.filter(function (h) { return !habEmpty(h); }).map(function (h) { return { date: h.date || '', type: h.type, details: h.text }; }),
+      habits: HB.filter(function (h) { return !habEmpty(h); }).map(function (h) {
+        var o = { date: h.date || '' }; HAB_FIELDS.forEach(function (f) { o[f[0]] = h[f[0]]; }); return o;
+      }),
       records: R.filter(function (r) { return !recIsEmpty(r); }).map(function (r) {
         return { date: r.date || '', weightKg: pnum(r.w), waistCm: pnum(r.waist), hipCm: pnum(r.hip), armCm: pnum(r.arm), calfCm: pnum(r.calf) };
       }),
@@ -2576,9 +2584,14 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
     MED_P.forEach(function (k) { history.personal[k[0]] = str(hp[k[0]], 3000); });
     MED_F.forEach(function (k) { history.family[k[0]] = str(hf[k[0]], 3000); });
     var wt = d.weights && typeof d.weights === 'object' ? d.weights : {};
+    var OLD_TYPES = { 'Habits': 'habits', 'Exercise (type and frequency)': 'exercise', 'Walking (daily steps)': 'walking', 'Sleep hours': 'sleep', 'Work schedule': 'work' };
     var hab = (Array.isArray(d.habits) ? d.habits.slice(0, 300) : []).map(function (h) {
       h = h && typeof h === 'object' ? h : {};
-      return { id: nid(), date: typeof h.date === 'string' && dateTime(h.date) !== null ? h.date : '', type: HAB_TYPES.indexOf(h.type) >= 0 ? h.type : 'Other', text: str(h.details, 2000) };
+      var o = newHab();
+      o.date = typeof h.date === 'string' && dateTime(h.date) !== null ? h.date : '';
+      HAB_FIELDS.forEach(function (f) { o[f[0]] = str(h[f[0]], 2000); });
+      if (typeof h.type === 'string') { var k = OLD_TYPES[h.type] || 'other'; o[k] = str(h.details, 2000); }
+      return o;
     });
     var cfs = (Array.isArray(d.customFoods) ? d.customFoods.slice(0, 5000) : []).map(function (f) {
       f = f && typeof f === 'object' ? f : {};
@@ -2876,7 +2889,7 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
         if (incOn('blk-weights') && weightsHas()) ids1.push('blk-weights');
         if (incOn('blk-habits') && HB.some(function (h) { return !habEmpty(h); })) {
           var hide = []; ids1.push('blk-habits');
-          $$('#hab tbody tr').forEach(function (tr) { var h = HB.filter(function (x) { return x.id === tr.dataset.id; })[0]; if (h && habEmpty(h)) { hiddenNodes.push([tr, tr.style.display]); tr.style.display = 'none'; } });
+          $$('#hab .habc').forEach(function (c) { var h = HB.filter(function (x) { return x.id === c.dataset.id; })[0]; if (h && habEmpty(h)) { hiddenNodes.push([c, c.style.display]); c.style.display = 'none'; } });
         }
         await snap(ids1, pageBreaks);
         restoreHidden(); $('#blk-medgrid').classList.remove('one');
