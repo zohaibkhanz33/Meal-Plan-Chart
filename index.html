@@ -327,6 +327,145 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 #blk-planhead .card-h{font-size:15px}
 @media (max-width:640px){.bar{position:static}.phint{display:none}}
 
+/* ---------- app shell: sidebar + views ---------- */
+.bar{max-width:1560px}
+.app{width:100%;max-width:1560px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr);gap:14px;align-items:start}
+@media (min-width:900px){.app{grid-template-columns:244px minmax(0,1fr)}}
+.sheet{max-width:none;margin:0;min-width:0}
+.side{display:flex;flex-direction:column;gap:8px;background:var(--paper);border:1px solid var(--green-line);border-radius:10px;padding:12px}
+@media (min-width:900px){.side{position:sticky;top:calc(env(safe-area-inset-top,0px) + 76px)}}
+.side-h{font-family:var(--font-display);font-weight:700;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);padding:0 2px 2px}
+.sidei{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:6px}
+.sidei input{width:17px;height:17px;accent-color:var(--green-deep);cursor:pointer}
+.sidebtn{display:flex;align-items:center;gap:9px;text-align:left;font:inherit;font-weight:700;font-size:14px;line-height:1.2;color:var(--green-deep);background:#fff;border:1.5px solid var(--green-line);border-radius:9px;padding:9px 10px;cursor:pointer;min-width:0}
+.sidebtn:hover{background:var(--green-pale)}
+.sidebtn[aria-current=page]{background:var(--green-deep);border-color:var(--green-deep);color:#fff}
+.sn{flex:none;display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--green-pale);color:var(--green-deep);font-size:12px}
+.sidebtn[aria-current=page] .sn{background:#fff}
+.sidepdf{font:inherit;font-size:11.5px;font-weight:700;color:var(--green-deep);background:#fff;border:1.5px solid var(--green-line);border-radius:7px;padding:5px 7px;cursor:pointer}
+.sidepdf:hover{background:var(--green-pale)}
+.side-n{margin:2px 2px 0;font-size:12.5px;color:var(--muted)}
+@media (max-width:899px){
+  .side{flex-direction:row;flex-wrap:nowrap;overflow-x:auto;gap:8px}
+  .side-h,.side-n{display:none}
+  .sidei{flex:none}
+  .sidebtn{white-space:nowrap}
+}
+.view{display:none;flex-direction:column;gap:18px}
+.view.on{display:flex}
+.exporting .view{display:flex!important}
+
+/* include-in-PDF tick boxes */
+.card-h{position:relative}
+.inc{position:absolute;right:10px;top:50%;transform:translateY(-50%);display:inline-flex;align-items:center;gap:5px;font-family:var(--font-body);font-size:11.5px;font-weight:700;letter-spacing:.04em;text-transform:none;color:#fff;cursor:pointer}
+.inc input{width:15px;height:15px;accent-color:#fff;cursor:pointer}
+.incrow{display:flex;justify-content:flex-end;padding:0 2px 6px}
+.incrow .inc{position:static;transform:none;color:var(--green-deep)}
+.incrow .inc input{accent-color:var(--green-deep)}
+@media (max-width:520px){.card-h{padding-right:62px;text-align:left}}
+
+/* ---------- clinical history ---------- */
+.mgrid{display:grid;grid-template-columns:minmax(0,1fr);gap:18px;align-items:start}
+@container (min-width:860px){.mgrid{grid-template-columns:minmax(0,3fr) minmax(0,2fr)}}
+.exporting .mgrid.one{grid-template-columns:minmax(0,1fr)}
+.mf{padding:10px 14px 14px;display:grid;gap:8px}
+.mf .pr.stack label{font-weight:700;font-size:14px}
+.wgrid{padding:10px 14px 14px;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:6px 26px}
+.wgrid .pr.stack{grid-column:1/-1}
+.wgrid .pr{grid-template-columns:130px minmax(0,1fr)}
+.hab-t{min-width:640px}
+.dt td textarea.fld{border:1px solid var(--green-line);border-radius:6px;padding:6px 8px;background:#FAFCF8;text-align:left;min-height:34px}
+.dt td select.fld.lftsel{text-align:left;text-align-last:left}
+
+/* ---------- plan builder (inside section 3) ---------- */
+#blk-builder .plans{padding:12px 14px 14px;border-top:0}
+.mini-note{margin:0;padding:0 14px 12px;font-size:12.5px;color:var(--muted)}
+
+/* ---------- daily meal plans ---------- */
+.dtabs{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:12px 14px 0}
+.dtab{font:inherit;font-size:13.5px;font-weight:700;color:var(--green-deep);background:#fff;border:1.5px solid var(--green-line);border-radius:999px;padding:5px 13px;max-width:170px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;cursor:pointer}
+.dtab:hover{background:var(--green-pale)}
+.dtab[aria-selected=true]{background:var(--green-deep);border-color:var(--green-deep);color:#fff}
+.dayb{padding:12px 14px 14px;display:grid;gap:12px}
+#blk-day{display:grid;gap:12px}
+.dayh{display:flex;flex-wrap:wrap;align-items:center;gap:8px;background:var(--green-deep);color:#fff;border-radius:10px;padding:8px 14px}
+.dayh .fld{flex:1 1 180px;color:#fff;border-bottom:1px solid rgba(255,255,255,.4);font-family:var(--font-display);font-weight:700;font-size:17px;letter-spacing:.04em;text-transform:uppercase}
+.dayh .fld::placeholder{color:rgba(255,255,255,.7)}
+.dayh .btn{min-height:32px;padding:4px 11px;font-size:13px;background:#fff}
+.dgrid{display:grid;grid-template-columns:minmax(0,1fr);gap:16px;align-items:start}
+@container (min-width:1000px){.dgrid{grid-template-columns:minmax(0,1fr) 330px}}
+.exporting .dgrid{grid-template-columns:minmax(0,1fr) 330px}
+.dmeals{display:grid;gap:12px;min-width:0}
+.mealc{border:1.5px solid var(--green-line);border-radius:10px;overflow:hidden;min-width:0}
+.mealh{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;background:var(--green-pale);padding:6px 10px;border-bottom:1.5px solid var(--green-deep)}
+.mealh .fld{flex:1 1 140px;font-family:var(--font-display);font-weight:700;font-size:14.5px;color:var(--green-deep);text-transform:uppercase;letter-spacing:.05em}
+.tgt{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--ink);white-space:nowrap}
+.tgt i{flex:none;width:9px;height:9px;border-radius:50%}
+.ft{width:100%;border-collapse:collapse;table-layout:fixed}
+.ft th{font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);padding:5px 4px;text-align:right;border-bottom:1px solid var(--green-line)}
+.ft th:first-child,.ft td:first-child{text-align:left}
+.ft td{padding:2px 4px;border-bottom:1px solid #E6EEE2;text-align:right;font-variant-numeric:tabular-nums;font-size:13.5px;vertical-align:middle}
+.ft .c-food{width:34%}.ft .c-g{width:12%}.ft .c-p{width:9%}.ft .c-n{width:11%}.ft .c-x{width:34px}
+.ft .fld{min-height:28px;font-size:13.5px}
+.ft td:first-child .fld{text-align:left}
+.ft td .fld[type=number]{text-align:right}
+.fld.nf{border-bottom:1.5px solid var(--red);color:var(--red-dark)}
+.ft tfoot td{font-weight:700;color:var(--green-deep);background:#FAFCF8;border-bottom:0;border-top:1.5px solid var(--green-line);padding:5px 4px}
+.mealf{display:flex;justify-content:flex-start;padding:6px 10px}
+.mealf .btn{min-height:30px;padding:3px 10px;font-size:13px}
+.dtot{width:100%;border-collapse:collapse;border:1.5px solid var(--green-deep);border-radius:10px;overflow:hidden}
+.dtot th,.dtot td{padding:6px 8px;text-align:right;font-variant-numeric:tabular-nums;font-size:13.5px;border-bottom:1px solid var(--green-line)}
+.dtot thead th{background:var(--green-pale);color:var(--green-deep);font-size:11.5px;text-transform:uppercase;letter-spacing:.05em}
+.dtot th:first-child,.dtot td:first-child{text-align:left;font-weight:700;color:var(--green-deep)}
+.dtot tbody tr:last-child td{border-bottom:0}
+.dside{display:grid;gap:12px;min-width:0}
+.pcard{border:1.5px solid var(--green-deep);border-radius:12px;overflow:hidden;background:#fff}
+.pcard h3{margin:0;background:var(--green-deep);color:#fff;text-align:center;font-family:var(--font-display);font-size:12px;letter-spacing:.13em;text-transform:uppercase;padding:7px 10px}
+.pbody{padding:10px 12px 12px;display:grid;gap:8px;justify-items:center}
+.pie{display:block;width:100%;max-width:290px;height:auto}
+.pempty{margin:0;padding:22px 8px;text-align:center;color:var(--muted);font-size:13.5px}
+.plegend{width:100%;display:grid;gap:4px;font-size:13px}
+.plegend div{display:flex;align-items:center;gap:7px;min-width:0}
+.plegend i{flex:none;width:11px;height:11px;border-radius:3px}
+.plegend .ln{flex:1;min-width:0;overflow-wrap:anywhere}
+.plegend b{font-variant-numeric:tabular-nums;white-space:nowrap}
+.plegend .sub{font-size:12px;color:var(--muted);white-space:nowrap}
+.pnote{margin:0;font-size:12.5px;font-weight:700;color:var(--red-dark);text-align:center}
+.pnote.ok{color:var(--green-deep)}
+.pnote[hidden]{display:none}
+.fibl{margin:0;font-size:13.5px;text-align:center;color:var(--ink)}
+.dnote{margin:0;font-size:12.5px;color:var(--muted)}
+.dbtools{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.exporting .dayh .fld.ex{background:transparent;color:#fff;border:0}
+.exporting .ft .fld.ex{padding:2px 2px;min-height:0}
+.exporting .mealh .fld.ex{color:var(--green-deep)}
+
+/* ---------- link-style button + weekly overview tools ---------- */
+.linkbtn{font:inherit;font-size:13px;font-weight:700;color:var(--green-leaf);background:none;border:0;padding:4px 2px;cursor:pointer;text-decoration:underline}
+.wk-tools{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding-bottom:6px}
+
+/* ---------- dialogs ---------- */
+.dlg-b{max-height:calc(100vh - 32px);overflow:auto}
+.dlg-b.wide{max-width:560px}
+.tree{display:grid;gap:2px}
+.tree .t1{font-weight:700;color:var(--green-deep);margin-top:6px}
+.tree .t2{margin-left:22px}
+.tree .t3{margin-left:44px;font-size:13.5px}
+.tree .chk{padding:2px 0}
+.dlg-sec{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-top:8px}
+.frm{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.frm label{display:grid;gap:2px;font-size:12.5px;font-weight:700}
+.frm label.full{grid-column:1/-1}
+.frm input{border:1.5px solid var(--green-line);border-radius:7px;padding:6px 8px;background:#fff;font-size:14px}
+.fl{display:grid;gap:3px;font-size:13px;max-height:140px;overflow:auto}
+.fl div{display:flex;align-items:center;justify-content:space-between;gap:8px;border-bottom:1px solid var(--green-line);padding:2px 0}
+.dlg-n{margin:0;font-size:12.5px;color:var(--muted)}
+.foot .incrow{padding:0 0 2px}.foot .incrow .inc{color:#fff}.foot .incrow .inc input{accent-color:#fff}
+.mealc{overflow-x:auto}
+.ft{min-width:600px}
+.exporting .mealc{overflow:hidden}
+.exporting .ft{min-width:0}
+
 /* ---------- export (PDF) state ---------- */
 .exporting{max-width:none;border-radius:0;box-shadow:none;background:#fff}
 .exporting .sheet-in{padding:0}
@@ -342,6 +481,10 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 .exporting .dt .fld.ex{padding:8px 4px;min-height:0}
 .exporting .legend,.exporting .cwrap{break-inside:avoid}
 .exporting .recsel.ex{padding:9px 10px}
+.exporting #blk-days{border:0;border-radius:0}
+.exporting #blk-days > .card-h,.exporting #blk-days .dtabs{display:none}
+.exporting .dayb{padding:0}
+.exporting .hab-t{min-width:0}
 
 @media (max-width:640px){
   .bar-hint{display:none}
@@ -357,39 +500,30 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 <div class="bar" id="bar">
   <div class="bar-t">
     <strong class="bar-name">Meal plan builder</strong>
-    <span class="bar-hint">Everything on the sheet is editable. Save plan keeps a file you can reopen later.</span>
+    <span class="bar-hint">Everything is editable. Save file keeps all sections, plans and added foods in one file you can reopen.</span>
   </div>
   <div class="bar-a">
     <span id="status" class="status" role="status" aria-live="polite"></span>
-    <button class="btn" id="btn-new" type="button">New plan</button>
-    <button class="btn" id="btn-open" type="button">Open plan</button>
-    <button class="btn" id="btn-save" type="button">Save plan</button>
+    <button class="btn" id="btn-new" type="button">New file</button>
+    <button class="btn" id="btn-open" type="button">Open file</button>
+    <button class="btn" id="btn-save" type="button">Save file</button>
     <button class="btn primary" id="btn-pdf" type="button">Download PDF</button>
     <input type="file" id="file-open" accept=".json,application/json" hidden>
   </div>
-
-  <div class="plans no-export" id="plans">
-    <div class="ptabs" id="ptabs" role="tablist" aria-label="Meal plans"></div>
-    <button class="btn" id="btn-pdup" type="button" title="Copy the current plan into a new one">+ Duplicate plan</button>
-    <button class="btn" id="btn-pnew" type="button" title="Start a new plan with an empty table">+ Blank plan</button>
-    <label class="pfld">Name <input id="pname" type="text" maxlength="60" autocomplete="off" aria-label="Plan name"></label>
-    <label class="pfld">Date <input id="pdate" type="date" aria-label="Plan date"></label>
-    <button class="btn" id="btn-pdel" type="button">Delete plan</button>
-    <p class="phint">Goal, meal table, energy, notes and recommendations belong to each plan. Patient details and progress records are shared.</p>
-  </div>
 </div>
 
-<div class="dlg" id="pdfdlg" hidden role="dialog" aria-modal="true" aria-labelledby="pdfdlg-h">
-  <div class="dlg-b">
-    <h3 id="pdfdlg-h">Download PDF</h3>
-    <div id="pdfdlg-list"></div>
-    <div class="dlg-a"><button class="btn" id="pdfdlg-cancel" type="button">Cancel</button><button class="btn primary" id="pdfdlg-go" type="button">Download PDF</button></div>
-  </div>
-</div>
-
+<div class="app">
+  <nav class="side" id="side" aria-label="Sections">
+    <div class="side-h">Sections</div>
+    <div class="sidei"><input type="checkbox" data-inc="sec1" aria-label="Include section 1 in the PDF"><button class="sidebtn" type="button" data-view="1" aria-current="page"><span class="sn">1</span><span>Logo, intro &amp; clinical history</span></button><button class="sidepdf" type="button" data-pdf="1" title="Download this section as a PDF">PDF</button></div>
+    <div class="sidei"><input type="checkbox" data-inc="sec2" aria-label="Include section 2 in the PDF"><button class="sidebtn" type="button" data-view="2" aria-current="false"><span class="sn">2</span><span>Progress records</span></button><button class="sidepdf" type="button" data-pdf="2" title="Download this section as a PDF">PDF</button></div>
+    <div class="sidei"><input type="checkbox" data-inc="sec3" aria-label="Include section 3 in the PDF"><button class="sidebtn" type="button" data-view="3" aria-current="false"><span class="sn">3</span><span>Energy &amp; meal plan</span></button><button class="sidepdf" type="button" data-pdf="3" title="Download this section as a PDF">PDF</button></div>
+    <p class="side-n">Tick a section or a box to include it in the PDF. The PDF button next to a section downloads only that section.</p>
+  </nav>
 <main class="sheet" id="sheet">
   <div class="sheet-in">
 
+    <div class="view on" data-view="1" id="view-1">
     <section class="head" id="blk-head">
       <div class="card" aria-labelledby="pd-h">
         <h2 class="card-h" id="pd-h">Patient details</h2>
@@ -401,8 +535,6 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
             <select class="fld" id="f-gender" required><option value="">Select</option><option value="male">Male</option><option value="female">Female</option></select></div>
           <div class="pr"><label for="f-height">Height</label>
             <div class="duo"><select class="fld" id="f-height" required aria-label="Height, centimeters"></select><select class="fld" id="f-height-mm" aria-label="Height, additional millimeters"></select></div></div>
-          <div class="pr"><label for="f-cw">Current weight</label><div class="unit"><input class="fld" id="f-cw" type="number" inputmode="decimal" step="any" min="0" placeholder="e.g. 72.5"><span>kg</span></div></div>
-          <div class="pr"><label for="f-tw">Target weight</label><div class="unit"><input class="fld" id="f-tw" type="number" inputmode="decimal" step="any" min="0" placeholder="e.g. 65"><span>kg</span></div></div>
           <div class="pr"><label for="f-goal">Goal</label>
             <select class="fld" id="f-goal" required>
               <option value="">Select</option>
@@ -428,20 +560,42 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
             <p class="ct"><span class="ci tel"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.500 1.500a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg></span><span>+34 600 614 222</span></p>
           </div>
         </div>
-        <div class="banner">
-          <textarea class="ag ttl" id="f-title" rows="1" aria-label="Plan title">7-Day Meal Plan</textarea>
-          <textarea class="ag sub" id="f-sub" rows="1" aria-label="Plan subtitle" placeholder="Add a subtitle, for example the daily energy target"></textarea>
-        </div>
       </div>
     </section>
 
+    <div class="mgrid" id="blk-medgrid">
+      <section class="card" id="blk-medp" aria-labelledby="mp-h"><h2 class="card-h" id="mp-h">Medical history: personal</h2><div class="mf" id="med-p"></div></section>
+      <section class="card" id="blk-medf" aria-labelledby="mfm-h"><h2 class="card-h" id="mfm-h">Medical history: family</h2><div class="mf" id="med-f"></div></section>
+    </div>
+
+    <section class="card" id="blk-weights" aria-labelledby="wt-h">
+      <h2 class="card-h" id="wt-h">Weights &amp; previous diets</h2>
+      <div class="wgrid">
+        <div class="pr"><label for="f-cw">Current weight</label><div class="unit"><input class="fld" id="f-cw" type="number" inputmode="decimal" step="any" min="0" placeholder="e.g. 72.5"><span>kg</span></div></div>
+        <div class="pr"><label for="w-high">Highest weight</label><div class="unit"><input class="fld" id="w-high" type="number" inputmode="decimal" step="any" min="0" placeholder="e.g. 95"><span>kg</span></div></div>
+        <div class="pr"><label for="w-low">Lowest weight</label><div class="unit"><input class="fld" id="w-low" type="number" inputmode="decimal" step="any" min="0" placeholder="e.g. 60"><span>kg</span></div></div>
+        <div class="pr stack"><label for="w-diets">Previous diets (fat burners, pills, medications, etc.)</label><textarea class="fld ag" id="w-diets" rows="2" placeholder="Describe previous diets, supplements and medications used for weight management"></textarea></div>
+      </div>
+    </section>
+
+    <section class="card" id="blk-habits" aria-labelledby="hb-h">
+      <h2 class="card-h" id="hb-h">Habits &amp; lifestyle log</h2>
+      <div class="tw"><table class="dt hab-t" id="hab"></table></div>
+      <div class="tact pad no-export">
+        <button class="btn" id="btn-addhab" type="button">+ Add entry</button>
+        <button class="btn" id="btn-sorthab" type="button">Sort by date</button>
+      </div>
+      <p class="hint pad no-export">Add dated entries for habits, exercise (type and frequency), walking (daily steps), sleep hours, work schedule and anything else relevant.</p>
+    </section>
+    </div>
+
+    <div class="view" data-view="2" id="view-2">
     <section class="card" id="blk-progress" aria-labelledby="pg-h">
       <h2 class="card-h" id="pg-h">Progress records</h2>
       <div class="tw"><table class="dt" id="rec"></table></div>
       <div class="tact pad no-export">
         <button class="btn" id="btn-addrec" type="button">+ Add record</button>
         <button class="btn" id="btn-sortrec" type="button">Sort by date</button>
-        <label class="chk"><input type="checkbox" id="inc-progress" checked> Include records and charts in the PDF</label>
       </div>
       <p class="hint pad no-export">BMI, WHR and WHtR are calculated automatically. BMI and WHtR use the height from Patient details.</p>
     </section>
@@ -488,6 +642,30 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
         </section>
     </div>
 
+    </div>
+
+    <div class="view" data-view="3" id="view-3">
+    <section class="card no-export" id="blk-builder" aria-labelledby="bd-h">
+      <h2 class="card-h" id="bd-h">Meal plan builder</h2>
+
+  <div class="plans" id="plans">
+    <div class="ptabs" id="ptabs" role="tablist" aria-label="Meal plans"></div>
+    <button class="btn" id="btn-pdup" type="button" title="Copy the current plan into a new one">+ Duplicate plan</button>
+    <button class="btn" id="btn-pnew" type="button" title="Start a new plan with an empty table">+ Blank plan</button>
+    <label class="pfld">Name <input id="pname" type="text" maxlength="60" autocomplete="off" aria-label="Plan name"></label>
+    <label class="pfld">Date <input id="pdate" type="date" aria-label="Plan date"></label>
+    <button class="btn" id="btn-pdel" type="button">Delete plan</button>
+    <p class="phint">Goal, meal table, energy, notes and recommendations belong to each plan. Patient details, clinical history and progress records are shared.</p>
+  </div>
+    </section>
+
+    <section id="blk-banner" aria-label="Plan title">
+      <div class="banner">
+          <textarea class="ag ttl" id="f-title" rows="1" aria-label="Plan title">7-Day Meal Plan</textarea>
+          <textarea class="ag sub" id="f-sub" rows="1" aria-label="Plan subtitle" placeholder="Add a subtitle, for example the daily energy target"></textarea>
+        </div>
+    </section>
+
     <section class="card" id="blk-planhead" hidden><h2 class="card-h" id="ph-t"></h2></section>
 
     <section class="card" id="blk-energy" aria-labelledby="en-h">
@@ -504,7 +682,6 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
           <div class="tile"><span class="tl">TDEE</span><span class="tv" id="t-tdee">&ndash;</span><span class="tn">BMR &times; AF + TEF</span></div>
           <div class="tile hl"><span class="tl" id="tl-def">TDEE with 0 kcal deficit</span><span class="tv" id="t-def">&ndash;</span><span class="tn">kcal per day</span></div>
         </div>
-        <label class="chk no-export"><input type="checkbox" id="inc-energy" checked> Include energy calculations in the PDF</label>
       </div>
     </section>
 
@@ -522,7 +699,15 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
       <div class="fiber"><label for="e-fiber">Fiber goal (g/day)</label><input class="fld" id="e-fiber" type="text" maxlength="40" autocomplete="off" placeholder="e.g. 25-30 g"></div>
     </section>
 
-    <section id="blk-table" aria-label="Meal plan table">
+    <section class="card" id="blk-days" aria-labelledby="dy-h">
+      <h2 class="card-h" id="dy-h">Daily meal plans</h2>
+      <div class="dtabs no-export" id="dtabs" role="tablist" aria-label="Days"></div>
+      <div class="dayb"><div id="blk-day"></div></div>
+      <div class="tact pad no-export"><button class="linkbtn" id="btn-fooddb" type="button">Manage food database</button><span class="hint">Search foods by name and type the amount in grams. Energy and macros are calculated from the food database, using the edible portion.</span></div>
+    </section>
+
+    <section id="blk-table" aria-label="Weekly overview">
+      <div class="wk-tools no-export"><button class="btn" id="btn-fillweek" type="button">Fill from daily plans</button><span class="hint">Builds this table from the foods and amounts in the daily meal plans. You can still edit every cell.</span></div>
       <div class="tscroll"><table class="plan" id="plan"></table></div>
       <div class="tact no-export">
         <button class="btn" id="btn-addrow" type="button">+ Add day</button>
@@ -546,8 +731,48 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
       <textarea class="ag" id="f-foot" rows="1" aria-label="Footer note">This meal plan is for educational purposes. Follow the advice of your healthcare provider.</textarea>
     </footer>
 
+    </div>
+
   </div>
 </main>
+</div>
+
+<datalist id="foodlist"></datalist>
+
+<div class="dlg" id="pdfdlg" hidden role="dialog" aria-modal="true" aria-labelledby="pdfdlg-h">
+  <div class="dlg-b wide">
+    <h3 id="pdfdlg-h">Download PDF</h3>
+    <div class="tree" id="pdfdlg-tree"></div>
+    <div class="dlg-sec" id="pdfdlg-plans-h" hidden>Plans to include</div>
+    <div class="tree" id="pdfdlg-plans" hidden></div>
+    <div class="dlg-a"><button class="btn" id="pdfdlg-cancel" type="button">Cancel</button><button class="btn primary" id="pdfdlg-go" type="button">Download PDF</button></div>
+  </div>
+</div>
+
+<div class="dlg" id="fooddlg" hidden role="dialog" aria-modal="true" aria-labelledby="fooddlg-h">
+  <div class="dlg-b wide">
+    <h3 id="fooddlg-h">Food database</h3>
+    <p class="dlg-n" id="food-count"></p>
+    <div class="dlg-sec">Add a food (values per 100 g)</div>
+    <div class="frm">
+      <label class="full">Food name<input id="nf-name" maxlength="120" autocomplete="off"></label>
+      <label>Edible portion (1 = 100%)<input id="nf-edible" type="number" step="any" value="1"></label>
+      <label>Kcal / 100 g<input id="nf-kcal" type="number" step="any"></label>
+      <label>Carbohydrates (g)<input id="nf-carbs" type="number" step="any"></label>
+      <label>Protein (g)<input id="nf-protein" type="number" step="any"></label>
+      <label>Fat (g)<input id="nf-fat" type="number" step="any"></label>
+      <label>Fiber (g)<input id="nf-fiber" type="number" step="any"></label>
+    </div>
+    <div class="dlg-a"><button class="btn primary" id="nf-add" type="button">Add food</button></div>
+    <div class="dlg-sec">Import or export</div>
+    <p class="dlg-n">CSV columns in the same order as your Excel: Food, Edible portion, Kcal/100 g, Carbohydrates, Protein, Fat, Fiber. Semicolon, comma or tab separated.</p>
+    <div class="dlg-a" style="justify-content:flex-start"><button class="btn" id="food-import" type="button">Import CSV…</button><button class="btn" id="food-export" type="button">Download my added foods (CSV)</button><input type="file" id="food-file" accept=".csv,text/csv,text/plain" hidden></div>
+    <div class="dlg-sec">Foods you added</div>
+    <div class="fl" id="food-list"></div>
+    <p class="dlg-n" id="food-msg" role="status"></p>
+    <div class="dlg-a"><button class="btn" id="food-close" type="button">Close</button></div>
+  </div>
+</div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -987,113 +1212,6 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 
   function hasText(id) { return !!document.getElementById(id).value.trim(); }
 
-  async function exportPDF(sel) {
-    var btn = $('#btn-pdf');
-    if (btn.disabled) return;
-    sel = (sel && sel.length ? sel : [PL.active]).slice().sort(function (a, b) { return a - b; });
-    var multi = sel.length > 1;
-    setStatus('');
-    closePops();
-    if (!window.html2canvas || !window.jspdf) { setStatus('The PDF tools did not load. Check your connection and try again.', true); return; }
-    btn.disabled = true; btn.textContent = 'Preparing PDF…';
-    var origActive = PL.active, origDirty = dirty, ph = $('#blk-planhead');
-    try {
-      PL.parts[PL.active] = captureParsed(); stamp();
-      if (document.fonts && document.fonts.ready) await document.fonts.ready;
-
-      var shots = [];
-      async function snap(ids, brk) {
-        for (var i = 0; i < ids.length; i++) {
-          var node = document.getElementById(ids[i]), canvas, sc = 3;
-          try { canvas = await shoot(node, 3); }
-          catch (err) { sc = 2; canvas = await shoot(node, 2); }
-          shots.push({ canvas: canvas, h: canvas.height / sc, brk: !!(brk && i === 0) });
-        }
-      }
-
-      /* shared blocks: patient details, progress records, charts (4 per page) */
-      renderCharts(true);
-      var shared = ['blk-head'];
-      if (INC.progress && hasRecordData()) {
-        shared.push('blk-progress');
-        var vis = CHART_IDS.filter(function (id) { return !$('#c-' + id).hidden; });
-        vis.forEach(function (id, n) { (n < 4 ? $('#blk-cg1') : $('#blk-cg2')).appendChild($('#blk-chart-' + id)); });
-        CHART_IDS.forEach(function (id) { if (vis.indexOf(id) < 0) $('#blk-chart-' + id).style.display = 'none'; });
-        if (vis.length) shared.push('blk-cg1');
-        if (vis.length > 4) shared.push('blk-cg2');
-      }
-      await snap(shared, false);
-
-      /* each selected plan */
-      for (var n = 0; n < sel.length; n++) {
-        var idx = sel[n];
-        if (idx !== PL.active) { PL.active = idx; applyPart(PL.parts[idx]); }
-        normalizeCells(); stamp();
-        var ec = updateEnergy();
-        var ids = [];
-        if (multi) {
-          var p = PL.parts[idx];
-          $('#ph-t').textContent = planLabel(p, idx) + (p.date ? ' • ' + fmtDate(p.date) : '');
-          ph.hidden = false; ids.push('blk-planhead');
-        }
-        if (INC.energy && ec.bmr !== null) {
-          ids.push('blk-energy');
-          if (ec.base !== null) ids.push('blk-meals', 'blk-macros');
-        }
-        ids.push('blk-table');
-        if (hasText('f-notes')) ids.push('blk-notes');
-        if (T.some(tipHasContent)) ids.push('blk-tips');
-        if (hasText('f-foot')) ids.push('blk-foot');
-        await snap(ids, multi);
-        ph.hidden = true;
-      }
-
-      var jsPDF = window.jspdf.jsPDF;
-      var pdf = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4', compress: true });
-      var PW = 297, PH = 210, M = 8, GAP = 4;
-      var cw = PW - 2 * M, ch = PH - 2 * M, k = cw / EXPORT_W;
-      var hs = shots.map(function (s) { return s.h * k; });
-      var total = hs.reduce(function (a, b) { return a + b; }, 0) + GAP * (shots.length - 1);
-
-      function bg() { pdf.setFillColor(255, 255, 255); pdf.rect(0, 0, PW, PH, 'F'); }
-      function put(shot, x, y, w, h) { pdf.addImage(shot.canvas.toDataURL('image/png'), 'PNG', x, y, w, h, undefined, 'FAST'); }
-
-      bg();
-      var fit = ch / total;
-      if (!multi && total <= ch) {
-        var y0 = M;
-        shots.forEach(function (s, i) { put(s, M, y0, cw, hs[i]); y0 += hs[i] + GAP; });
-      } else if (!multi && fit >= 0.78) {
-        var w = cw * fit, x0 = M + (cw - w) / 2, yy = M;
-        shots.forEach(function (s, i) { var h = hs[i] * fit; put(s, x0, yy, w, h); yy += h + GAP * fit; });
-      } else {
-        var y = M;
-        shots.forEach(function (s, i) {
-          var h = hs[i], w2 = cw;
-          if (h > ch) { var f = ch / h; h = ch; w2 = cw * f; }
-          if (y > M && (s.brk || y + h > M + ch)) { pdf.addPage(); bg(); y = M; }
-          put(s, M + (cw - w2) / 2, y, w2, h); y += h + GAP;
-        });
-      }
-
-      var res = await deliver(fileStem() + '.pdf', pdf.output('arraybuffer'), 'application/pdf');
-      setStatus(res && res.status === 'saved' ? 'PDF saved.' : 'PDF sent.');
-    } catch (err) {
-      var code = err && err.code;
-      if (code === 'declined') setStatus('Download cancelled.');
-      else if (code === 'rate_limited') setStatus('Another save prompt is open. Answer it, then try again.', true);
-      else setStatus('Could not create the PDF. Try again.', true);
-    } finally {
-      ph.hidden = true;
-      try {
-        if (PL.active !== origActive) { PL.active = origActive; applyPart(PL.parts[origActive]); }
-        restoreCharts(); renderCharts(false);
-      } catch (e2) { /* ignore */ }
-      dirty = origDirty;
-      btn.disabled = false; btn.textContent = 'Download PDF';
-    }
-  }
-  $('#btn-pdf').addEventListener('click', choosePdf);
 
   /* ---------- numbers, dates, classification ---------- */
   var DAY = 86400000;
@@ -1102,7 +1220,7 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
   var MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   var R = [];
   var E = {};
-  var INC = { progress: true, energy: true };
+  var INC = {};
 
   function pnum(v) {
     if (v === null || v === undefined) return null;
@@ -1256,6 +1374,7 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
       setDerived(tr.querySelector('[data-k=whtr]'), d.whtr !== undefined ? d.whtr.toFixed(2) : '–', d.whtrBand);
     });
   }
+  $('#btn-fillweek').addEventListener('click', function () { if (this.dataset.armed === '1') { this.dataset.armed = ''; this.textContent = 'Fill from daily plans'; if (fillTableFromDays()) setStatus('Weekly overview filled from the daily plans.'); return; } this.dataset.armed = '1'; this.textContent = 'Click again to replace the table'; var b = this; setTimeout(function () { b.dataset.armed = ''; b.textContent = 'Fill from daily plans'; }, 5000); });
   $('#btn-addrec').addEventListener('click', function () {
     var r = newRec(); R.push(r); markDirty(); renderRecords(r.id); recalc(); setStatus('');
   });
@@ -1550,7 +1669,6 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
       for (var d = 0; d <= 1500; d += 100) { var o = el('option'); o.value = String(d); o.textContent = d + ' kcal'; sel.appendChild(o); }
     }
     sel.value = E.deficit; $('#e-af').value = E.af; $('#e-fiber').value = E.fiber;
-    $('#inc-progress').checked = INC.progress; $('#inc-energy').checked = INC.energy;
   }
   function renderMeals(focusId) {
     var tb = $('#meals'); tb.replaceChildren();
@@ -1676,8 +1794,6 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
   $('#e-af').addEventListener('input', function () { E.af = this.value; });
   $('#e-def').addEventListener('change', function () { E.deficit = this.value; });
   $('#e-fiber').addEventListener('input', function () { E.fiber = this.value; });
-  $('#inc-progress').addEventListener('change', function () { INC.progress = this.checked; });
-  $('#inc-energy').addEventListener('change', function () { INC.energy = this.checked; });
   $('#btn-addmeal').addEventListener('click', function () {
     var m = { id: nid(), name: 'Meal ' + (E.meals.length + 1), min: '', max: '' };
     E.meals.push(m); markDirty(); renderMeals(m.id); recalc(); setStatus('');
@@ -1686,8 +1802,9 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
   var recalcQueued = false;
   function recalc() {
     updateRecDerived();
-    renderCharts(false);
+    if (VIEW === 2) renderCharts(false);
     updateEnergy();
+    updateDays();
   }
   function scheduleRecalc() {
     if (recalcQueued) return; recalcQueued = true;
@@ -1701,8 +1818,555 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
   }
   function hasRecordData() { return R.some(function (r) { return !recIsEmpty(r); }); }
 
+  /* ---------- sections: sidebar views and PDF-include ticks ---------- */
+  var VIEW = 1;
+  var SECS = { 1: 'Logo, intro & clinical history', 2: 'Progress records', 3: 'Energy & meal plan' };
+  var BLOCKS = [
+    { sec: 1, id: 'blk-head', name: 'Logo & patient details' },
+    { sec: 1, id: 'blk-medp', name: 'Medical history: personal' },
+    { sec: 1, id: 'blk-medf', name: 'Medical history: family' },
+    { sec: 1, id: 'blk-weights', name: 'Weights & previous diets' },
+    { sec: 1, id: 'blk-habits', name: 'Habits & lifestyle log' },
+    { sec: 2, id: 'blk-progress', name: 'Progress records table' },
+    { sec: 2, id: 'blk-chart-weight', name: 'Weight chart' },
+    { sec: 2, id: 'blk-chart-bmi', name: 'BMI chart' },
+    { sec: 2, id: 'blk-chart-waisthip', name: 'Waist and hip chart' },
+    { sec: 2, id: 'blk-chart-armcalf', name: 'Arm and calf chart' },
+    { sec: 2, id: 'blk-chart-whr', name: 'WHR chart' },
+    { sec: 2, id: 'blk-chart-whtr', name: 'WHtR chart' },
+    { sec: 3, id: 'blk-banner', name: 'Plan title' },
+    { sec: 3, id: 'blk-energy', name: 'Energy expenditure calculations' },
+    { sec: 3, id: 'blk-meals', name: 'Energy distribution by meals' },
+    { sec: 3, id: 'blk-macros', name: 'Energy distribution by macros' },
+    { sec: 3, id: 'blk-days', name: 'Daily meal plans' },
+    { sec: 3, id: 'blk-table', name: 'Weekly overview' },
+    { sec: 3, id: 'blk-notes', name: 'Comments & notes' },
+    { sec: 3, id: 'blk-tips', name: 'Recommendations' },
+    { sec: 3, id: 'blk-foot', name: 'Footer note' }
+  ];
+  function incOn(id) { return INC[id] !== false; }
+  function secOn(n) { return INC['sec' + n] !== false; }
+  function incLabel(id) {
+    var lb = el('label', 'inc no-export', { title: 'Include in the PDF' });
+    var cb = el('input', null, { type: 'checkbox', 'data-inc': id, 'aria-label': 'Include in the PDF' });
+    lb.appendChild(cb); lb.appendChild(document.createTextNode(' PDF'));
+    return lb;
+  }
+  function addIncBoxes() {
+    BLOCKS.forEach(function (b) {
+      var node = document.getElementById(b.id); if (!node) return;
+      var h = node.querySelector('.card-h');
+      if (h) h.appendChild(incLabel(b.id));
+      else { var row = el('div', 'incrow no-export'); row.appendChild(incLabel(b.id)); node.insertBefore(row, node.firstChild); }
+    });
+  }
+  function syncIncBoxes() {
+    $$('input[data-inc]').forEach(function (cb) { cb.checked = incOn(cb.getAttribute('data-inc')); });
+  }
+  document.addEventListener('change', function (e) {
+    var cb = e.target; if (!cb || !cb.getAttribute || !cb.getAttribute('data-inc')) return;
+    var id = cb.getAttribute('data-inc');
+    if (cb.checked) delete INC[id]; else INC[id] = false;
+    markDirty(); syncIncBoxes();
+  });
+  document.addEventListener('input', function (e) {
+    var t = e.target; if (t && t.classList && t.classList.contains('ag')) ag(t);
+  });
+  function showView(n) {
+    VIEW = n;
+    $$('.view').forEach(function (v) { v.classList.toggle('on', +v.getAttribute('data-view') === n); });
+    $$('.sidebtn').forEach(function (b) { b.setAttribute('aria-current', +b.getAttribute('data-view') === n ? 'page' : 'false'); });
+    window.scrollTo(0, 0);
+    requestAnimationFrame(function () { agAll(); recalc(); });
+  }
+  $$('.sidebtn').forEach(function (b) { b.addEventListener('click', function () { showView(+b.getAttribute('data-view')); }); });
+
+  /* ---------- clinical history (personal, family) and weights ---------- */
+  var MED_P = [
+    ['allergies', 'Allergies'], ['intolerances', 'Intolerances'],
+    ['digestive', 'Digestive diseases (diarrhea, constipation, etc.)'],
+    ['pregnancy', 'Pregnant / recent delivery / breastfeeding'],
+    ['menarche', 'Menarche / menopause'],
+    ['otherDiseases', 'Other diseases (HTA, DMT1/DMT2, etc.)'],
+    ['treatments', 'Medical treatments'], ['interventions', 'Recent interventions'], ['otherInfo', 'Other info']
+  ];
+  var MED_F = [
+    ['hta', 'Hypertension (HTA)'], ['diabetes', 'Diabetes (DMT1/DMT2)'], ['obesity', 'Obesity'],
+    ['heart', 'Heart attacks'], ['other', 'Other']
+  ];
+  function buildHistory(boxId, prefix, defs) {
+    var box = $(boxId);
+    defs.forEach(function (d) {
+      var row = el('div', 'pr stack'), lb = el('label', null, { 'for': prefix + d[0] });
+      lb.textContent = d[1];
+      var ta = el('textarea', 'fld ag', { id: prefix + d[0], rows: '1', 'aria-label': d[1] });
+      row.appendChild(lb); row.appendChild(ta); box.appendChild(row);
+    });
+  }
+  buildHistory('#med-p', 'mp-', MED_P);
+  buildHistory('#med-f', 'mf-', MED_F);
+  function readHistory() {
+    var o = { personal: {}, family: {} };
+    MED_P.forEach(function (d) { o.personal[d[0]] = $('#mp-' + d[0]).value; });
+    MED_F.forEach(function (d) { o.family[d[0]] = $('#mf-' + d[0]).value; });
+    return o;
+  }
+  function writeHistory(h) {
+    MED_P.forEach(function (d) { $('#mp-' + d[0]).value = (h && h.personal && h.personal[d[0]]) || ''; });
+    MED_F.forEach(function (d) { $('#mf-' + d[0]).value = (h && h.family && h.family[d[0]]) || ''; });
+  }
+  function historyHas(prefix, defs) { return defs.some(function (d) { return $('#' + prefix + d[0]).value.trim(); }); }
+  function weightsHas() { return ['#f-cw', '#w-high', '#w-low', '#w-diets'].some(function (s) { return $(s).value.trim(); }); }
+
+  /* ---------- habits and lifestyle log (dated entries) ---------- */
+  var HAB_TYPES = ['Habits', 'Exercise (type and frequency)', 'Walking (daily steps)', 'Sleep hours', 'Work schedule', 'Other'];
+  var HB = [];
+  function newHab() { return { id: nid(), date: '', type: 'Habits', text: '' }; }
+  function habEmpty(h) { return !h.date && !h.text.trim(); }
+  function freshHabits() { HB = [newHab()]; }
+  function renderHabits(focusId) {
+    var tb = $('#hab'); tb.replaceChildren();
+    var thead = el('thead'), hr = el('tr');
+    ['Date', 'Type', 'Details', ''].forEach(function (h, i) {
+      var th = el('th', i === 3 ? 'no-export' : (i === 2 ? 'lft' : null), { scope: 'col' }); th.textContent = h; hr.appendChild(th);
+    });
+    thead.appendChild(hr); tb.appendChild(thead);
+    var body = el('tbody');
+    HB.forEach(function (h) {
+      var tr = el('tr'); tr.dataset.id = h.id;
+      var td = el('td'); td.style.width = '150px';
+      var d = el('input', 'fld', { type: 'date', 'aria-label': 'Entry date' }); d.value = h.date;
+      d.addEventListener('input', function () { h.date = d.value; }); td.appendChild(d); tr.appendChild(td);
+      td = el('td'); td.style.width = '230px';
+      var s = el('select', 'fld lftsel', { 'aria-label': 'Entry type' });
+      HAB_TYPES.forEach(function (t) { var o = el('option'); o.value = t; o.textContent = t; s.appendChild(o); });
+      s.value = HAB_TYPES.indexOf(h.type) >= 0 ? h.type : 'Other';
+      s.addEventListener('change', function () { h.type = s.value; }); td.appendChild(s); tr.appendChild(td);
+      td = el('td', 'lft');
+      var ta = el('textarea', 'fld ag', { rows: '1', 'aria-label': 'Entry details', placeholder: 'e.g. 3 x 45 min gym per week' }); ta.value = h.text;
+      ta.addEventListener('input', function () { h.text = ta.value; }); td.appendChild(ta); tr.appendChild(td);
+      td = el('td', 'no-export');
+      var rm = el('button', 'rmt', { type: 'button', 'aria-label': 'Remove this entry', title: 'Remove' }); rm.textContent = '×'; rm.disabled = HB.length <= 1;
+      rm.addEventListener('click', function () { HB = HB.filter(function (x) { return x.id !== h.id; }); markDirty(); renderHabits(); setStatus('Entry removed.'); });
+      td.appendChild(rm); tr.appendChild(td); body.appendChild(tr);
+    });
+    tb.appendChild(body);
+    agSoon();
+    if (focusId) { var f = tb.querySelector('tr[data-id="' + focusId + '"] input'); if (f) f.focus(); }
+  }
+  $('#btn-addhab').addEventListener('click', function () { var h = newHab(); HB.push(h); markDirty(); renderHabits(h.id); setStatus(''); });
+  $('#btn-sorthab').addEventListener('click', function () {
+    HB.sort(function (a, b) {
+      var x = dateTime(a.date), y = dateTime(b.date);
+      if (x === null && y === null) return 0; if (x === null) return 1; if (y === null) return -1; return x - y;
+    });
+    markDirty(); renderHabits(); setStatus('Entries sorted by date.');
+  });
+
+  /* ---------- food database (built in, hidden; user additions are kept) ---------- */
+  var FOODS = [["Abadejo",0.56,74.0,0.0,16.7,0.8,0.0],["Acedera",1.0,32.9,3.2,2.0,0.7,2.9],["Aceite de cacahuete",1.0,900.0,0.0,0.0,100.0,0.0],["Aceite de coco",1.0,900.0,0.0,0.0,100.0,0.0],["Aceite de colza",1.0,900.0,0.0,0.0,100.0,0.0],["Aceite de germen de trigo",1.0,899.0,0.0,0.0,99.9,0.0],["Aceite de girasol",1.0,899.0,0.0,0.0,99.9,0.0],["Aceite de Hígado de bacalao",1.0,899.0,0.0,0.0,99.9,0.0],["Aceite de lino",1.0,900.0,0.0,0.11,100.0,0.0],["Aceite de maíz",1.0,899.0,0.0,0.0,99.9,0.0],["Aceite de nuez",1.0,898.0,0.0,0.0,99.8,0.0],["Aceite de oliva",1.0,899.0,0.0,0.0,99.9,0.0],["Aceite de oliva virgen",1.0,899.0,0.0,0.0,99.9,0.0],["Aceite de oliva virgen extra",1.0,899.0,0.0,0.0,99.9,0.0],["Aceite de oliva virgen extra ecológico",1.0,899.0,0.0,0.0,99.9,0.0],["Aceite de palma",1.0,899.0,0.0,0.0,99.9,0.0],["Aceite de semilla de uva",1.0,899.0,0.0,0.0,99.9,0.0],["Aceite de sésamo",1.0,900.0,0.0,0.0,100.0,0.0],["Aceite de soja",1.0,900.0,0.0,0.0,100.0,0.0],["Aceituna negra con hueso",0.8,156.0,0.0,0.5,16.0,4.8],["Aceituna negra sin hueso",1.0,156.0,0.0,0.5,16.0,4.8],["Aceituna rellena de anchoa",1.0,121.0,0.0,1.3,12.3,2.5],["Aceituna rellena de pimiento",1.0,169.0,3.8,1.2,16.0,2.5],["Aceituna verde con hueso",0.8,167.0,1.0,0.8,16.7,4.8],["Aceituna verde sin hueso",1.0,167.0,1.0,0.8,16.7,4.8],["Acelga",0.88,29.8,4.5,1.9,0.2,1.2],["Acelga en conserva",1.0,15.3,1.2,1.8,0.08,1.3],["Achicoria",1.0,10.6,2.4,0.5,0.6,1.3],["Agua con gas embotellada",1.0,0.0,0.0,0.0,0.0,0.0],["Agua corriente",1.0,0.0,0.0,0.0,0.0,0.0],["Agua de coco",1.0,17.2,2.6,0.7,0.2,1.1],["Agua de mineralización débil",1.0,0.0,0.0,0.0,0.0,0.0],["Agua sin gas embotellada",1.0,0.0,0.0,0.0,0.0,0.0],["Aguacate",0.71,233.0,0.4,1.9,23.5,6.3],["Aguardiente",1.0,222.0,0.0,0.0,0.0,0.0],["Ajo",0.79,119.0,24.3,4.3,0.23,1.2],["Ajo en polvo",1.0,346.0,63.7,16.6,0.73,9.0],["Ala de pollo",0.74,217.0,0.0,18.3,16.0,0.0],["Albahaca fresca",1.0,26.2,1.1,3.2,0.64,1.6],["Albahaca seca",1.0,255.0,20.5,14.0,4.0,40.5],["Albaricoque",0.92,41.4,8.5,0.88,0.1,1.5],["Albaricoque seco (orejones)",1.0,283.0,62.6,3.4,0.51,7.3],["Albóndigas en conserva",1.0,148.0,5.9,6.8,9.7,5.1],["Alcachofa",0.48,43.9,2.9,2.4,0.12,10.8],["Alcachofa congelada",1.0,37.7,3.9,2.6,0.43,3.9],["Alcachofa en conserva",1.0,36.6,1.2,2.9,0.16,9.4],["Alcaparra",1.0,28.7,2.1,2.4,0.86,1.5],["Alga agar cruda",1.0,29.0,6.4,0.54,0.03,0.5],["Alga agar desecada",1.0,336.0,73.2,6.2,0.3,7.7],["Alga espirulina desecada",1.0,391.0,20.3,58.2,7.7,3.6],["Alga Kelp cruda",1.0,47.6,8.3,1.7,0.56,1.3],["Alga Kelp desecada",1.0,246.0,49.7,7.9,0.6,5.3],["Alga Laver cruda",1.0,45.5,4.8,5.8,0.28,0.3],["Alga Laver desecada",1.0,225.0,0.0,30.7,1.5,44.4],["Alga musgo de Irlanda cruda",1.0,54.0,11.0,1.5,0.16,1.3],["Alga Spirulina cruda",1.0,37.1,2.4,5.9,0.39,0.4],["Alga Wakame cruda",1.0,53.6,8.7,3.0,0.64,0.5],["Alga Wakame desecada",1.0,165.0,0.0,12.4,2.4,47.1],["Alioli",1.0,796.0,2.8,0.5,86.9,0.1],["Almeja",0.25,76.6,1.5,15.4,1.0,0.0],["Almeja en conserva",1.0,79.2,1.5,17.4,0.4,0.0],["Almendra con cascara",0.4,610.0,5.4,18.7,54.1,13.5],["Almendra frita salada sin cascara",1.0,618.0,3.8,19.0,55.2,15.0],["Almendra sin cascara",1.0,610.0,5.4,18.7,54.1,13.5],["Almendra tostada sin cascara",1.0,633.0,9.7,22.9,52.9,13.4],["Almendrado",1.0,431.0,57.0,9.0,18.1,2.0],["Altramuz seco",1.0,394.0,40.4,36.2,9.7,0.0],["Anacardo",1.0,578.0,30.5,17.5,42.2,2.9],["Anca de rana",0.65,68.3,0.0,16.4,0.3,0.0],["Anchoa en aceite",1.0,253.0,0.37,28.6,15.2,0.0],["Anguila",0.67,281.0,0.0,15.0,24.5,0.0],["Angula",1.0,205.0,0.0,16.3,15.5,0.0],["anís",1.0,267.0,1.0,0.0,0.0,0.0],["Añojo de 2ª y 3ª",1.0,212.0,0.0,20.7,14.4,0.0],["Añojo lomo",1.0,256.0,0.0,15.4,21.6,0.0],["Apio",0.8,19.4,2.5,1.2,0.2,1.4],["Apio en conserva",1.0,32.3,5.9,0.5,0.3,2.0],["Arándano",0.99,42.1,6.1,0.63,0.6,4.9],["Arenque",0.5,233.0,0.0,18.2,17.8,0.0],["Arroz",1.0,364.0,81.6,6.7,0.9,1.4],["Arroz blanco de cocción rápida",1.0,349.0,78.2,6.9,0.6,1.4],["Arroz con leche",1.0,121.0,23.9,3.3,1.3,0.1],["Arroz integral",1.0,350.0,74.1,7.3,2.2,2.2],["Arroz salvaje",1.0,356.0,68.7,14.7,1.1,6.2],["Arroz tres delicias congelado",1.0,115.0,20.0,3.4,1.6,3.5],["Aspartamo",1.0,365.0,93.7,1.4,0.0,0.0],["Atún",0.58,226.0,0.0,21.5,15.5,0.0],["Atún al natural",1.0,99.4,0.0,23.5,0.6,0.0],["Atún en aceite",1.0,208.0,0.0,24.8,12.1,0.0],["Atún en escabeche",1.0,99.4,0.0,23.5,0.6,0.0],["Avellana con cascara",0.61,661.0,10.5,12.0,61.6,8.2],["Avellana sin cascara",1.0,661.0,10.5,12.0,61.6,8.2],["Avena",1.0,353.0,55.7,11.7,7.1,9.7],["Azafrán",1.0,353.0,61.5,11.4,5.9,3.9],["Azúcar blanco",1.0,399.0,99.8,0.0,0.0,0.0],["Azúcar moreno",1.0,390.0,97.6,0.0,0.0,0.0],["Bacaladilla",0.64,84.4,0.0,17.5,1.6,0.0],["Bacalao fresco",0.89,79.8,0.0,17.7,1.0,0.0],["Bacalao salado",0.8,322.0,0.0,75.0,2.4,0.0],["Bacon",0.86,682.0,0.0,14.6,69.3,0.0],["Barquillo",1.0,427.0,81.5,8.1,6.9,3.0],["Barra de chocolate tipo “Mars”",1.0,431.0,60.2,5.6,18.5,0.6],["Barrita de cereales con frutas rojas",1.0,392.0,78.0,8.0,5.0,1.5],["Barrita de cereales con melocotón y albaricoque",1.0,403.0,77.0,7.0,7.0,2.0],["Barrita de cereales con pepitas de chocolate",1.0,350.0,62.0,9.0,7.0,1.5],["Barrita de cereales integrales",1.0,393.0,76.0,8.0,6.0,1.5],["Barrita de chocolate con galleta",1.0,501.0,63.0,6.5,24.5,1.3],["Barrita de fibra y chocolate",1.0,414.0,51.0,7.0,16.0,19.0],["Barrita hipocalórica",1.0,473.0,42.0,22.0,22.9,5.4],["Base de pizza",1.0,273.0,43.9,6.7,7.4,2.2],["Batido de cacao",1.0,84.0,9.8,2.7,3.6,0.8],["Batido de fresa",1.0,65.8,11.0,2.8,1.0,0.8],["Batido de vainilla",1.0,63.4,10.3,2.9,1.0,0.8],["Batido fermentado de soja",1.0,82.4,3.9,5.0,5.2,0.0],["Batido hipocalórico",1.0,322.0,37.0,26.9,4.6,12.3],["Bebida comercial de zumo y leche",1.0,51.7,12.0,0.7,0.1,0.0],["Bebida de almendras",1.0,24.3,3.0,0.5,1.1,0.2],["Bebida de alpiste",1.0,45.0,7.1,1.2,1.0,0.39],["Bebida de avena",1.0,46.7,8.7,1.0,0.7,0.8],["Bebida de soja",1.0,54.8,5.8,3.2,1.8,1.3],["Bebida isotónica",1.0,28.4,7.1,0.0,0.0,0.0],["Berberecho",0.2,82.6,1.5,16.9,1.0,0.0],["Berberecho en conserva",1.0,79.2,1.5,17.4,0.4,0.0],["Berenjena",0.85,21.4,2.4,1.3,0.18,2.5],["Berenjenas encurtidas",1.0,27.0,2.8,0.7,1.0,2.0],["Berro",0.62,20.1,2.0,1.6,0.3,1.5],["Besugo",0.55,88.6,0.0,18.1,1.8,0.0],["Bíter con alcohol",1.0,152.0,16.0,0.0,0.0,0.0],["Bíter sin alcohol",1.0,42.0,10.5,0.0,0.0,0.0],["Bizcocho",1.0,377.0,54.0,6.0,15.0,1.0],["Bizcocho de chocolate",1.0,365.0,45.0,6.6,17.0,2.9],["Bizcocho de fruta y fibra",1.0,383.0,58.0,4.0,13.0,9.0],["Bizcocho de soletilla",1.0,298.0,61.3,6.4,2.7,1.5],["Bogavante",0.3,83.5,0.7,15.9,1.9,0.0],["Bollo",1.0,443.0,50.8,6.6,23.0,3.0],["Bollo de leche",1.0,346.0,46.5,9.7,13.2,1.4],["Bollo relleno de chocolate",1.0,403.0,50.6,3.9,20.1,2.2],["Bollo tipo donette",1.0,457.0,49.0,5.7,26.0,2.0],["Bollo tipo donut",1.0,419.0,46.0,6.0,23.0,2.2],["Bollo tipo donut de chocolate",1.0,435.0,46.0,5.4,25.0,2.2],["Bollo tipo donut sin gluten",1.0,468.0,52.0,2.0,28.0,0.0],["Bombón",1.0,476.0,66.0,4.8,21.2,0.8],["Boniato",0.84,114.0,24.1,1.6,0.6,3.1],["Bonito",0.9,153.0,0.0,24.7,6.0,0.0],["Bonito en aceite",1.0,203.0,0.0,24.9,11.5,0.0],["Bonito en aceite de soja",1.0,207.0,0.0,32.2,8.7,0.0],["Bonito en escabeche",1.0,171.0,0.8,15.0,12.0,0.0],["Boquerón",0.79,142.0,0.5,21.5,6.0,0.0],["Borraja",0.8,25.9,3.1,1.8,0.7,0.0],["Breca",0.55,74.6,1.0,15.4,1.0,0.0],["Brécol",0.61,33.0,2.7,3.6,0.2,3.0],["Brote de soja",1.0,54.6,4.7,5.5,1.0,2.4],["Brotes de bambú en conserva",1.0,26.0,3.2,1.7,0.4,1.4],["Brotes de bambú fresco",1.0,38.3,5.2,2.6,0.3,2.2],["Bulgur",1.0,344.0,64.5,12.3,1.3,12.5],["Buñuelo",1.0,266.0,26.3,6.0,14.8,1.6],["Butifarra",0.97,238.0,5.5,10.0,19.6,0.0],["Caballa",0.71,182.0,0.0,18.7,11.9,0.0],["Caballa ahumada",1.0,250.0,0.0,20.5,18.7,0.0],["Caballa en aceite",1.0,217.0,0.6,22.5,13.8,0.0],["Caballa en escabeche",1.0,171.0,0.8,15.0,12.0,0.0],["Cabeza de jabalí",0.94,534.0,0.2,19.4,50.6,0.0],["Cabracho",0.5,91.3,0.0,19.0,1.7,0.0],["Cabrito",0.75,122.0,0.0,19.2,5.0,0.0],["Cacahuete con cascara",0.71,563.0,7.9,25.2,46.0,8.1],["Cacahuete cubierto de chocolate",1.0,513.0,60.5,9.4,25.4,2.7],["Cacahuete frito salado sin cascara",1.0,627.0,8.9,24.5,53.0,8.4],["Cacahuete sin cascara",1.0,563.0,7.9,25.2,46.0,8.1],["Cacahuete tostado y salado sin cascara",1.0,615.0,14.0,23.9,49.7,8.0],["Cacao en polvo azucarado",1.0,391.0,81.0,5.9,4.0,3.5],["Cacao en polvo bajo en calorías",1.0,358.0,63.4,16.1,3.0,6.4],["Café capuccino en polvo soluble",1.0,396.0,60.8,10.6,11.4,3.9],["Café descafeinado en grano",1.0,315.0,6.7,13.5,13.1,58.2],["Café descafeinado en polvo soluble",1.0,228.0,42.6,13.9,0.22,0.0],["Café descafeinado liquido",1.0,12.2,0.25,0.52,0.5,2.3],["Café en grano",1.0,315.0,6.7,13.5,13.1,58.2],["Café en polvo soluble",1.0,227.0,41.1,14.6,0.5,0.0],["Café liquido",1.0,12.2,0.25,0.52,0.5,2.3],["Calabacín",0.88,23.3,2.0,1.9,0.5,1.6],["Calabaza",0.67,28.4,4.6,1.1,0.13,2.2],["Calamar",0.7,80.6,0.7,16.3,1.4,0.0],["Calamar en salsa americana",1.0,195.0,1.5,13.1,15.2,0.0],["Calamar en su tinta",1.0,117.0,6.3,13.3,4.3,0.0],["Calamares a la romana congelados",1.0,189.0,23.7,5.7,7.8,0.6],["Calamares fritos",1.0,172.0,4.0,22.0,7.5,0.1],["Caldo de carne",1.0,6.5,0.04,1.1,0.22,0.0],["Caldo de pescado",1.0,15.0,0.4,2.0,0.6,0.0],["Caldo de pollo",1.0,5.0,0.4,0.4,0.21,0.0],["Caldo de verdura",1.0,30.9,4.9,0.9,0.79,0.3],["Caldo en cubitos de carne",1.0,252.0,5.0,15.7,18.7,0.2],["Callos a la madrileña",1.0,109.0,2.5,6.8,5.8,10.0],["Callos de ternera",1.0,134.0,0.0,14.8,8.3,0.0],["Canela",1.0,255.0,25.6,3.9,3.2,54.3],["Canelones de carne congelados",1.0,129.0,12.8,6.2,5.4,2.2],["Cangrejo y similares",0.44,124.0,0.0,19.5,5.1,0.0],["Canónigos",0.57,16.6,0.7,1.8,0.4,1.5],["Capón asado",1.0,221.0,0.0,29.0,11.7,0.0],["Caqui",0.87,74.2,16.0,0.63,0.3,2.5],["Caracol",0.24,85.8,2.0,16.3,1.4,0.0],["Carambola",1.0,31.0,6.3,0.5,0.0,1.7],["Caramelo",1.0,382.0,95.0,0.4,0.0,0.0],["Cardamomo, semillas",1.0,344.0,46.2,10.8,6.7,28.0],["Cardo",0.6,16.9,2.2,0.8,0.1,2.0],["Cardo en conserva",1.0,15.8,2.1,0.76,0.11,1.7],["Carne de caballo",1.0,108.0,0.4,20.6,2.7,0.0],["Carne de cerdo semigrasa",1.0,219.0,0.0,17.5,16.5,0.0],["Carne de conejo grasa",0.68,204.0,0.4,18.1,14.4,0.0],["Carne de conejo, grasa y magra",0.68,138.0,0.5,22.1,5.3,0.0],["Carne de jabalí",1.0,162.0,0.0,19.5,9.3,0.0],["Carne de vaca 2ªy3ª",1.0,234.0,0.0,22.0,16.2,0.0],["Carne de vaca grasa",0.95,200.0,0.0,18.6,14.0,0.0],["Carne de vaca magra",1.0,120.0,0.0,20.3,4.3,0.0],["Carne empanada, pasteles de carne (congelados)",1.0,299.0,12.0,21.9,18.1,0.13],["Carne semigrasa de vaca",1.0,160.0,0.0,19.1,9.3,0.0],["Carpa",0.54,114.0,0.0,18.0,4.7,0.0],["Castaña",0.82,190.0,36.5,2.7,2.2,6.7],["Castaña asada",0.9,237.0,39.7,4.0,5.3,7.1],["Cava",1.0,70.5,1.5,0.2,0.0,0.0],["Caviar",1.0,252.0,1.9,26.1,15.5,0.0],["Cazón",0.8,82.9,0.0,18.7,0.9,0.0],["Cd con base de arroz",1.0,388.0,86.0,7.0,1.5,1.0],["Cd con base de arroz y chocolate",1.0,388.0,85.0,5.0,2.5,2.5],["Cd con base de arroz y trigo integral",1.0,375.0,74.0,16.0,1.0,3.0],["Cd con base de arroz, trigo integral, frutas rojas",1.0,390.0,79.5,14.0,1.0,3.5],["Cd con base de avena",1.0,349.0,54.4,13.8,7.2,5.6],["Cd con base de avena integral tostada y miel",1.0,388.0,75.0,8.6,4.9,4.9],["Cd con base de maíz",1.0,376.0,83.0,8.0,0.8,2.5],["Cd con base de maíz azucarados",1.0,361.0,83.7,4.5,0.6,1.5],["Cd con base de trigo y chocolate",1.0,364.0,75.0,8.0,2.5,4.5],["Cd con base de trigo y frutas",1.0,348.0,65.0,10.0,2.0,15.0],["Cd con base de trigo y miel",1.0,387.0,84.0,7.0,1.7,4.0],["Cd de trigo integral relleno de pasas",1.0,358.0,71.5,9.0,2.0,9.0],["Cd rellenos de chocolate",1.0,436.0,66.6,7.5,14.0,7.0],["Cd salvado de trigo completo",1.0,338.0,48.0,13.0,4.0,29.0],["Cd variados con miel",1.0,379.0,80.7,5.5,3.0,3.4],["Cd variados integrales con miel",1.0,382.0,77.0,8.0,3.1,7.0],["Cebada",1.0,330.0,62.1,9.9,1.2,15.6],["Cebolla",0.91,31.9,5.3,1.2,0.25,1.8],["Cebolla deshidratada en copos",1.0,355.0,74.1,9.0,0.45,9.2],["Cebollino",1.0,29.0,1.9,3.0,0.53,2.3],["Centeno",1.0,372.0,65.2,14.8,2.5,14.6],["Centollo",0.44,127.0,0.0,20.1,5.2,0.0],["Cerdo magro",1.0,156.0,0.0,22.0,7.6,0.0],["Cereales (almohadillas ricas en fibra)",1.0,408.0,63.0,7.5,14.0,7.0],["Cereales (copos ricos en fibra)",1.0,356.0,67.0,10.0,2.0,15.0],["Cereales en polvo solubles tipo “Eko”",1.0,343.0,73.7,5.7,0.42,10.9],["Cereales malteados en polvo",1.0,343.0,73.7,5.7,0.4,10.9],["Cereza",0.83,62.1,13.3,0.88,0.31,1.3],["Cerveza",1.0,42.4,3.1,0.5,0.0,0.0],["Cerveza baja en alcohol",1.0,38.1,2.9,0.5,0.0,0.0],["Cerveza sin alcohol",1.0,25.4,5.4,0.38,0.0,0.0],["Champagne",1.0,67.6,1.5,0.18,0.0,0.0],["Champiñón",0.8,34.0,0.54,4.3,1.2,1.9],["Champiñón en conserva",1.0,21.4,0.07,3.4,0.5,1.5],["Chicle",1.0,390.0,96.7,0.0,0.3,0.0],["Chicle sin azúcar",1.0,2.7,0.0,0.0,0.3,0.0],["Chile rojo",1.0,37.0,6.4,1.0,0.4,1.9],["Chile verde",1.0,20.1,2.6,0.8,0.3,1.9],["Chipirón",0.7,80.6,0.7,16.3,1.4,0.0],["Chips de verduras",1.0,468.0,67.3,3.2,19.8,4.4],["Chirimoya",0.6,72.7,14.1,1.3,0.7,2.4],["Chirivía",1.0,70.1,11.1,1.8,1.1,4.3],["Chistorra",1.0,519.0,0.9,15.3,50.5,0.0],["Chocolate blanco",1.0,547.0,58.8,8.0,30.9,0.8],["Chocolate con leche",1.0,538.0,54.1,9.2,31.5,0.8],["Chocolate con leche y almendra",1.0,558.0,51.5,8.7,34.9,1.4],["Chocolate en polvo a la taza",1.0,405.0,79.4,5.5,6.0,5.8],["Chocolate puro",1.0,509.0,47.0,5.3,30.0,15.0],["Chopped de cerdo",1.0,293.0,3.1,14.4,24.8,0.0],["Chorizo",0.99,356.0,1.9,21.2,29.3,0.0],["Chucrut en conserva",1.0,22.5,2.4,1.5,0.3,2.1],["Chufa",1.0,443.0,42.5,6.1,23.7,17.4],["Chuleta de cerdo",0.8,352.0,0.0,21.7,29.5,0.0],["Chuleta de cordero",0.77,250.0,0.0,16.2,20.6,0.0],["Chuleta de ternera",0.78,107.0,0.0,20.9,2.6,0.0],["Churro",1.0,361.0,40.0,4.6,20.0,1.2],["Cigala",0.5,85.4,0.5,17.7,1.4,0.0],["Cilantro",1.0,22.1,0.9,2.1,0.5,2.8],["Ciruela",0.94,48.1,10.2,0.63,0.17,1.6],["Ciruela seca",0.84,219.0,42.4,2.2,0.52,17.8],["Clara de huevo",1.0,49.0,0.7,11.1,0.2,0.0],["Clavo",1.0,335.0,31.6,6.0,13.0,33.9],["Cocido madrileño en conserva",1.0,139.0,9.6,6.9,7.8,1.5],["Coco fresco",0.7,384.0,4.8,4.6,36.5,9.0],["Coco rallado",1.0,633.0,6.4,5.6,62.0,13.7],["Codorniz",0.7,110.0,0.0,22.4,2.3,0.0],["Col",0.77,30.2,4.2,1.4,0.2,3.0],["Col de Bruselas",0.78,42.7,3.3,4.4,0.34,4.4],["Col rizada",0.85,43.7,2.5,4.3,0.9,4.2],["Coliflor",0.8,27.5,2.4,2.4,0.28,2.9],["Colines",1.0,414.0,77.7,11.2,6.2,1.0],["Comino",1.0,391.0,33.7,17.8,18.2,10.5],["Compota de manzana",1.0,81.3,19.1,0.2,0.1,1.6],["Coñac",1.0,240.0,2.0,0.0,0.0,0.0],["Conejo",0.62,88.4,0.0,10.4,5.2,0.0],["Congrio",0.75,123.0,1.4,19.0,4.6,0.0],["Copa de chocolate y nata",1.0,182.0,21.2,3.2,9.3,0.12],["Corazón de cerdo",0.95,114.0,1.3,17.3,4.4,0.0],["Corazón de cordero",0.78,118.0,0.21,16.5,5.7,0.0],["Corazón de pollo",1.0,149.0,0.71,15.6,9.3,0.0],["Corazón de vaca",0.81,104.0,0.0,17.0,4.0,0.0],["Corteza de trigo",1.0,521.0,57.0,9.1,28.0,2.1],["Costilla de cerdo",0.72,281.0,0.0,17.1,23.6,0.0],["Crema de almendras",1.0,341.0,50.7,4.6,13.2,0.5],["Crema de cacahuete",1.0,619.0,13.6,30.1,47.8,7.0],["Crema de cacao y avellanas",1.0,555.0,57.8,6.2,33.0,1.1],["Crema de chocolate",1.0,199.0,21.2,3.6,10.7,1.8],["Crema de whisky",1.0,324.0,25.0,3.0,13.0,0.0],["Crema desecada de champiñón",1.0,361.0,61.9,9.6,7.7,3.0],["Crema desecada de espárragos",1.0,392.0,54.0,8.0,15.5,2.4],["Crema hipocalórica",1.0,262.0,30.0,23.0,3.8,7.8],["Crema pastelera",1.0,158.0,22.3,4.9,5.4,0.3],["Croissant",1.0,444.0,52.6,7.0,22.4,2.1],["Croissant de chocolate",1.0,437.0,44.2,8.7,24.1,4.0],["Croquetas de bacalao congelada",1.0,154.0,25.0,3.8,4.2,0.6],["Croquetas de jamón congelada",1.0,153.0,23.0,3.8,4.6,2.0],["Croquetas de marisco congelada",1.0,136.0,21.9,5.6,2.7,0.6],["Croquetas de merluza congelada",1.0,140.0,21.3,3.5,3.8,1.2],["Croquetas de pollo congeladas",1.0,160.0,21.0,5.8,5.3,2.5],["Croquetas de queso congelada",1.0,131.0,20.6,4.3,3.3,0.6],["Cuajada",1.0,86.7,6.6,4.5,4.7,0.0],["Cubata de ron",1.0,109.0,7.4,0.0,0.0,0.0],["Cúrcuma",1.0,291.0,44.4,9.7,3.3,22.7],["Cuscús",1.0,377.0,77.4,12.8,0.64,5.0],["Dátil",0.84,289.0,65.1,1.9,0.45,8.7],["Delicias de jamón y queso congeladas",1.0,207.0,24.9,5.1,9.1,2.6],["Dorada",0.55,230.0,1.3,18.1,16.9,0.0],["Dulce de leche",1.0,321.0,62.0,5.2,5.6,0.7],["Dulce de membrillo y pastas de frutas",1.0,259.0,62.2,1.0,0.0,3.2],["Edulcorante liquido",1.0,4.0,1.0,0.0,0.0,0.0],["Empanadilla de atún congelada",1.0,265.0,31.7,4.8,12.0,5.4],["Endivia",0.83,23.6,3.6,1.1,0.24,1.3],["Eneldo seco",1.0,316.0,42.2,20.0,4.4,13.6],["Ensaimada",1.0,474.0,48.4,8.1,27.0,2.4],["Escarola",0.79,17.4,1.0,1.6,0.2,2.6],["Esparrago de lata",1.0,18.8,1.5,1.9,0.31,1.2],["Esparrago verde",0.75,21.2,2.0,2.3,0.16,1.3],["Espinaca",0.81,20.7,0.61,2.6,0.3,2.6],["Espinaca congelada",1.0,32.4,1.2,3.1,1.0,3.1],["Espinaca en conserva",1.0,27.8,2.3,3.1,0.4,1.3],["Espinacas a la crema congeladas",1.0,65.1,4.7,2.8,3.5,1.8],["Fabada en conserva",1.0,156.0,9.3,6.1,8.8,7.8],["Faisán entero",0.55,155.0,0.0,23.8,6.6,0.0],["Fécula de maíz",1.0,356.0,88.0,0.41,0.08,0.6],["Fécula de patata",1.0,375.0,83.1,6.9,0.34,5.9],["Fideos de soja",1.0,340.0,83.2,0.09,0.07,3.3],["Flan de huevo",1.0,143.0,20.4,5.0,4.6,0.0],["Flan de vainilla",1.0,122.0,23.9,3.0,1.6,0.0],["Flan instantáneo en polvo",1.0,366.0,91.6,0.0,0.0,0.0],["Foie gras",1.0,324.0,2.7,11.9,29.5,0.0],["Frambuesa",1.0,36.9,4.9,1.3,0.3,4.7],["Fresa y fresón",0.95,32.2,5.5,0.81,0.4,1.7],["Fritos de maíz sabor barbacoa",1.0,539.0,55.0,7.0,31.0,5.9],["Fructosa",1.0,399.0,99.8,0.0,0.0,0.0],["Fuet",0.97,438.0,1.4,19.3,39.5,0.0],["Galleta cubierta de chocolate",1.0,491.0,60.4,6.9,24.0,3.1],["Galleta doble rellena de chocolate",1.0,487.0,60.4,6.9,23.5,3.1],["Galleta integral",1.0,427.0,42.9,10.0,21.2,12.5],["Galleta salada",1.0,466.0,64.0,6.2,20.0,2.5],["Galleta tipo cookie",1.0,476.0,64.0,6.2,21.0,3.3],["Galleta tipo digestive",1.0,469.0,63.0,6.3,20.3,4.6],["Galleta tipo digestive con chocolate",1.0,501.0,62.6,6.8,24.1,3.1],["Galleta tipo Maria",1.0,482.0,69.0,7.1,19.0,3.1],["Galleta tipo sandwich",1.0,447.0,67.7,2.9,17.7,2.9],["Gallina entera",0.72,232.0,0.0,17.3,18.1,0.0],["Gallo",0.56,81.5,0.0,16.1,1.9,0.0],["Gamba roja",0.4,94.2,1.5,18.0,1.8,0.0],["Ganchitos",1.0,470.0,71.1,6.6,17.4,1.4],["Garbanzo",1.0,341.0,44.3,20.8,5.5,15.5],["Garbanzo en conserva",1.0,120.0,14.1,7.2,2.9,4.1],["Gaseosa",1.0,21.6,5.4,0.0,0.0,0.0],["Gaseosa sin calorías",1.0,0.32,0.07,0.01,0.0,0.0],["Gazpacho en conserva",1.0,39.8,3.0,0.6,2.8,0.2],["Gelatina",1.0,338.0,0.0,84.4,0.0,0.0],["Germen de trigo",1.0,355.0,30.6,28.6,9.2,17.7],["Ginebra",1.0,221.0,0.0,0.0,0.0,0.0],["Gofio canario, tostado",1.0,356.0,64.8,10.1,2.7,16.2],["Gofre",1.0,225.0,23.9,4.8,12.0,0.97],["Gomasio",1.0,89.7,0.14,2.7,8.7,0.0],["Granada",0.56,77.2,16.1,0.69,0.6,2.3],["Granadina, jarabe",1.0,268.0,66.9,0.0,0.0,0.0],["Grelo",0.81,20.8,0.1,2.7,0.2,3.9],["Grosella negra",0.98,45.2,6.1,1.3,0.22,6.8],["Grosella roja",0.99,32.4,4.8,1.1,0.2,3.5],["Guayaba",0.89,41.6,5.8,0.88,0.5,5.2],["Guindilla picante",0.95,47.3,6.7,1.9,1.1,1.5],["Guisante congelado",1.0,74.0,9.5,6.0,0.4,4.2],["Guisante en conserva",1.0,88.9,12.4,5.3,0.9,5.0],["Guisante seco",1.0,302.0,41.2,22.9,1.4,16.7],["Guisante verde",0.37,90.7,11.3,6.9,0.9,4.9],["Gulas salteadas en conserva",1.0,255.0,7.2,8.9,21.2,0.0],["Gusanitos con queso",1.0,520.0,58.0,5.6,29.0,2.5],["Haba fresca",0.4,50.4,4.2,5.4,0.2,5.1],["Haba seca",1.0,307.0,33.3,26.1,2.1,25.0],["Hamburguesa vegetal",1.0,192.0,15.7,15.7,6.3,4.9],["Harina de algarrobo",1.0,300.0,49.1,4.6,0.65,39.8],["Harina de arroz",1.0,349.0,78.0,7.6,0.7,0.0],["Harina de centeno",1.0,326.0,59.7,10.0,1.9,15.0],["Harina de maíz",1.0,342.0,66.3,8.3,2.8,9.4],["Harina de soja",1.0,475.0,23.5,36.8,23.5,11.2],["Harina de tapioca",1.0,382.0,94.3,0.5,0.2,0.4],["Harina de trigo",1.0,341.0,70.6,9.9,1.2,4.3],["Harina integral de trigo",1.0,322.0,58.3,12.7,2.2,9.0],["Helado cremoso",1.0,177.0,21.0,4.0,8.6,0.0],["Helado de chocolate",1.0,191.0,18.5,3.8,11.0,1.2],["Helado de fresa",1.0,186.0,24.0,3.2,8.4,0.9],["Helado de nata",1.0,199.0,21.5,3.9,10.8,0.0],["Hígado de cerdo",1.0,131.0,0.93,20.7,4.9,0.0],["Hígado de cordero",1.0,137.0,2.2,20.7,5.0,0.0],["Hígado de pollo",1.0,136.0,1.2,22.1,4.7,0.0],["Hígado de ternera",1.0,136.0,4.2,19.4,4.6,0.0],["Hígado de vaca",1.0,130.0,5.3,19.5,3.4,0.0],["Higo",0.81,65.3,12.9,1.3,0.5,2.0],["Higo seco",1.0,272.0,55.1,3.6,1.3,12.9],["Hinojo",1.0,20.2,2.3,1.1,0.0,3.3],["Hongos desecados, shiitake",1.0,344.0,68.4,9.6,0.99,11.5],["Horchata",1.0,97.3,17.0,1.2,2.7,0.1],["Huevas frescas",1.0,119.0,1.5,24.3,1.8,0.0],["Huevo de codorniz",0.88,155.0,0.41,13.1,11.2,0.0],["Huevo de gallina",0.87,162.0,0.68,12.7,12.1,0.0],["Huevo de pato",0.89,184.0,0.7,13.0,14.4,0.0],["Hummus",1.0,174.0,11.0,7.9,9.6,6.0],["Infusión de manzanilla",1.0,1.0,0.2,0.0,0.0,0.0],["Infusión genérica",1.0,0.0,0.0,0.0,0.0,0.0],["Jalea real",1.0,261.0,65.0,0.2,0.0,0.0],["Jamón cocido",1.0,213.0,9.9,19.1,10.8,0.0],["Jamón cocido enlatado",1.0,120.0,0.0,18.4,5.1,0.0],["Jamón ibérico",1.0,375.0,0.1,43.2,22.4,0.0],["Jamón serrano",1.0,136.0,0.0,21.4,5.6,0.0],["Jarabe",1.0,297.0,74.1,0.1,0.0,0.0],["Jengibre crudo",1.0,32.9,3.4,1.1,1.1,2.7],["Jengibre en polvo",1.0,336.0,58.3,9.1,4.2,14.1],["Judía blanca",1.0,284.0,34.7,21.1,1.6,23.2],["Judía blanca en conserva",1.0,101.0,15.7,6.7,0.3,4.4],["Judía pinta",1.0,292.0,35.1,23.6,0.83,24.9],["Judía pinta en conserva",1.0,84.2,9.9,8.4,0.2,4.6],["Judía verde",0.91,36.4,4.2,2.4,0.58,2.4],["Judía verde congelada",1.0,36.5,3.6,1.9,0.9,3.2],["Judía verde en conserva",1.0,15.1,1.6,1.2,0.1,1.5],["Jurel",0.71,118.0,0.8,19.8,3.9,0.0],["Kebab",1.0,341.0,25.9,17.1,18.8,0.0],["Kebab, ternera",1.0,216.0,2.2,18.9,14.6,0.33],["Kéfir",1.0,63.9,4.8,3.3,3.5,0.0],["Kétchup",1.0,117.0,26.0,2.0,0.4,0.9],["Kiwi",0.86,51.8,9.1,1.0,0.8,2.1],["Langosta",0.47,83.9,1.3,17.2,1.1,0.0],["Langostino",0.4,110.0,1.5,24.3,0.8,0.0],["Lasaña de carne y besamel congelada",1.0,150.0,13.0,6.3,7.9,0.8],["Laurel",1.0,353.0,48.7,7.6,8.4,26.3],["Leche concentrada",1.0,132.0,9.3,6.5,7.6,0.0],["Leche condensada azucarada",1.0,336.0,52.8,8.5,10.1,0.0],["Leche condensada desnatada con azúcar",1.0,282.0,60.0,10.0,0.2,0.0],["Leche de cabra",1.0,66.7,4.2,3.7,3.9,0.0],["Leche de coco",1.0,241.0,3.3,2.3,23.8,2.2],["Leche de continuación (polvo)",1.0,511.0,60.1,12.9,24.3,0.0],["Leche de inicio (polvo)",1.0,522.0,58.9,11.4,26.8,0.0],["Leche de oveja",1.0,96.7,4.7,5.3,6.3,0.0],["Leche de vaca desnatada",1.0,37.0,4.9,3.9,0.2,0.0],["Leche de vaca entera",1.0,65.4,4.7,3.1,3.8,0.0],["Leche de vaca semidesnatada",1.0,47.6,4.8,3.5,1.6,0.0],["Leche desnatada sin lactosa",1.0,36.6,4.8,3.9,0.2,0.0],["Leche en polvo desnatada",1.0,352.0,50.4,36.1,0.64,0.0],["Leche en polvo entera",1.0,477.0,35.1,25.2,26.2,0.0],["Leche en polvo semidesnatada",1.0,442.0,43.9,29.8,16.3,0.0],["Leche entera sin lactosa",1.0,65.4,4.7,3.1,3.8,0.0],["Leche evaporada entera",1.0,151.0,8.1,8.4,9.4,0.0],["Leche fermentada con lactobacillus acidophilus",1.0,98.5,14.1,3.1,3.3,0.0],["Leche fermentada con lactobacillus casei",1.0,88.3,11.7,3.0,3.3,0.0],["Leche fermentada tipo bio con frutas",1.0,84.9,13.4,4.0,1.7,0.0],["Leche fermentada tipo bio desnatado con frutas",1.0,53.0,8.5,4.7,0.02,0.0],["Leche fermentada tipo bio desnatado natural",1.0,42.7,5.1,4.9,0.3,0.0],["Leche fermentada tipo bio natural",1.0,62.6,4.4,3.6,3.4,0.0],["Leche materna calostro",1.0,53.5,4.9,2.6,2.6,0.0],["Leche materna madura",1.0,68.8,7.0,1.2,4.0,0.0],["Leche materna transicional",1.0,66.5,6.6,1.7,3.7,0.0],["Leche merengada",1.0,83.6,10.7,3.0,3.2,0.0],["Leche semidesnatada sin lactosa",1.0,47.6,4.8,3.5,1.6,0.0],["Lechuga",0.74,19.6,1.4,1.4,0.6,1.5],["Lecitina de soja",1.0,501.0,5.9,0.0,53.0,0.0],["Lengua de buey",0.7,224.0,3.7,16.0,16.1,0.0],["Lengua de cerdo",0.84,157.0,0.0,16.0,10.3,0.0],["Lengua de cordero",0.57,193.0,0.0,15.3,14.6,0.0],["Lengua de ternera",0.8,148.0,0.0,17.8,8.5,0.0],["Lengua de vaca",1.0,219.0,3.7,14.9,16.1,0.0],["Lenguado",0.7,83.7,0.5,17.5,1.3,0.0],["Lenteja",1.0,305.0,40.6,23.2,1.7,17.0],["Lenteja en conserva",1.0,109.0,14.9,8.8,0.7,3.8],["Lentejas, brotes",1.0,129.0,22.1,9.0,0.55,0.0],["Levadura",1.0,164.0,11.8,27.8,0.0,3.0],["Levadura de panadería fresca",1.0,73.0,0.0,16.0,1.0,0.0],["Lichi en conserva",1.0,117.0,27.0,0.9,0.3,1.3],["Licor dulce",1.0,224.0,35.0,0.1,0.0,0.0],["Liebre",0.8,113.0,0.0,21.6,3.0,0.0],["Lima",0.7,17.0,1.9,0.5,0.2,2.8],["Limón",0.64,27.7,3.2,0.69,0.3,4.7],["Limonada",1.0,17.0,1.9,0.5,0.2,2.8],["Litchi",0.62,76.7,16.8,0.9,0.3,1.6],["Lombarda",0.81,26.6,3.5,1.5,0.18,2.5],["Lomo de cerdo",1.0,305.0,0.0,16.3,26.6,0.0],["Lomo de conejo",0.68,102.0,0.6,23.7,0.6,0.0],["Lomo de ternera",1.0,120.0,0.0,16.6,6.0,0.0],["Lomo embuchado",0.99,308.0,0.0,32.0,20.0,0.0],["Longaniza",1.0,348.0,0.0,25.0,27.5,0.0],["Lubina",0.84,97.9,0.0,19.3,2.3,0.0],["Macedonia de frutas en almíbar",1.0,68.6,15.8,0.62,0.1,1.0],["Macedonia de frutas en su jugo",1.0,63.1,14.5,0.7,0.03,1.0],["Magdalena",1.0,441.0,51.7,4.4,23.9,1.0],["Maíz en grano hervido en lata",1.0,102.0,18.2,3.3,1.3,2.3],["Maíz en mazorca crudo",0.59,346.0,64.7,8.6,3.8,9.2],["Maíz en mazorca hervido",0.59,110.0,18.6,3.4,1.5,4.2],["Malta",1.0,365.0,73.1,11.2,2.1,4.2],["Mandarina",0.76,44.7,9.2,0.63,0.2,1.8],["Mango",0.66,61.2,12.8,0.63,0.45,1.7],["Manita de cerdo",0.39,291.0,0.5,16.0,25.0,0.0],["Manteca de cacao",1.0,900.0,0.0,0.0,100.0,0.0],["Manteca de cerdo",1.0,891.0,0.0,0.0,99.0,0.0],["Mantequilla",1.0,734.0,0.06,0.85,81.1,0.0],["Mantequilla ligera",1.0,517.0,1.9,3.3,55.1,0.0],["Mantequilla salada",1.0,736.0,0.7,0.89,81.1,0.0],["Manzana",0.89,54.1,11.4,0.31,0.36,2.0],["Maracuyá",0.61,54.2,9.5,2.4,0.4,1.5],["Margarina",1.0,722.0,0.4,0.2,80.0,0.0],["Margarina con esteroles",1.0,387.0,0.95,0.1,42.5,0.3],["Margarina de maíz",1.0,740.0,4.0,0.9,80.0,0.0],["Margarina ligera",1.0,371.0,1.1,1.6,40.0,0.0],["Margarina salada",1.0,730.0,0.5,0.9,80.5,0.0],["Margarina vegetal enriquecida",1.0,731.0,0.4,0.5,80.8,0.0],["Masa de hojaldre congelada",1.0,544.0,41.3,7.4,38.5,1.5],["Masa quebrada",1.0,372.0,39.3,6.1,20.9,0.9],["Mayonesa comercial",1.0,709.0,5.8,1.3,75.6,0.0],["Mayonesa ligera",1.0,272.0,8.8,0.7,26.0,0.0],["Mazapán",1.0,503.0,58.7,8.0,24.9,6.0],["Medias noches",1.0,354.0,52.0,8.4,12.0,2.2],["Mejillón",0.25,72.4,3.4,10.2,2.0,0.0],["Mejillón en conserva al natural",1.0,82.1,2.0,12.0,2.9,0.0],["Mejillón en escabeche",1.0,77.7,2.0,11.8,2.5,0.0],["Mejorana seca",1.0,324.0,32.4,12.7,7.0,40.3],["Melocotón",0.9,50.8,10.3,1.0,0.2,1.9],["Melocotón en almíbar",1.0,58.6,14.2,0.38,0.03,0.0],["Melocotón seco (orejones)",1.0,257.0,53.2,3.0,0.76,12.8],["Melón",0.66,55.5,12.4,0.88,0.1,0.73],["Melva en aceite de oliva",1.0,184.0,2.0,27.5,7.3,0.0],["Membrillo",0.65,47.3,7.3,0.44,0.5,5.9],["Menestra congelada",1.0,63.9,9.5,3.3,0.52,4.0],["Menestra en conserva",1.0,48.3,8.5,2.0,0.32,1.7],["Menta fresca",1.0,67.3,6.9,3.8,0.94,8.0],["Merengue",1.0,416.0,91.6,0.0,1.3,0.0],["Merluza",0.85,63.8,0.0,11.9,1.8,0.0],["Merluza congelada",0.83,81.2,0.0,15.8,2.0,0.0],["Mermelada de albaricoque y melocotón",1.0,258.0,63.2,0.32,0.2,1.2],["Mermelada de cereza",1.0,251.0,60.9,0.38,0.16,0.55],["Mermelada de ciruela",1.0,251.0,59.6,0.31,0.63,2.6],["Mermelada de frambuesa",1.0,251.0,60.9,0.45,0.3,1.2],["Mermelada de fresa",1.0,255.0,62.6,0.31,0.2,0.8],["Mermelada de fresa baja en calorías",1.0,33.0,6.4,0.7,0.0,2.3],["Mermelada de mora",1.0,239.0,58.7,0.5,0.0,1.1],["Mermelada de naranja",1.0,234.0,58.0,0.38,0.0,0.2],["Mermelada de tomate",1.0,197.0,48.0,0.56,0.14,0.61],["Mero",0.57,70.3,0.0,16.0,0.7,0.0],["Miel",1.0,302.0,75.1,0.38,0.0,0.0],["Mijo",1.0,356.0,64.4,11.0,4.2,8.5],["Milhoja con nata y crema",1.0,281.0,33.0,4.5,14.3,1.0],["Miso",1.0,218.0,26.5,11.7,6.0,5.4],["Molleja de cordero",1.0,131.0,0.0,15.3,7.8,0.0],["Molleja de ternera",1.0,303.0,0.0,11.5,28.6,0.0],["Mora",1.0,45.0,6.2,1.2,1.0,3.2],["Morcilla de arroz",0.97,256.0,16.7,6.9,17.7,1.3],["Mortadela",1.0,266.0,1.3,11.9,23.7,0.0],["Mostaza",1.0,125.0,5.0,7.1,8.2,1.3],["Mousse de chocolate",1.0,150.0,18.9,4.0,6.5,0.0],["Muesli",1.0,395.0,61.0,9.0,11.0,8.0],["Mújol",0.49,124.0,0.8,20.4,4.3,0.0],["Muslo de pavo",0.81,114.0,0.0,20.5,3.6,0.0],["Muslo de pollo",0.38,183.0,0.0,20.6,11.2,0.0],["Nabo",0.75,31.8,4.7,1.0,0.22,3.5],["Nachos con queso",1.0,357.0,34.9,4.3,21.5,3.2],["Naranja",0.7,45.5,8.9,0.87,0.2,2.3],["Nata liquida para cocinar",1.0,125.0,4.5,3.1,10.5,0.0],["Nata liquida para montar",1.0,307.0,3.1,2.4,31.7,0.0],["Nata montada",1.0,308.0,3.3,2.4,31.7,0.0],["Natillas",1.0,103.0,15.5,3.7,2.9,0.0],["Natillas de chocolate",1.0,133.0,19.8,4.2,4.1,0.0],["Navaja en conserva",1.0,89.2,0.05,20.0,1.0,0.0],["Néctar de frutas envasado",1.0,54.4,13.2,0.4,0.0,0.0],["Nectarina",0.9,49.7,10.2,0.9,0.1,2.2],["Níscalo",0.61,23.8,0.2,1.6,0.8,4.7],["Níspero",0.62,42.6,8.6,0.56,0.2,2.1],["Nopal",0.96,23.6,3.3,1.3,0.09,2.2],["Nueces de macadamia sin cascara",1.0,744.0,4.8,7.9,75.8,5.3],["Nueces pecanas sin cascara",1.0,732.0,2.9,9.3,73.8,9.5],["Nuez con cascara",0.45,649.0,4.4,14.4,62.5,5.8],["Nuez moscada",1.0,506.0,28.5,5.8,36.3,20.8],["Nuez sin cascara",1.0,649.0,4.4,14.4,62.5,5.8],["Oca deshuesada sin piel",1.0,155.0,0.0,22.8,7.1,0.0],["Oca entera",1.0,366.0,0.0,15.9,33.6,0.0],["Orégano fresco",1.0,65.6,9.7,2.2,2.0,0.0],["Orégano seco",1.0,309.0,21.6,11.0,10.3,42.8],["Ostra",0.15,66.0,4.8,9.0,1.2,0.0],["Paella de marisco congelada",1.0,125.0,25.2,3.6,0.62,2.0],["Paleta de cordero",0.8,151.0,0.0,11.1,11.8,0.0],["Paletilla de cerdo",1.0,349.0,0.0,21.5,29.2,0.0],["Palito de cangrejo",1.0,82.9,6.1,12.6,0.9,0.0],["Palmera",1.0,539.0,61.0,5.0,30.0,2.4],["Palmito en conserva",1.0,43.2,8.0,2.8,0.0,0.0],["Paloma",1.0,288.0,0.0,18.5,23.8,0.0],["Palometa",0.6,125.0,0.0,20.0,5.0,0.0],["Palomitas de maíz",1.0,494.0,44.3,6.2,30.2,10.0],["Pan blanco",1.0,243.0,47.0,8.3,1.6,3.5],["Pan blanco sin sal",1.0,265.0,53.9,8.0,1.1,3.5],["Pan blanco tipo baguette",1.0,273.0,55.9,8.0,1.2,3.5],["Pan blanco tostado",1.0,389.0,73.4,11.5,4.6,3.9],["Pan blanco tostado sin sal",1.0,389.0,73.4,11.5,3.9,5.2],["Pan de avena",1.0,275.0,48.5,8.4,4.4,4.0],["Pan de cebada",1.0,248.0,43.5,6.4,4.5,4.0],["Pan de centeno",1.0,245.0,42.5,8.5,3.3,5.8],["Pan de gambas",1.0,349.0,85.5,1.6,0.1,0.0],["Pan de molde",1.0,350.0,46.9,9.3,13.6,1.5],["Pan de molde integral",1.0,239.0,40.0,10.0,3.0,6.0],["Pan de pasas",1.0,269.0,49.6,8.3,3.0,2.8],["Pan de perrito",1.0,271.0,47.5,7.5,4.7,4.1],["Pan de pita",1.0,274.0,55.7,9.1,1.2,2.2],["Pan de trigo y centeno",1.0,243.0,49.0,6.7,1.0,5.5],["Pan de Viena",1.0,268.0,49.7,10.8,2.4,2.2],["Pan fajitas",1.0,315.0,53.0,8.6,6.4,5.4],["Pan integral",1.0,259.0,44.0,10.9,3.0,6.0],["Pan integral tostado",1.0,385.0,62.0,13.0,7.0,11.0],["Pan sin gluten",1.0,242.0,42.3,4.3,5.2,4.3],["Pan tipo hamburguesa",1.0,271.0,47.5,7.5,4.7,4.1],["Pan tipo picatoste con omega",3.0,1.0,10.2,0.0,6.2,0.0],["Panceta",0.88,471.0,0.5,12.5,46.6,0.0],["Panecillos hechos con aceite de oliva",1.0,305.0,56.6,8.0,4.5,3.2],["Panga",1.0,65.6,0.3,13.4,1.2,0.0],["Papaya",0.72,35.0,7.1,0.5,0.09,1.9],["Papilla de cereales con leche (polvo)",1.0,419.0,68.0,15.5,9.0,1.8],["Papilla de cereales y frutas (polvo)",1.0,379.0,85.8,6.0,1.3,0.0],["Papilla de cereales y miel con leche (polvo)",1.0,421.0,72.4,13.0,8.8,0.0],["Papilla sin gluten con leche (polvo)",1.0,403.0,66.8,15.3,8.3,0.0],["Papilla sin gluten y frutas con leche (polvo)",1.0,422.0,70.8,15.2,8.7,0.0],["Pasa",1.0,305.0,69.3,2.5,0.5,6.5],["Pasta",1.0,359.0,70.9,12.8,1.6,5.0],["Pasta al huevo",1.0,374.0,69.9,12.4,4.2,3.4],["Pasta de colores",1.0,352.0,70.6,13.1,1.0,4.3],["Pasta de te",1.0,446.0,73.0,6.9,13.8,1.1],["Pasta fresca cocida",1.0,130.0,24.9,5.2,1.1,0.0],["Pasta integral",1.0,352.0,63.7,13.1,2.9,9.3],["Pasta rellena de carne hervida",1.0,104.0,12.7,4.7,3.4,1.8],["Pasta rellena de queso hervida",1.0,151.0,16.3,9.5,5.1,0.9],["Pastel de chocolate",1.0,443.0,41.8,5.2,27.9,1.8],["Pastel relleno de crema",1.0,370.0,63.5,3.1,11.4,0.4],["Patata nueva",0.8,73.6,14.8,2.3,0.11,2.1],["Patata vieja",0.8,78.7,16.1,2.2,0.21,1.8],["Patatas fritas de bolsa",1.0,531.0,47.5,6.5,34.2,3.6],["Patatas fritas de bolsa bajas en calorías",1.0,462.0,57.4,6.6,21.5,6.3],["Patatas prefritas congeladas",1.0,115.0,20.0,2.1,2.4,2.7],["Pato entero",0.67,227.0,0.0,18.1,17.2,0.0],["Pavo",0.57,157.0,0.0,20.2,8.5,0.0],["Pechuga de pavo",0.89,105.0,0.0,24.1,0.99,0.0],["Pechuga de pavo embutido",1.0,81.5,3.7,15.2,0.65,0.0],["Pechuga de pollo",0.9,145.0,0.0,22.2,6.2,0.0],["Peladilla",1.0,469.0,65.8,10.0,17.9,2.5],["Pepinillos en vinagre en conserva",1.0,10.5,1.1,1.3,0.1,0.0],["Pepino",0.77,13.3,1.9,0.63,0.2,0.7],["Pera",0.91,49.4,10.6,0.43,0.1,2.2],["Pera en almíbar",1.0,62.9,14.5,0.25,0.1,1.5],["Perca",1.0,88.8,0.0,18.6,1.6,0.0],["Percebe",0.15,66.4,0.0,15.7,0.4,0.0],["Perejil",0.4,59.0,7.4,4.4,0.36,4.3],["Pescadilla",0.75,74.0,0.0,16.7,0.8,0.0],["Pescadilla congelada",0.75,54.6,0.0,11.8,0.82,0.0],["Pescaditos",1.0,79.8,1.8,11.4,3.0,0.0],["Pez espada",0.94,117.0,0.0,19.4,4.4,0.0],["Picatostes",1.0,371.0,75.6,11.0,2.0,3.5],["Pierna de conejo",0.83,137.0,0.0,21.0,5.9,0.0],["Pierna de cordero",0.77,178.0,0.0,17.9,11.8,0.0],["Pimentón",1.0,357.0,34.8,14.8,13.0,20.9],["Pimienta blanca",1.0,283.0,42.4,10.4,2.1,26.2],["Pimienta negra",1.0,280.0,38.3,10.9,3.3,26.5],["Pimiento del piquillo en conserva",1.0,32.2,5.2,1.2,0.4,1.5],["Pimiento morrón en conserva",1.0,29.4,4.5,1.2,0.4,1.5],["Pimiento rojo",0.83,33.1,4.2,1.3,0.9,1.5],["Pimiento rojo asado en conserva",1.0,33.0,5.4,1.2,0.4,1.5],["Pimiento verde",0.84,19.7,1.6,0.63,0.8,1.8],["Piña",0.57,50.8,10.4,0.44,0.4,1.9],["Piña en almíbar",1.0,65.8,15.4,0.38,0.11,0.82],["Piña en su jugo",1.0,42.9,9.7,0.4,0.1,0.8],["Piñón con cascara",0.3,706.0,3.9,14.0,68.6,8.5],["Piñón sin cascara",1.0,706.0,3.9,14.0,68.6,8.5],["Pipa de girasol pelada con sal",1.0,640.0,9.1,17.3,56.8,11.5],["Pipa de girasol pelada sin sal",1.0,652.0,12.2,17.3,56.8,11.5],["Pipa de girasol sin sal",0.52,569.0,12.3,19.8,47.5,6.3],["Pipas de calabaza sin cascara tostadas sin sal",1.0,635.0,14.7,29.9,49.1,6.5],["Pistacho",0.55,603.0,11.6,17.7,51.6,10.6],["Pistacho tostado salado",0.51,613.0,12.5,18.0,52.7,8.5],["Pisto de verduras congelado",1.0,57.0,8.8,2.9,0.15,4.4],["Pizza de atún congelada",1.0,219.0,23.0,8.0,9.8,3.4],["Pizza margarita congelada",1.0,237.0,32.6,8.2,7.8,1.7],["Pizza romana congelada",1.0,177.0,26.5,7.3,3.8,3.8],["Plátano",0.66,95.2,20.8,1.1,0.27,2.6],["Plátano macho o hartón",1.0,141.0,31.9,1.3,0.37,2.3],["Platija",0.71,85.9,0.0,17.2,1.9,0.0],["Polenta cocinada",1.0,61.8,13.2,1.4,0.31,0.29],["Polenta, harina",1.0,350.0,74.0,7.9,1.8,3.2],["Pollo empanado congelado",1.0,242.0,13.5,18.0,12.7,0.7],["Pollo entero",0.64,166.0,0.0,19.9,9.6,0.0],["Polo de hielo",1.0,134.0,29.5,1.0,1.3,0.0],["Polvorón de almendra",1.0,479.0,59.3,5.5,23.8,2.8],["Pomelo",0.68,36.7,7.4,0.63,0.15,1.6],["Potito de fruta variada",1.0,73.5,17.0,0.6,0.1,1.1],["Potito de pescado",1.0,74.6,6.0,3.6,3.8,1.0],["Potito de pollo",1.0,78.5,5.8,5.2,3.7,0.6],["Potito de ternera",1.0,64.8,6.0,3.6,2.6,1.5],["Profiteroles con chocolate",1.0,302.0,42.0,5.5,12.0,2.0],["Profiteroles sin chocolate",1.0,374.0,20.0,6.0,29.5,2.0],["Pudin de pasas",1.0,211.0,24.7,4.6,9.7,3.0],["Puerro",0.86,29.2,3.3,2.2,0.29,2.3],["Puerro en conserva",1.0,38.1,5.4,1.2,0.7,2.7],["Pulmón de cerdo",0.87,80.7,0.0,14.1,2.7,0.0],["Pulmón de cordero",0.76,90.2,0.0,16.7,2.6,0.0],["Pulmón de ternera",0.76,87.3,0.0,16.2,2.5,0.0],["Pulpo",0.79,89.8,1.4,17.9,1.4,0.0],["Pure de patatas para reconstituir",1.0,353.0,76.0,6.5,1.0,7.0],["Queso azul",1.0,353.0,0.0,21.1,29.8,0.0],["Queso Brie",1.0,342.0,0.1,22.6,27.9,0.0],["Queso Camembert",1.0,285.0,0.1,21.0,22.3,0.0],["Queso Cheddar",1.0,393.0,0.36,25.4,32.2,0.0],["Queso de Arzua",0.95,339.0,0.0,19.4,29.0,0.0],["Queso de bola",0.95,329.0,0.8,25.5,24.9,0.0],["Queso de Burgos",1.0,200.0,2.5,14.0,14.9,0.0],["Queso de cabra curado",1.0,467.0,0.0,27.6,39.6,0.0],["Queso de cabra semicurado",1.0,327.0,0.1,18.3,28.2,0.0],["Queso de cabra tierno",1.0,208.0,1.2,11.1,17.6,0.0],["Queso de Cabrales",0.95,392.0,0.0,21.5,34.0,0.0],["Queso Edam",1.0,356.0,1.4,25.0,27.8,0.0],["Queso Emmental",0.94,397.0,0.0,29.0,31.2,0.0],["Queso en lonchas",1.0,327.0,2.2,25.1,24.2,0.0],["Queso en porciones",1.0,376.0,5.4,15.6,32.4,0.0],["Queso en porciones descremado",1.0,162.0,6.5,10.0,10.7,0.0],["Queso gallego",0.95,352.0,2.0,23.0,28.0,0.0],["Queso Gorgonzola",1.0,361.0,0.62,19.4,31.2,0.0],["Queso Gouda",1.0,331.0,0.0,25.5,25.4,0.0],["Queso Gruyere",0.94,397.0,0.0,26.9,32.1,0.0],["Queso Havarti",1.0,413.0,0.0,20.0,37.0,0.0],["Queso Idiazabal",0.95,443.0,0.0,23.3,38.9,0.0],["Queso Mahón",1.0,411.0,0.0,26.9,33.7,0.0],["Queso manchego curado",0.95,476.0,0.51,38.0,35.8,0.0],["Queso manchego fresco",0.95,333.0,0.0,26.0,25.4,0.0],["Queso manchego semicurado",0.95,391.0,0.5,28.8,30.4,0.0],["Queso Mozzarella",1.0,233.0,2.2,19.9,16.1,0.0],["Queso Parmesano",0.95,375.0,0.06,35.6,25.8,0.0],["Queso quark 20%mg",1.0,71.3,3.5,7.8,2.9,0.0],["Queso quark descremado",1.0,67.9,3.2,13.2,0.25,0.0],["Queso raclette",1.0,369.0,0.69,25.0,29.6,0.0],["Queso ricotta",1.0,156.0,3.8,11.5,10.5,0.0],["Queso Roncal",1.0,448.0,0.0,24.7,38.8,0.0],["Queso Roquefort",1.0,369.0,2.0,21.5,30.6,0.0],["Queso San Simón",1.0,382.0,0.0,24.2,31.7,0.0],["Queso tetilla",0.95,399.0,0.0,22.0,34.5,0.0],["Queso tipo manchego en aceite",1.0,471.0,0.0,26.5,40.5,0.0],["Queso tipo petit de chocolate",1.0,182.0,26.9,4.3,6.4,0.0],["Queso tipo petit de sabores",1.0,122.0,14.0,7.5,4.0,0.0],["Queso tipo petit natural azucarado",1.0,120.0,13.7,7.3,4.0,0.0],["Queso Torta del Casar",0.95,399.0,0.0,26.3,32.6,0.0],["Queso zamorano",1.0,439.0,0.0,25.3,37.5,0.0],["Quinoa",1.0,354.0,57.2,14.1,6.1,7.0],["Quisquilla",0.46,81.8,1.5,17.6,0.6,0.0],["Rábano",0.81,17.3,2.1,1.1,0.14,1.6],["Rabo de toro",1.0,242.0,0.0,18.6,18.6,0.0],["Rape",0.9,65.6,0.0,14.9,0.67,0.0],["Raya",0.55,97.3,0.8,20.6,1.3,0.0],["Refresco aroma lima- limón",1.0,58.4,14.6,0.0,0.0,0.0],["Refresco de té",1.0,36.4,9.1,0.0,0.0,0.0],["Refresco de té bajo en calorías",1.0,0.0,0.0,0.0,0.0,0.0],["Refresco sabor cola",1.0,43.6,10.9,0.0,0.0,0.0],["Refresco sabor cola bajo en calorías",1.0,0.4,0.1,0.0,0.0,0.0],["Refresco sabor cola sin cafeína",1.0,43.2,10.8,0.0,0.0,0.0],["Refresco sabor cola sin cafeína bajo en calorías",1.0,0.8,0.1,0.1,0.0,0.0],["Refresco sabor limón",1.0,45.6,11.4,0.0,0.0,0.0],["Refresco sabor naranja",1.0,42.0,10.5,0.0,0.0,0.0],["Regaliz",1.0,323.0,71.5,3.9,1.9,2.0],["Remolacha",0.8,46.1,8.4,1.6,0.1,2.6],["Remolacha en conserva",1.0,39.1,6.4,2.3,0.1,1.7],["Repollo",0.77,32.1,4.1,1.7,0.45,2.4],["Requesón",1.0,101.0,3.3,12.3,4.3,0.0],["Riñón de cerdo",0.9,102.0,0.0,16.9,3.8,0.0],["Riñón de cordero",0.93,90.3,0.0,16.5,2.7,0.0],["Riñón de ternera",1.0,131.0,0.0,16.7,7.1,0.0],["Rodaballo",0.48,82.1,0.0,16.7,1.7,0.0],["Ron",1.0,234.0,0.0,0.0,0.0,0.0],["Rosada",0.8,70.5,0.0,16.5,0.5,0.0],["Rúcula",1.0,34.3,3.7,2.6,0.66,1.6],["Sacarina",1.0,364.0,89.1,2.0,0.0,0.0],["Sal común",1.0,0.0,0.0,0.0,0.0,0.0],["Sal fluorada",1.0,0.0,0.0,0.0,0.0,0.0],["Sal hiposódica",1.0,0.0,0.0,0.0,0.0,0.0],["Sal yodada",1.0,0.0,0.0,0.0,0.0,0.0],["Sal yodada fluorada",1.0,0.0,0.0,0.0,0.0,0.0],["Salami",1.0,444.0,1.7,21.0,39.2,0.1],["Salchicha fresca",1.0,309.0,0.9,13.1,28.1,0.0],["Salchicha tipo Frankfurt",1.0,243.0,1.4,13.1,20.5,0.0],["Salchicha vegetal",1.0,283.0,9.8,18.5,18.2,2.8],["Salchichón",0.97,438.0,1.4,19.3,39.5,0.0],["Salmon",0.79,191.0,0.0,20.6,12.1,0.0],["Salmon ahumado",1.0,140.0,0.0,25.4,4.3,0.0],["Salmonete",0.74,109.0,0.0,18.7,3.8,0.0],["Salsa agridulce",1.0,121.0,24.0,0.48,2.4,0.8],["Salsa al curry",1.0,78.2,6.8,1.5,5.0,0.0],["Salsa barbacoa",1.0,71.0,11.6,1.8,1.8,0.6],["Salsa bechamel",1.0,153.0,10.8,4.1,10.3,0.3],["Salsa boloñesa",1.0,163.0,7.2,8.0,11.1,1.1],["Salsa brava",1.0,186.0,12.3,2.0,14.3,1.3],["Salsa carbonara",1.0,307.0,2.0,7.5,29.9,0.0],["Salsa cesar",1.0,543.0,3.3,2.2,57.9,0.0],["Salsa de queso",1.0,111.0,8.4,5.3,6.1,0.5],["Salsa de soja",1.0,65.7,6.7,8.7,0.1,1.6],["Salsa holandesa",1.0,289.0,0.6,2.7,30.6,0.0],["Salsa inglesa",1.0,78.0,19.5,0.0,0.0,0.0],["Salsa picante",1.0,13.1,1.8,0.5,0.37,0.3],["Salsa roquefort",1.0,480.0,6.0,7.2,47.5,0.0],["Salsa tabasco",1.0,12.0,0.8,1.3,0.76,0.6],["Salsa tamari",1.0,66.9,5.6,10.5,0.1,0.8],["Salsa tartara",1.0,209.0,13.3,1.0,16.7,0.5],["Salsa vinagreta",1.0,648.0,0.2,0.2,71.8,0.0],["Salvado de avena",1.0,319.0,33.8,12.3,7.4,34.1],["Salvado de trigo",1.0,274.0,21.7,15.6,4.3,42.8],["San Jacobo congelado",1.0,252.0,26.7,4.1,13.3,4.5],["Sandia",0.56,28.4,5.6,0.63,0.3,0.4],["Sangre de cerdo",1.0,76.0,0.06,18.5,0.2,0.0],["Sangría",1.0,95.9,9.9,0.12,0.03,0.1],["Sardina",0.68,157.0,0.0,18.0,9.4,0.0],["Sardina ahumada o salada",1.0,202.0,0.0,21.0,13.1,0.0],["Sardina con salsa de tomate",1.0,174.0,1.9,13.8,12.3,0.0],["Sardina en aceite",1.0,218.0,0.0,23.9,13.6,0.0],["Sardina en escabeche",1.0,131.0,0.8,15.0,7.5,0.0],["Sardinilla en aceite",1.0,218.0,0.0,23.9,13.6,0.0],["Sargo",0.54,104.0,1.0,15.0,4.4,0.0],["Semilla de anís",1.0,443.0,50.0,17.6,15.9,14.6],["Semilla de chia",1.0,403.5,2.6,22.0,33.9,29.6],["Semilla de lino",1.0,514.0,1.6,18.3,42.2,27.3],["Semilla de sésamo",1.0,605.0,15.8,17.7,49.7,11.8],["Semillas de alcaravea",1.0,334.0,11.9,19.8,14.6,38.0],["Sémola de trigo",0.79,351.0,69.0,12.7,1.1,7.2],["Sepia",0.98,75.3,0.7,16.1,0.9,0.0],["Seso de cerdo",1.0,123.0,0.0,10.6,9.0,0.0],["Seso de cordero",1.0,133.0,0.0,10.0,10.3,0.0],["Seso de ternera",1.0,109.0,0.0,10.1,7.6,0.0],["Sidra",1.0,49.9,6.0,0.0,0.0,0.0],["Snacks bajos en calorías de chocolate",1.0,332.0,50.0,9.0,10.0,3.0],["Sobao",1.0,465.0,53.0,6.5,25.0,1.0],["Sobrasada",1.0,595.0,0.0,13.0,60.3,0.0],["Soda sifón",1.0,35.2,8.8,0.0,0.0,0.0],["Sofrito",1.0,215.0,4.7,1.1,21.0,1.4],["Soja",1.0,373.0,6.3,34.7,18.3,22.0],["Solomillo añojo",1.0,102.0,0.0,15.1,4.6,0.0],["Solomillo de avestruz",0.79,114.0,0.0,21.7,3.0,0.0],["Solomillo de buey",1.0,104.0,0.0,18.2,3.5,0.0],["Solomillo de cerdo",1.0,158.0,0.0,22.3,7.6,0.0],["Solomillo de ternera",0.92,103.0,0.0,20.2,2.5,0.0],["Solomillo de vaca",1.0,272.0,0.0,16.6,22.8,0.0],["Sopa de ave con fideos para reconstituir",1.0,326.0,66.0,11.0,1.5,2.2],["Sopa jardinera para reconstituir",1.0,270.0,59.0,0.0,1.5,10.0],["Sorbete de limón",1.0,140.0,34.2,0.9,0.0,0.0],["Stevia",1.0,0.0,100.0,0.0,0.0,0.0],["Sucedáneo de café soluble",1.0,404.0,80.9,12.3,3.4,0.1],["Suizo",1.0,401.0,48.4,5.5,20.1,2.5],["Tahine",1.0,642.0,21.5,17.4,53.0,4.7],["Tamarindo, pulpa",1.0,277.0,62.5,2.8,0.6,5.1],["Tapioca",1.0,345.0,84.9,0.58,0.2,0.4],["Tarta de crema pastelera y manzana",1.0,208.0,28.7,1.8,9.2,1.3],["Tarta de frutas",1.0,332.0,57.9,2.9,9.1,3.7],["Té",1.0,220.0,3.0,19.6,2.0,55.8],["Té con agua",1.0,1.9,0.03,0.17,0.02,0.49],["Tempeh",1.0,104.0,3.5,18.0,1.5,0.0],["Tequila",1.0,266.0,0.0,0.0,0.0,0.0],["Ternera de 2ª y 3ª",1.0,131.0,0.0,18.6,6.3,0.0],["Ternera magra",1.0,131.0,0.0,20.7,5.4,0.0],["Ternera semigrasa",1.0,205.0,0.0,20.6,13.6,0.0],["Tocino",1.0,655.0,0.0,4.1,71.0,0.0],["Tofu",0.94,89.4,3.3,8.1,4.8,0.3],["Tomate",1.0,22.2,3.5,0.88,0.21,1.4],["Tomate frito en conserva",1.0,78.3,9.9,0.82,3.5,1.8],["Tomate pelado enlatado",1.0,30.6,6.0,1.1,0.19,0.66],["Tomate triturado",1.0,31.1,5.8,0.8,0.1,1.9],["Tomate, Cherry",1.0,33.0,5.0,0.8,0.8,1.3],["Tomillo seco",1.0,369.0,57.1,9.1,7.4,18.6],["Tónica",1.0,36.8,9.2,0.0,0.0,0.0],["Torta de aceite",1.0,511.0,66.8,6.5,23.5,2.9],["Tortita de arroz inflado",1.0,371.0,75.0,8.5,3.5,2.7],["Tortita de arroz integral",1.0,394.0,80.3,8.6,3.2,5.0],["Tortita de arroz integral tipo1",1.0,369.0,76.5,7.5,2.5,5.0],["Tortita de maíz",1.0,384.0,81.5,8.1,2.4,1.9],["Tortita sin nata",1.0,297.0,43.0,5.8,11.0,1.3],["Triángulos maíz",0.52,503.0,56.3,6.5,27.7,1.0],["Trucha",1.0,136.0,0.0,18.8,6.7,0.0],["Trufa cruda",1.0,126.0,13.0,9.0,0.5,16.5],["Trufa de chocolate",1.0,514.0,44.9,6.2,33.8,2.5],["Turrón de Alicante",1.0,516.0,46.0,13.0,29.3,8.2],["Turrón de Jijona",0.94,488.0,34.7,13.2,31.1,8.2],["Uva blanca",0.94,70.3,16.1,0.72,0.16,0.8],["Uva negra",1.0,67.1,15.5,0.72,0.16,0.4],["Vainilla",1.0,51.6,12.7,0.06,0.06,0.0],["Valenciana",1.0,430.0,53.1,5.1,20.9,4.4],["Venado magro deshuesado",1.0,103.0,0.0,22.2,1.6,0.0],["Vermut",0.25,145.0,13.5,0.1,0.0,0.0],["Vieira",1.0,81.7,2.8,15.6,0.9,0.0],["Vinagre",1.0,4.0,0.6,0.4,0.0,0.0],["Vinagre balsámico",1.0,70.0,17.0,0.49,0.0,0.0],["Vinagre de manzana",1.0,2.4,0.2,0.4,0.0,0.0],["Vinagre de vino",1.0,4.0,0.6,0.4,0.0,0.0],["Vino blanco",1.0,61.0,0.1,0.1,0.0,0.0],["Vino dulce (Málaga, Oporto)",1.0,161.0,13.0,0.2,0.0,0.0],["Vino fino (Jerez, Manzanilla)",1.0,127.0,10.0,0.2,0.0,0.0],["Vino rosado",1.0,66.9,1.4,0.1,0.0,0.0],["Vino tinto",1.0,70.7,0.3,0.23,0.0,0.0],["Vodka",1.0,235.0,0.0,0.0,0.0,0.0],["Whisky",1.0,247.0,0.11,0.0,0.0,0.0],["Yema de huevo",1.0,353.0,0.3,16.1,31.9,0.0],["Yogur de soja",1.0,90.0,17.1,2.4,1.2,0.6],["Yogur desnatado con cereales",1.0,56.5,6.9,4.6,1.1,0.3],["Yogur desnatado con fruta",1.0,71.6,13.1,3.8,0.2,1.1],["Yogur desnatado de sabores",1.0,90.1,16.7,3.8,0.9,0.0],["Yogur desnatado natural",1.0,45.3,6.3,4.3,0.32,0.0],["Yogur desnatado natural azucarado",1.0,75.9,13.8,4.5,0.3,0.0],["Yogur desnatado natural edulcorado",1.0,40.5,5.1,4.3,0.32,0.0],["Yogur entero con cereales",1.0,89.6,9.1,3.9,3.8,1.8],["Yogur entero con fruta",1.0,94.9,14.3,3.8,2.3,0.9],["Yogur entero de sabores",1.0,115.0,15.6,5.4,3.4,0.0],["Yogur entero natural azucarado",1.0,85.9,13.7,3.5,1.9,0.0],["Yogur helado",1.0,131.0,21.6,3.0,3.6,0.0],["Yogur liquido con pulpa de fruta",1.0,81.9,14.3,2.8,1.5,0.0],["Yogur liquido de sabores",1.0,75.4,12.8,2.9,1.4,0.0],["Yogur liquido natural azucarado",1.0,69.2,11.6,3.0,1.2,0.0],["Yogur natural entero",1.0,61.4,5.5,4.0,2.6,0.0],["Yogur sin lactosa natural azucarado",1.0,70.7,9.9,3.5,1.9,0.0],["Yogur tipo griego",1.0,139.0,5.4,6.4,10.2,0.0],["Yuca, mandioca, casava",0.25,164.0,38.1,1.4,0.3,1.8],["Zamburiña",0.87,76.6,1.5,15.4,1.0,0.0],["Zanahoria",1.0,39.8,6.9,1.3,0.2,2.6],["Zanahoria en conserva",1.0,26.8,4.2,0.8,0.2,2.5],["Zumo comercial de naranja",1.0,43.3,9.4,0.63,0.2,0.7],["Zumo comercial sabor frutas tropicales",1.0,60.8,14.9,0.3,0.0,0.0],["Zumo de aloe vera",1.0,15.0,3.8,0.0,0.0,0.0],["Zumo de limón natural",1.0,33.1,6.1,0.4,0.29,0.4],["Zumo de mango",1.0,42.0,9.8,0.1,0.2,0.3],["Zumo de manzana",1.0,48.9,11.9,0.06,0.11,0.01],["Zumo de melocotón",1.0,47.1,10.5,0.63,0.22,0.3],["Zumo de naranja",1.0,43.6,9.4,0.69,0.2,0.7],["Zumo de piña",1.0,41.4,9.7,0.38,0.08,0.2],["Zumo de pomelo",1.0,43.6,10.1,0.53,0.1,0.1],["Zumo de tomate comercial",1.0,14.1,2.6,0.63,0.06,0.3],["Zumo de tomate natural",1.0,16.7,3.0,0.76,0.05,0.6],["Zumo de uva",1.0,68.1,16.6,0.21,0.1,0.0],["Zumo de zanahoria",1.0,24.2,4.8,0.63,0.1,0.8],["Zumo de zanahoria natural",1.0,24.3,4.8,0.63,0.15,0.62],["Zumo uva y melocotón",1.0,52.8,12.0,0.6,0.23,0.15],["Chapati",1.0,259.0,57.0,8.8,1.2,1.6],["Vegetable Curry",1.0,220.0,30.0,5.0,9.0,6.0],["Chutney Green Mint",1.0,50.0,8.0,2.0,1.0,2.0],["Chicken Kebab",1.0,236.0,0.0,22.2,6.2,0.0],["Meat Curry",1.0,425.0,8.0,30.0,30.0,2.0],["Biryani",1.0,170.0,20.0,8.5,6.5,1.0],["Pasta with Chicken",1.0,175.0,18.0,9.0,7.0,1.5],["Naan",1.0,290.0,50.0,9.0,7.0,2.0]];
+  var CF = [];
+  var FMAP = {};
+  var CF_KEY = 'zk-custom-foods-v1';
+  function fkey(s) { return String(s || '').trim().toLowerCase().replace(/\s+/g, ' '); }
+  function escHtml(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+  function rebuildFoods() {
+    FMAP = {};
+    FOODS.forEach(function (f) { FMAP[fkey(f[0])] = { name: f[0], edible: f[1], kcal: f[2], c: f[3], p: f[4], f: f[5], fib: f[6] }; });
+    CF.forEach(function (f) { FMAP[fkey(f.name)] = f; });
+    var names = FOODS.map(function (f) { return f[0]; }), seen = {};
+    FOODS.forEach(function (f) { seen[fkey(f[0])] = 1; });
+    CF.forEach(function (f) { if (!seen[fkey(f.name)]) names.push(f.name); });
+    names.sort(function (a, b) { return a.localeCompare(b, 'es'); });
+    $('#foodlist').innerHTML = names.map(function (n) { return '<option value="' + escHtml(n) + '"></option>'; }).join('');
+  }
+  function saveCF() { try { localStorage.setItem(CF_KEY, JSON.stringify(CF)); } catch (e) { /* storage may be unavailable */ } }
+  function cleanFood(o) {
+    if (!o || typeof o !== 'object') return null;
+    var name = typeof o.name === 'string' ? o.name.trim().slice(0, 120) : '';
+    var n = function (v, lo, hi) { v = typeof v === 'number' ? v : pnum(v); return v !== null && v >= lo && v <= hi ? v : null; };
+    var ed = n(o.edible, 0.01, 5), kc = n(o.kcal, 0, 950), c = n(o.c, 0, 100), p = n(o.p, 0, 100), f = n(o.f, 0, 100), fb = n(o.fib, 0, 100);
+    if (!name || ed === null || kc === null || c === null || p === null || f === null || fb === null) return null;
+    return { name: name, edible: ed, kcal: kc, c: c, p: p, f: f, fib: fb, custom: true };
+  }
+  function mergeCF(list) {
+    var changed = 0;
+    list.forEach(function (raw) {
+      var f = cleanFood(raw); if (!f) return;
+      var k = fkey(f.name), i = -1;
+      CF.forEach(function (x, j) { if (fkey(x.name) === k) i = j; });
+      if (i >= 0) CF[i] = f; else CF.push(f);
+      changed++;
+    });
+    if (changed) { rebuildFoods(); saveCF(); }
+    return changed;
+  }
+  try { var stored = JSON.parse(localStorage.getItem(CF_KEY) || '[]'); if (Array.isArray(stored)) CF = stored.map(cleanFood).filter(Boolean); } catch (e0) { CF = []; }
+  rebuildFoods();
+
+  /* ---------- daily meal plans: days, meals, foods (Excel formulas) ---------- */
+  var DY = { days: [], active: 0 };
+  var PALETTE = ['#B92526', '#E8833A', '#D9A21B', '#6FA23C', '#14532D', '#4F6D8F', '#8A5A9B', '#7A5C3E', '#2F8F83', '#C46A8A'];
+  var MACRO_COL = { carbs: '#D98A1C', protein: '#B92526', fat: '#14532D' };
+  function newItem() { return { id: nid(), food: '', g: '' }; }
+  function newMeal(name) { return { id: nid(), name: name || '', items: [newItem()] }; }
+  function newDay(name) {
+    var ms = E.meals && E.meals.length ? E.meals.map(function (m) { return newMeal(m.name); }) : [newMeal('Meal 1')];
+    return { id: nid(), name: name, inc: true, meals: ms };
+  }
+  function freshDays() { DY = { days: [newDay('Day 1')], active: 0 }; }
+  function curDay() { return DY.days[DY.active]; }
+
+  function itemCalc(it) {
+    var f = FMAP[fkey(it.food)], g = pnum(it.g);
+    if (!f) return { found: false, typed: !!it.food.trim() };
+    var o = { found: true, typed: true, portion: f.edible };
+    if (g === null || g < 0) return o;
+    var eff = g * f.edible / 100;
+    o.kcal = f.kcal * eff; o.c = f.c * eff; o.p = f.p * eff; o.f = f.f * eff; o.fib = f.fib * eff;
+    return o;
+  }
+  function sumInto(t, o) {
+    ['kcal', 'c', 'p', 'f', 'fib'].forEach(function (k) { t[k] += o[k] || 0; });
+  }
+  function dayCalc(day) {
+    var tot = { kcal: 0, c: 0, p: 0, f: 0, fib: 0 }, meals = [];
+    day.meals.forEach(function (m) {
+      var mt = { kcal: 0, c: 0, p: 0, f: 0, fib: 0 }, items = m.items.map(function (it) { var o = itemCalc(it); sumInto(mt, o); return o; });
+      sumInto(tot, mt);
+      meals.push({ tot: mt, items: items });
+    });
+    var mk = { c: tot.c * 4, p: tot.p * 4, f: tot.f * 9 };
+    var pct = tot.kcal > 0 ? { c: mk.c * 100 / tot.kcal, p: mk.p * 100 / tot.kcal, f: mk.f * 100 / tot.kcal } : null;
+    return { tot: tot, meals: meals, mk: mk, pct: pct };
+  }
+  function f1(n) { return n === undefined || n === null ? '' : (Math.round(n * 10) / 10).toFixed(1); }
+  function f0(n) { return n === undefined || n === null ? '' : fmtN(n); }
+
+  function el2(tag, cls, text) { var n = el(tag, cls); if (text !== undefined) n.textContent = text; return n; }
+  var FT_COLS = [['Food', 'c-food'], ['Amount (g)', 'c-g'], ['Edible portion', 'c-p'], ['kcal', 'c-n'], ['Carbs (g)', 'c-n'], ['Protein (g)', 'c-n'], ['Fat (g)', 'c-n'], ['Fiber (g)', 'c-n']];
+
+  function renderDays() {
+    var day = curDay();
+    var tabs = $('#dtabs'); tabs.replaceChildren();
+    DY.days.forEach(function (d, i) {
+      var b = el('button', 'dtab', { type: 'button', role: 'tab', 'aria-selected': i === DY.active ? 'true' : 'false' });
+      b.textContent = d.name || 'Day ' + (i + 1);
+      b.addEventListener('click', function () { DY.active = i; renderDays(); updateDays(); });
+      tabs.appendChild(b);
+    });
+    var add = el('button', 'btn', { type: 'button' }); add.textContent = '+ Add day';
+    add.addEventListener('click', function () {
+      if (DY.days.length >= 31) { setStatus('A plan can hold up to 31 days.', true); return; }
+      DY.days.push(newDay('Day ' + (DY.days.length + 1))); DY.active = DY.days.length - 1; markDirty(); renderDays(); updateDays(); setStatus('Day added.');
+    });
+    tabs.appendChild(add);
+
+    var box = $('#blk-day'); box.replaceChildren();
+    var head = el('div', 'dayh');
+    var nm = el('input', 'fld', { type: 'text', maxlength: '60', 'aria-label': 'Day name', placeholder: 'Day name' }); nm.value = day.name;
+    nm.addEventListener('input', function () { day.name = nm.value; var t = tabs.children[DY.active]; if (t) t.textContent = day.name || 'Day ' + (DY.active + 1); });
+    head.appendChild(nm);
+    var dup = el('button', 'btn no-export', { type: 'button' }); dup.textContent = 'Duplicate day';
+    dup.addEventListener('click', function () {
+      if (DY.days.length >= 31) { setStatus('A plan can hold up to 31 days.', true); return; }
+      var c = JSON.parse(JSON.stringify(day));
+      var copy = { id: nid(), name: (day.name || 'Day') + ' (copy)', inc: day.inc, meals: c.meals.map(function (m) { return { id: nid(), name: m.name, items: m.items.map(function (it) { return { id: nid(), food: it.food, g: it.g }; }) }; }) };
+      DY.days.splice(DY.active + 1, 0, copy); DY.active += 1; markDirty(); renderDays(); updateDays(); setStatus('Day duplicated.');
+    });
+    var del = el('button', 'btn no-export', { type: 'button' }); del.textContent = 'Delete day'; del.disabled = DY.days.length < 2;
+    var timer = null;
+    del.addEventListener('click', function () {
+      if (del.textContent === 'Delete day') { del.textContent = 'Click again to delete'; clearTimeout(timer); timer = setTimeout(function () { del.textContent = 'Delete day'; }, 5000); return; }
+      DY.days.splice(DY.active, 1); DY.active = Math.min(DY.active, DY.days.length - 1); markDirty(); renderDays(); updateDays(); setStatus('Day deleted.');
+    });
+    head.appendChild(dup); head.appendChild(del);
+    var il = incLabel('day'); var icb = il.querySelector('input'); icb.removeAttribute('data-inc'); icb.checked = day.inc !== false;
+    icb.addEventListener('change', function () { day.inc = icb.checked; markDirty(); });
+    il.title = 'Include this day in the PDF'; il.style.color = '#fff'; il.style.position = 'static'; il.style.transform = 'none'; il.style.marginLeft = 'auto';
+    head.appendChild(il);
+    box.appendChild(head);
+
+    var grid = el('div', 'dgrid'), left = el('div', 'dmeals'), side = el('aside', 'dside');
+    day.meals.forEach(function (m) { left.appendChild(renderMeal(day, m)); });
+    var addM = el('div', 'no-export dbtools'), bm = el('button', 'btn', { type: 'button' }); bm.textContent = '+ Add meal';
+    bm.addEventListener('click', function () {
+      if (day.meals.length >= 12) { setStatus('A day can hold up to 12 meals.', true); return; }
+      var m = newMeal('Meal ' + (day.meals.length + 1)); day.meals.push(m); markDirty(); renderDays(); updateDays();
+      var f = $('#blk-day [data-mid="' + m.id + '"] input'); if (f) f.focus();
+    });
+    addM.appendChild(bm); left.appendChild(addM);
+    var dt = el('table', 'dtot'), th = el('thead'), htr = el('tr');
+    ['', 'Energy', 'Carbs', 'Protein', 'Fat', 'Fiber'].forEach(function (h) { htr.appendChild(el2('th', null, h)); });
+    th.appendChild(htr); dt.appendChild(th);
+    var tb = el('tbody');
+    [['TOTAL (g)', 'g'], ['TOTAL (kcal)', 'k'], ['TOTAL (%)', 'p']].forEach(function (r) {
+      var tr = el('tr'); tr.dataset.row = r[1]; tr.appendChild(el2('td', null, r[0]));
+      ['e', 'c', 'p', 'f', 'fib'].forEach(function (k) { var td = el('td'); td.dataset.k = k; td.textContent = '–'; tr.appendChild(td); });
+      tb.appendChild(tr);
+    });
+    dt.appendChild(tb); left.appendChild(dt);
+
+    side.appendChild(pieCard('pie-meals', 'Energy used by meal', 'pl-meals', 'pn-meals'));
+    side.appendChild(pieCard('pie-macros', 'Macronutrient proportions', 'pl-macros', 'pn-macros'));
+    side.appendChild(el2('p', 'fibl', '')).id = 'fib-line';
+    grid.appendChild(left); grid.appendChild(side); box.appendChild(grid);
+    agSoon();
+  }
+  function pieCard(canvasId, title, legId, noteId) {
+    var c = el('div', 'pcard'), h = el2('h3', null, title), b = el('div', 'pbody');
+    var cv = el('canvas', 'pie', { id: canvasId, role: 'img', 'aria-label': title });
+    var em = el2('p', 'pempty', 'Add foods and amounts to see this chart.'); em.id = canvasId + '-e';
+    var lg = el('div', 'plegend'); lg.id = legId;
+    var nt = el2('p', 'pnote'); nt.id = noteId; nt.hidden = true;
+    b.appendChild(cv); b.appendChild(em); b.appendChild(lg); b.appendChild(nt);
+    c.appendChild(h); c.appendChild(b); return c;
+  }
+  function renderMeal(day, m) {
+    var card = el('div', 'mealc'); card.dataset.mid = m.id;
+    var h = el('div', 'mealh');
+    var nm = el('input', 'fld', { type: 'text', maxlength: '60', 'aria-label': 'Meal name', placeholder: 'Meal name' }); nm.value = m.name;
+    nm.addEventListener('input', function () { m.name = nm.value; });
+    h.appendChild(nm);
+    var tg = el('span', 'tgt'); tg.dataset.k = 'tgt'; h.appendChild(tg);
+    var rm = el('button', 'rmt no-export', { type: 'button', 'aria-label': 'Remove this meal', title: 'Remove meal' }); rm.textContent = '×';
+    rm.addEventListener('click', function () { day.meals = day.meals.filter(function (x) { return x.id !== m.id; }); markDirty(); renderDays(); updateDays(); setStatus('Meal removed.'); });
+    h.appendChild(rm); card.appendChild(h);
+    var t = el('table', 'ft'), cg = el('colgroup');
+    FT_COLS.forEach(function (c) { cg.appendChild(el('col', c[1])); });
+    var cx = el('col', 'c-x no-export'); cg.appendChild(cx); t.appendChild(cg);
+    var th = el('thead'), hr = el('tr');
+    FT_COLS.forEach(function (c) { hr.appendChild(el2('th', null, c[0])); });
+    hr.appendChild(el('th', 'no-export')); th.appendChild(hr); t.appendChild(th);
+    var tb = el('tbody');
+    m.items.forEach(function (it) { tb.appendChild(renderItem(m, it)); });
+    t.appendChild(tb);
+    var tf = el('tfoot'), tr = el('tr'); tr.dataset.k = 'mt';
+    tr.appendChild(el2('td', null, 'TOTAL'));
+    ['', '', 'kcal', 'c', 'p', 'f', 'fib'].forEach(function (k, i) { var td = el('td'); if (k) td.dataset.k = k; tr.appendChild(td); });
+    tr.appendChild(el('td', 'no-export')); tf.appendChild(tr); t.appendChild(tf);
+    card.appendChild(t);
+    var f = el('div', 'mealf no-export'), ba = el('button', 'btn', { type: 'button' }); ba.textContent = '+ Add food';
+    ba.addEventListener('click', function () {
+      if (m.items.length >= 40) { setStatus('A meal can hold up to 40 foods.', true); return; }
+      var it = newItem(); m.items.push(it); markDirty(); renderDays(); updateDays();
+      var inp = $('#blk-day tr[data-iid="' + it.id + '"] input'); if (inp) inp.focus();
+    });
+    f.appendChild(ba); card.appendChild(f);
+    return card;
+  }
+  function renderItem(m, it) {
+    var tr = el('tr'); tr.dataset.iid = it.id;
+    var td = el('td'), fi = el('input', 'fld', { type: 'text', list: 'foodlist', autocomplete: 'off', maxlength: '120', 'aria-label': 'Food', placeholder: 'Search food' }); fi.value = it.food;
+    fi.addEventListener('input', function () { it.food = fi.value; updateDays(); });
+    td.appendChild(fi); tr.appendChild(td);
+    td = el('td'); var gi = el('input', 'fld', { type: 'number', inputmode: 'decimal', step: 'any', min: '0', 'aria-label': 'Amount in grams', placeholder: 'g' }); gi.value = it.g;
+    gi.addEventListener('input', function () { it.g = gi.value; updateDays(); });
+    td.appendChild(gi); tr.appendChild(td);
+    ['portion', 'kcal', 'c', 'p', 'f', 'fib'].forEach(function (k) { var c = el('td'); c.dataset.k = k; tr.appendChild(c); });
+    td = el('td', 'no-export'); var rm = el('button', 'rmt', { type: 'button', 'aria-label': 'Remove this food', title: 'Remove' }); rm.textContent = '×';
+    rm.addEventListener('click', function () {
+      m.items = m.items.filter(function (x) { return x.id !== it.id; });
+      if (!m.items.length) m.items.push(newItem());
+      markDirty(); renderDays(); updateDays();
+    });
+    td.appendChild(rm); tr.appendChild(td);
+    return tr;
+  }
+
+  function tgtStatus(v, lo, hi) { return v < lo - 0.5 ? 'below' : v > hi + 0.5 ? 'above' : 'within'; }
+  var STAT_COL = { below: '#E08A1E', within: '#3FA356', above: '#D2352D' };
+  function setTarget(span, text, st) {
+    span.replaceChildren();
+    if (!text) return;
+    var d = el('i'); d.style.background = STAT_COL[st] || '#999'; span.appendChild(d); span.appendChild(document.createTextNode(text));
+  }
+
+  function drawDonut(canvas, o) {
+    var W = o.W, H = o.H, dpr = o.dpr;
+    canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
+    var ctx = canvas.getContext('2d'); ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, W, H);
+    var cx = W / 2, cy = H / 2, R1 = Math.min(W, H) / 2 - 6, R0 = R1 * 0.6;
+    var sum = o.slices.reduce(function (a, s) { return a + s.v; }, 0), a0 = -Math.PI / 2;
+    if (sum <= 0) {
+      ctx.beginPath(); ctx.arc(cx, cy, R1, 0, Math.PI * 2); ctx.arc(cx, cy, R0, Math.PI * 2, 0, true); ctx.closePath(); ctx.fillStyle = '#E3E9DF'; ctx.fill();
+    } else {
+      o.slices.forEach(function (s) {
+        if (s.v <= 0) return;
+        var a1 = a0 + s.v / sum * Math.PI * 2;
+        ctx.beginPath(); ctx.arc(cx, cy, R1, a0, a1); ctx.arc(cx, cy, R0, a1, a0, true); ctx.closePath();
+        ctx.fillStyle = s.color; ctx.fill(); ctx.lineWidth = 2; ctx.strokeStyle = '#fff'; ctx.stroke();
+        a0 = a1;
+      });
+    }
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillStyle = o.c1color || '#14532D'; ctx.font = '700 ' + Math.round(R0 * 0.42) + 'px Georgia, Gelasio, serif'; ctx.fillText(o.c1, cx, cy - R0 * 0.14);
+    ctx.fillStyle = '#5B685F'; ctx.font = '400 ' + Math.round(R0 * 0.2) + 'px ' + FONT; ctx.fillText(o.c2, cx, cy + R0 * 0.3);
+  }
+  function legRow(color, name, val, sub) {
+    var r = el('div'), i = el('i'); i.style.background = color; r.appendChild(i);
+    r.appendChild(el2('span', 'ln', name));
+    if (sub) r.appendChild(el2('span', 'sub', sub));
+    r.appendChild(el2('b', null, val)); return r;
+  }
+
+  function updateDays(forExport) {
+    var day = curDay(); if (!day || !$('#blk-day tr[data-iid]')) return;
+    var box = $('#blk-day'), calc = dayCalc(day), ec = energyCalc(), base = ec.base;
+    day.meals.forEach(function (m, mi) {
+      var card = box.querySelector('[data-mid="' + m.id + '"]'); if (!card) return;
+      var mc = calc.meals[mi];
+      m.items.forEach(function (it, ii) {
+        var tr = card.querySelector('tr[data-iid="' + it.id + '"]'), o = mc.items[ii]; if (!tr) return;
+        var set = function (k, v) { tr.querySelector('[data-k=' + k + ']').textContent = v; };
+        tr.querySelector('input').classList.toggle('nf', o.typed && !o.found);
+        tr.querySelector('input').title = o.typed && !o.found ? 'Not in the food database. Pick a food from the list, or add it with Manage food database.' : '';
+        set('portion', o.found ? String(Math.round(o.portion * 100) / 100) : '');
+        set('kcal', o.kcal !== undefined ? f0(o.kcal) : ''); set('c', f1(o.c)); set('p', f1(o.p)); set('f', f1(o.f)); set('fib', f1(o.fib));
+      });
+      var ft = card.querySelector('tr[data-k=mt]');
+      var any = mc.items.some(function (o) { return o.kcal !== undefined; });
+      [['kcal', f0(mc.tot.kcal)], ['c', f1(mc.tot.c)], ['p', f1(mc.tot.p)], ['f', f1(mc.tot.f)], ['fib', f1(mc.tot.fib)]].forEach(function (x) { ft.querySelector('[data-k=' + x[0] + ']').textContent = any ? x[1] : ''; });
+      var tg = card.querySelector('[data-k=tgt]'), em = null;
+      E.meals.forEach(function (x) { if (!em && fkey(x.name) && fkey(x.name) === fkey(m.name)) em = x; });
+      var p = em ? pair(em.min, em.max) : null;
+      if (p && base !== null && !p.bad) {
+        var lo = base * p.min / 100, hi = base * p.max / 100;
+        setTarget(tg, fmtRange(Math.round(lo), Math.round(hi), fmtN) + ' kcal target', any ? tgtStatus(mc.tot.kcal, lo, hi) : null);
+      } else setTarget(tg, '', null);
+    });
+    var T0 = calc.tot, has = T0.kcal > 0 || T0.c > 0 || T0.p > 0 || T0.f > 0;
+    var rows = {}; $$('.dtot tbody tr', box).forEach(function (r) { rows[r.dataset.row] = r; });
+    var cell = function (r, k, v) { rows[r].querySelector('[data-k=' + k + ']').textContent = has ? v : '–'; };
+    cell('g', 'e', '–'); cell('g', 'c', f1(T0.c)); cell('g', 'p', f1(T0.p)); cell('g', 'f', f1(T0.f)); cell('g', 'fib', f1(T0.fib));
+    cell('k', 'e', f0(T0.kcal)); cell('k', 'c', f0(calc.mk.c)); cell('k', 'p', f0(calc.mk.p)); cell('k', 'f', f0(calc.mk.f)); cell('k', 'fib', '–');
+    cell('p', 'e', '100'); cell('p', 'c', calc.pct ? f1(calc.pct.c) : '–'); cell('p', 'p', calc.pct ? f1(calc.pct.p) : '–'); cell('p', 'f', calc.pct ? f1(calc.pct.f) : '–'); cell('p', 'fib', '–');
+    rows.g.querySelector('[data-k=e]').textContent = '–'; rows.k.querySelector('[data-k=fib]').textContent = '–'; rows.p.querySelector('[data-k=fib]').textContent = '–';
+
+    var fl = $('#fib-line');
+    fl.textContent = has ? 'Fiber: ' + f1(T0.fib) + ' g' + (E.fiber ? ' (goal: ' + E.fiber + ')' : '') : '';
+
+    var dpr = forExport ? 3 : Math.min(window.devicePixelRatio || 1, 2.5), SZ = 300;
+    var cvM = $('#pie-meals'), cvX = $('#pie-macros'), emM = $('#pie-meals-e'), emX = $('#pie-macros-e');
+    var legM = $('#pl-meals'), legX = $('#pl-macros'), nM = $('#pn-meals'), nX = $('#pn-macros');
+    legM.replaceChildren(); legX.replaceChildren();
+    cvM.hidden = emM.hidden = cvX.hidden = emX.hidden = false;
+    cvM.hidden = !has; emM.hidden = has; cvX.hidden = !has; emX.hidden = has;
+    if (!has) { nM.hidden = true; nX.hidden = true; return; }
+
+    var slices = [];
+    day.meals.forEach(function (m, i) { var k = calc.meals[i].tot.kcal; if (k > 0) slices.push({ v: k, color: PALETTE[i % PALETTE.length], name: m.name || 'Meal ' + (i + 1), kcal: k }); });
+    var over = base !== null && T0.kcal > base + 0.5, rem = base !== null && T0.kcal < base ? base - T0.kcal : 0;
+    var drawn = slices.map(function (s) { return { v: s.v, color: s.color }; });
+    if (rem > 0) drawn.push({ v: rem, color: '#DDE5D8' });
+    drawDonut(cvM, { W: SZ, H: SZ, dpr: dpr, slices: drawn, c1: f0(T0.kcal), c2: base !== null ? 'of ' + fmtN(base) + ' kcal' : 'kcal', c1color: over ? '#B92526' : '#14532D' });
+    slices.forEach(function (s) { legM.appendChild(legRow(s.color, s.name, f0(s.kcal) + ' kcal', base !== null ? Math.round(s.kcal * 100 / base) + '%' : '')); });
+    if (rem > 0) legM.appendChild(legRow('#DDE5D8', 'Remaining', f0(rem) + ' kcal', Math.round(rem * 100 / base) + '%'));
+    if (base === null) { nM.hidden = false; nM.className = 'pnote'; nM.textContent = 'Complete the energy calculation (Energy expenditure) to compare with the target.'; }
+    else { nM.hidden = false; nM.className = over ? 'pnote' : 'pnote ok'; nM.textContent = over ? 'Over the target by ' + f0(T0.kcal - base) + ' kcal' : 'Target: ' + fmtN(base) + ' kcal (TDEE with ' + fmtN(ec.deficit) + ' kcal deficit)'; }
+
+    var mx = [['carbs', 'Carbohydrates', calc.mk.c, calc.pct && calc.pct.c, T0.c], ['protein', 'Protein', calc.mk.p, calc.pct && calc.pct.p, T0.p], ['fat', 'Lipids', calc.mk.f, calc.pct && calc.pct.f, T0.f]];
+    drawDonut(cvX, { W: SZ, H: SZ, dpr: dpr, slices: mx.map(function (x) { return { v: x[2], color: MACRO_COL[x[0]] }; }), c1: 'Macros', c2: '% of energy' });
+    mx.forEach(function (x) {
+      var p = pair(E.macros[x[0]].min, E.macros[x[0]].max), sub = '', row;
+      row = legRow(MACRO_COL[x[0]], x[1], (x[3] !== null && x[3] !== undefined ? f1(x[3]) : '0.0') + '%', f1(x[4]) + ' g');
+      legX.appendChild(row);
+      if (p && !p.bad && x[3] !== null && x[3] !== undefined) {
+        var t = el('div'), span = el('span', 'tgt'); span.style.marginLeft = '18px';
+        setTarget(span, 'target ' + fmtRange(p.min, p.max, pctText) + '%', tgtStatus(x[3], p.min, p.max));
+        t.appendChild(span); legX.appendChild(t);
+      }
+    });
+    nX.hidden = true;
+  }
+
+  /* ---------- weekly overview: fill the table from the daily plans ---------- */
+  function fillTableFromDays() {
+    var cols = [], idx = {};
+    DY.days.forEach(function (d) { d.meals.forEach(function (m) { var k = fkey(m.name); if (k && idx[k] === undefined && cols.length < 20) { idx[k] = cols.length; cols.push(m.name.trim()); } }); });
+    if (!cols.length) { setStatus('Add meals to the daily plans first.', true); return false; }
+    S = { corner: S.corner || 'Day', cols: cols.map(function (n) { return { id: nid(), name: n }; }), rows: [], cells: {} };
+    DY.days.slice(0, 60).forEach(function (d) {
+      var row = { id: nid(), name: d.name || '' }; S.rows.push(row);
+      d.meals.forEach(function (m) {
+        var j = idx[fkey(m.name)]; if (j === undefined) return;
+        var lines = m.items.filter(function (it) { return it.food.trim() && pnum(it.g) > 0; }).map(function (it) { return '• ' + it.food.trim() + ' – ' + round(pnum(it.g), 1) + ' g'; });
+        if (lines.length) { var key = row.id + ':' + S.cols[j].id; S.cells[key] = (S.cells[key] ? S.cells[key] + '\n' : '') + lines.join('\n'); }
+      });
+    });
+    renderTable(); agSoon(); markDirty();
+    return true;
+  }
+
+  /* ---------- manage food database dialog ---------- */
+  function foodMsg(t, bad) { var m = $('#food-msg'); m.textContent = t || ''; m.style.color = bad ? 'var(--red-dark)' : ''; }
+  function renderFoodDlg() {
+    $('#food-count').textContent = FOODS.length + ' built-in foods' + (CF.length ? ' + ' + CF.length + ' added by you' : '') + '. Values are per 100 g.';
+    var l = $('#food-list'); l.replaceChildren();
+    if (!CF.length) { l.appendChild(el2('div', null, 'None yet.')); return; }
+    CF.forEach(function (f) {
+      var r = el('div'); r.appendChild(el2('span', null, f.name + ' · ' + f.kcal + ' kcal'));
+      var b = el('button', 'linkbtn', { type: 'button' }); b.textContent = 'Remove';
+      b.addEventListener('click', function () { CF = CF.filter(function (x) { return x !== f; }); rebuildFoods(); saveCF(); markDirty(); renderFoodDlg(); updateDays(); });
+      r.appendChild(b); l.appendChild(r);
+    });
+  }
+  function openFoodDlg() { foodMsg(''); renderFoodDlg(); $('#fooddlg').hidden = false; $('#nf-name').focus(); }
+  $('#btn-fooddb').addEventListener('click', openFoodDlg);
+  $('#food-close').addEventListener('click', function () { $('#fooddlg').hidden = true; });
+  $('#fooddlg').addEventListener('click', function (e) { if (e.target === this) this.hidden = true; });
+  $('#nf-add').addEventListener('click', function () {
+    var f = cleanFood({ name: $('#nf-name').value, edible: $('#nf-edible').value, kcal: $('#nf-kcal').value, c: $('#nf-carbs').value, p: $('#nf-protein').value, f: $('#nf-fat').value, fib: $('#nf-fiber').value });
+    if (!f) { foodMsg('Check the values: name required, edible portion 0.01–5, kcal 0–950, macros and fiber 0–100 g per 100 g.', true); return; }
+    mergeCF([f]); markDirty(); renderFoodDlg(); updateDays();
+    ['#nf-name', '#nf-kcal', '#nf-carbs', '#nf-protein', '#nf-fat', '#nf-fiber'].forEach(function (s) { $(s).value = ''; }); $('#nf-edible').value = '1';
+    foodMsg('Added ' + f.name + '. It now appears in the food search.'); $('#nf-name').focus();
+  });
+  function parseCsv(text) {
+    var first = text.split(/\r?\n/, 1)[0] || '';
+    var delim = [';', '\t', ','].map(function (d) { return [d, first.split(d).length]; }).sort(function (a, b) { return b[1] - a[1]; })[0][0];
+    var rows = [], cur = [], q = false, cell = '';
+    for (var i = 0; i < text.length; i++) {
+      var ch = text[i];
+      if (q) { if (ch === '"') { if (text[i + 1] === '"') { cell += '"'; i++; } else q = false; } else cell += ch; }
+      else if (ch === '"') q = true;
+      else if (ch === delim) { cur.push(cell); cell = ''; }
+      else if (ch === '\n' || ch === '\r') { if (ch === '\r' && text[i + 1] === '\n') i++; cur.push(cell); cell = ''; if (cur.some(function (x) { return x.trim(); })) rows.push(cur); cur = []; }
+      else cell += ch;
+    }
+    cur.push(cell); if (cur.some(function (x) { return x.trim(); })) rows.push(cur);
+    return rows;
+  }
+  $('#food-import').addEventListener('click', function () { $('#food-file').value = ''; $('#food-file').click(); });
+  $('#food-file').addEventListener('change', function () {
+    var f = this.files && this.files[0]; if (!f) return;
+    if (f.size > 3 * 1024 * 1024) { foodMsg('That file is too large.', true); return; }
+    var rd = new FileReader();
+    rd.onerror = function () { foodMsg('Could not read that file.', true); };
+    rd.onload = function () {
+      var rows = parseCsv(String(rd.result).replace(/^﻿/, '')), ok = [], bad = 0;
+      if (rows.length && !/^\s*-?[\d.,]+\s*$/.test(rows[0][1] || '')) rows.shift();
+      rows.slice(0, 5000).forEach(function (r) {
+        var v = r.map(function (x) { return String(x).trim().replace(',', '.'); });
+        var o = cleanFood({ name: r[0], edible: v[1], kcal: v[2], c: v[3], p: v[4], f: v[5], fib: v[6] });
+        if (o) ok.push(o); else bad++;
+      });
+      var n = mergeCF(ok); markDirty(); renderFoodDlg(); updateDays();
+      foodMsg('Imported ' + n + ' foods' + (bad ? '; skipped ' + bad + ' rows with missing or out-of-range values.' : '.'), !n);
+    };
+    rd.readAsText(f);
+  });
+  $('#food-export').addEventListener('click', async function () {
+    if (!CF.length) { foodMsg('You have not added any foods yet.', true); return; }
+    var csv = '﻿Alimento;Porción comestible;Kcal/100 g;Carbohidratos (g);Proteína (g);Grasas (g);Fibra (g)\n' + CF.map(function (f) {
+      return [f.name.replace(/;/g, ','), f.edible, f.kcal, f.c, f.p, f.f, f.fib].join(';');
+    }).join('\n') + '\n';
+    try { await deliver('My-added-foods.csv', csv, 'text/csv'); foodMsg('File ready.'); } catch (e) { foodMsg('Could not save the file.', true); }
+  });
+
   /* ---------- save, open and new plan ---------- */
-  var FORMAT = 'zohaib-khan-meal-plan', VERSION = 3;
+  var FORMAT = 'zohaib-khan-meal-plan', VERSION = 4;
   var dirty = false;
   function markDirty() { dirty = true; }
   $('#sheet').addEventListener('input', markDirty);
@@ -1727,6 +2391,11 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
   function copyMacros(m) {
     return MACRO_DEFS.reduce(function (acc, d) { acc[d.key] = { min: m[d.key].min, max: m[d.key].max }; return acc; }, {});
   }
+  function copyDays(days) {
+    return days.map(function (d) {
+      return { name: d.name, inc: d.inc !== false, meals: d.meals.map(function (m) { return { name: m.name, items: m.items.map(function (it) { return { food: it.food, g: it.g }; }) }; }) };
+    });
+  }
   /* the plan-specific part of the live page, in the same shape parseEntry returns */
   function captureParsed() {
     normalizeCells();
@@ -1743,7 +2412,8 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
         meals: E.meals.map(function (m) { return { id: nid(), name: m.name, min: m.min, max: m.max }; }),
         macros: copyMacros(E.macros)
       },
-      tips: T.map(function (t) { return { rec: t.rec, icon: t.icon, text: t.rec === 'custom' ? (t.text || '') : '' }; })
+      tips: T.map(function (t) { return { rec: t.rec, icon: t.icon, text: t.rec === 'custom' ? (t.text || '') : '' }; }),
+      days: copyDays(DY.days)
     };
   }
   function partToJson(p) {
@@ -1762,6 +2432,14 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
         title: p.title, subtitle: p.subtitle, cornerHeader: p.corner, columns: p.cols,
         rows: p.rows.map(function (r) { return { name: r.name, cells: r.cells }; })
       },
+      days: p.days.map(function (d) {
+        return {
+          name: d.name, include: d.inc !== false,
+          meals: d.meals.map(function (m) {
+            return { name: m.name, items: m.items.filter(function (it) { return it.food.trim() || String(it.g).trim(); }).map(function (it) { return { food: it.food, grams: pnum(it.g) }; }) };
+          })
+        };
+      }),
       notes: p.notes,
       recommendations: p.tips.map(function (t) {
         var std = recById(t.rec);
@@ -1770,6 +2448,7 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
       footer: p.footer
     };
   }
+  var SEC_IDS = ['sec1', 'sec2', 'sec3'].concat(BLOCKS.map(function (b) { return b.id; }));
 
   function serialize() {
     PL.parts[PL.active] = captureParsed();
@@ -1785,17 +2464,36 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
         heightCm: num('#f-height'),
         heightMm: num('#f-height-mm') || 0,
         currentWeightKg: num('#f-cw'),
-        targetWeightKg: num('#f-tw'),
         goal: $('#f-goal').value,
         conditions: $('#f-cond').value
       },
+      history: readHistory(),
+      weights: { highestKg: num('#w-high'), lowestKg: num('#w-low'), previousDiets: $('#w-diets').value },
+      habits: HB.filter(function (h) { return !habEmpty(h); }).map(function (h) { return { date: h.date || '', type: h.type, details: h.text }; }),
       records: R.filter(function (r) { return !recIsEmpty(r); }).map(function (r) {
         return { date: r.date || '', weightKg: pnum(r.w), waistCm: pnum(r.waist), hipCm: pnum(r.hip), armCm: pnum(r.arm), calfCm: pnum(r.calf) };
       }),
-      pdfInclude: { progress: INC.progress, energy: INC.energy },
+      customFoods: CF.map(function (f) { return { name: f.name, edible: f.edible, kcalPer100g: f.kcal, carbs: f.c, protein: f.p, fat: f.f, fiber: f.fib }; }),
+      pdfInclude: { hidden: SEC_IDS.filter(function (id) { return INC[id] === false; }) },
       activePlan: PL.active,
       plans: PL.parts.map(partToJson)
     };
+  }
+
+  function parseDays(src) {
+    var arr = Array.isArray(src.days) ? src.days.slice(0, 31) : [];
+    return arr.map(function (d, i) {
+      d = d && typeof d === 'object' ? d : {};
+      var meals = (Array.isArray(d.meals) ? d.meals.slice(0, 12) : []).map(function (m) {
+        m = m && typeof m === 'object' ? m : {};
+        var items = (Array.isArray(m.items) ? m.items.slice(0, 40) : []).map(function (it) {
+          it = it && typeof it === 'object' ? it : {};
+          return { food: str(it.food, 120), g: inRange(it.grams, 0, 10000) };
+        });
+        return { name: str(m.name, 60), items: items.length ? items : [{ food: '', g: '' }] };
+      });
+      return { name: str(d.name, 60) || 'Day ' + (i + 1), inc: d.include !== false, meals: meals };
+    });
   }
 
   /* one plan entry from a file; v1/v2 files carry exactly one plan at the top level */
@@ -1830,6 +2528,7 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
       title: str(pl.title, 200), subtitle: str(pl.subtitle, 300), corner: str(pl.cornerHeader, 80),
       cols: cols, rows: rows, notes: str(src.notes, 6000), footer: str(src.footer, 500),
       energy: { af: inRange(en.activityFactor, 0.5, 4), deficit: def, fiber: str(en.fiberGoal, 40), meals: meals && meals.length ? meals : null, macros: macros },
+      days: parseDays(src),
       tips: recs.map(function (r) {
         r = r && typeof r === 'object' ? r : {};
         var id = typeof r.recommendation === 'string' ? r.recommendation : '';
@@ -1866,17 +2565,39 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
         arm: inRange(r.armCm, 5, 300), calf: inRange(r.calfCm, 5, 300)
       };
     });
-    var inc = d.pdfInclude && typeof d.pdfInclude === 'object' ? d.pdfInclude : {};
+    var hid = {};
+    var pi = d.pdfInclude && typeof d.pdfInclude === 'object' ? d.pdfInclude : {};
+    if (Array.isArray(pi.hidden)) pi.hidden.forEach(function (id) { if (SEC_IDS.indexOf(id) >= 0) hid[id] = false; });
+    if (pi.progress === false) { hid['blk-progress'] = false; CHART_IDS.forEach(function (c) { hid['blk-chart-' + c] = false; }); }
+    if (pi.energy === false) { hid['blk-energy'] = false; hid['blk-meals'] = false; hid['blk-macros'] = false; }
+    var hs = d.history && typeof d.history === 'object' ? d.history : {};
+    var hp = hs.personal && typeof hs.personal === 'object' ? hs.personal : {}, hf = hs.family && typeof hs.family === 'object' ? hs.family : {};
+    var history = { personal: {}, family: {} };
+    MED_P.forEach(function (k) { history.personal[k[0]] = str(hp[k[0]], 3000); });
+    MED_F.forEach(function (k) { history.family[k[0]] = str(hf[k[0]], 3000); });
+    var wt = d.weights && typeof d.weights === 'object' ? d.weights : {};
+    var hab = (Array.isArray(d.habits) ? d.habits.slice(0, 300) : []).map(function (h) {
+      h = h && typeof h === 'object' ? h : {};
+      return { id: nid(), date: typeof h.date === 'string' && dateTime(h.date) !== null ? h.date : '', type: HAB_TYPES.indexOf(h.type) >= 0 ? h.type : 'Other', text: str(h.details, 2000) };
+    });
+    var cfs = (Array.isArray(d.customFoods) ? d.customFoods.slice(0, 5000) : []).map(function (f) {
+      f = f && typeof f === 'object' ? f : {};
+      return cleanFood({ name: f.name, edible: f.edible, kcal: f.kcalPer100g, c: f.carbs, p: f.protein, f: f.fat, fib: f.fiber });
+    }).filter(Boolean);
     return {
       patient: {
         name: str(pt.name, 120),
         dob: typeof pt.dateOfBirth === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(pt.dateOfBirth) ? pt.dateOfBirth : '',
         gender: pt.gender, height: pt.heightCm, heightMm: pt.heightMm,
-        cw: inRange(pt.currentWeightKg, 20, 400), tw: inRange(pt.targetWeightKg, 20, 400),
+        cw: inRange(pt.currentWeightKg, 20, 400),
         conditions: str(pt.conditions, 3000)
       },
+      history: history,
+      weights: { high: inRange(wt.highestKg, 20, 400), low: inRange(wt.lowestKg, 20, 400), diets: str(wt.previousDiets, 3000) },
+      habits: hab.length ? hab : [newHab()],
       records: rec.length ? rec : [newRec()],
-      inc: { progress: inc.progress !== false, energy: inc.energy !== false },
+      customFoods: cfs,
+      inc: hid,
       parts: parts, active: active
     };
   }
@@ -1901,7 +2622,15 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
     E.af = p.energy.af; E.deficit = p.energy.deficit; E.fiber = p.energy.fiber;
     if (p.energy.meals) E.meals = p.energy.meals.map(function (m) { return { id: nid(), name: m.name, min: m.min, max: m.max }; });
     E.macros = copyMacros(p.energy.macros);
-    renderTable(); renderTips(); renderNewSections(); agAll(); renderPlanBar();
+    if (p.days && p.days.length) {
+      DY = {
+        active: 0,
+        days: p.days.map(function (d) {
+          return { id: nid(), name: d.name, inc: d.inc !== false, meals: d.meals.map(function (m) { return { id: nid(), name: m.name, items: m.items.map(function (it) { return { id: nid(), food: it.food, g: it.g }; }) }; }) };
+        })
+      };
+    } else freshDays();
+    renderTable(); renderTips(); renderNewSections(); renderDays(); updateDays(); agAll(); renderPlanBar();
   }
   function applyPlan(p) {
     $('#f-name').value = p.patient.name;
@@ -1910,19 +2639,22 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
     setSelectValue('f-height', p.patient.height);
     setSelectValue('f-height-mm', p.patient.heightMm === undefined ? 0 : p.patient.heightMm);
     if (!$('#f-height-mm').value) $('#f-height-mm').value = '0';
-    $('#f-cw').value = p.patient.cw; $('#f-tw').value = p.patient.tw;
+    $('#f-cw').value = p.patient.cw;
     $('#f-cond').value = p.patient.conditions;
-    R = p.records;
-    INC = { progress: p.inc.progress, energy: p.inc.energy };
+    writeHistory(p.history);
+    $('#w-high').value = p.weights.high; $('#w-low').value = p.weights.low; $('#w-diets').value = p.weights.diets;
+    HB = p.habits; R = p.records;
+    mergeCF(p.customFoods);
+    INC = p.inc;
     PL = { parts: p.parts, active: p.active };
-    applyPart(PL.parts[PL.active]);
+    renderHabits(); applyPart(PL.parts[PL.active]); syncIncBoxes();
     dirty = false;
   }
   function planError(err) {
     var m = err && err.message;
-    if (m === 'newer') return 'This plan was saved with a newer version of the page and cannot be opened here.';
-    if (m === 'invalid') return 'This plan file is damaged or incomplete. Nothing was changed.';
-    return 'That file is not a saved meal plan. Open a .json file created with Save plan.';
+    if (m === 'newer') return 'This file was saved with a newer version of the page and cannot be opened here.';
+    if (m === 'invalid') return 'This file is damaged or incomplete. Nothing was changed.';
+    return 'That file is not a saved patient file. Open a .json file created with Save file.';
   }
 
   async function savePlan() {
@@ -1932,7 +2664,7 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
     btn.disabled = true;
     try {
       var res = await deliver(fileStem() + '.json', JSON.stringify(serialize(), null, 2), 'application/json');
-      if (res && res.status === 'saved') { dirty = false; setStatus('Plan saved. Use Open plan to continue editing it later.'); }
+      if (res && res.status === 'saved') { dirty = false; setStatus('File saved. Use Open file to continue editing it later.'); }
       else setStatus('Plan sent.');
     } catch (err) {
       var code = err && err.code;
@@ -1955,27 +2687,28 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
     };
     steps.push(api); return api;
   }
-  var newStep = twoStep($('#btn-new'), 'New plan', 'Click again to clear everything');
-  var openStep = twoStep($('#btn-open'), 'Open plan', 'Replace the current plan?');
+  var newStep = twoStep($('#btn-new'), 'New file', 'Click again to clear everything');
+  var openStep = twoStep($('#btn-open'), 'Open file', 'Replace what is on screen?');
   document.addEventListener('click', function (e) { steps.forEach(function (s) { if (s.btn !== e.target) s.reset(); }); });
 
   function applyBlank() {
     $('#f-goal').value = '';
     $('#f-title').value = DEFAULT_TITLE; $('#f-sub').value = ''; $('#f-notes').value = ''; $('#f-foot').value = DEFAULT_FOOT;
-    freshTable(); freshTips(); freshEnergy();
+    freshTable(); freshTips(); freshEnergy(); freshDays();
   }
   function resetAll() {
-    ['f-name', 'f-dob', 'f-age', 'f-gender', 'f-height', 'f-cw', 'f-tw', 'f-cond'].forEach(function (id) { document.getElementById(id).value = ''; });
+    ['f-name', 'f-dob', 'f-age', 'f-gender', 'f-height', 'f-cw', 'f-cond', 'w-high', 'w-low', 'w-diets'].forEach(function (id) { document.getElementById(id).value = ''; });
     $('#f-height-mm').value = '0';
-    freshRecords(); INC = { progress: true, energy: true };
+    writeHistory(null);
+    freshRecords(); freshHabits(); INC = {};
     applyBlank();
     PL = { parts: [{ name: 'Plan 1', date: todayISO() }], active: 0 };
-    renderTable(); renderTips(); renderNewSections(); agAll(); renderPlanBar();
+    renderTable(); renderTips(); renderNewSections(); renderHabits(); renderDays(); updateDays(); agAll(); renderPlanBar(); syncIncBoxes();
     dirty = false;
   }
   $('#btn-new').addEventListener('click', function () {
     if (!newStep.isArmed()) { newStep.arm(); return; }
-    newStep.reset(); resetAll(); setStatus('Started a new plan.');
+    newStep.reset(); resetAll(); setStatus('Started a new patient file.');
   });
 
   var fileIn = $('#file-open');
@@ -2055,36 +2788,192 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
     setStatus('Deleted ' + gone + '.');
   });
 
-  /* ---------- PDF: choose which plans to include ---------- */
-  function choosePdf() {
-    if ($('#btn-pdf').disabled) return;
-    if (PL.parts.length < 2) { exportPDF([PL.active]); return; }
+  /* ---------- PDF export: choose sections, boxes, days and plans ---------- */
+  var exportScope = null;
+  function dayNamesFor(idx) { var p = idx === PL.active ? { days: copyDays(DY.days) } : PL.parts[idx]; return p.days || []; }
+  function openExport(scope) {
+    exportScope = scope || null;
     PL.parts[PL.active] = captureParsed();
-    var list = $('#pdfdlg-list'); list.replaceChildren();
-    PL.parts.forEach(function (p, i) {
-      var lb = el('label', 'chk'), cb = el('input', null, { type: 'checkbox' });
-      cb.value = String(i); cb.checked = i === PL.active;
-      lb.appendChild(cb); lb.appendChild(document.createTextNode(' ' + planLabel(p, i) + (p.date ? ' (' + fmtDate(p.date) + ')' : '')));
-      list.appendChild(lb);
+    var tree = $('#pdfdlg-tree'); tree.replaceChildren();
+    function chk(label, cls, checked, onchange, aria) {
+      var lb = el('label', 'chk ' + cls), cb = el('input', null, { type: 'checkbox' });
+      cb.checked = checked; cb.addEventListener('change', function () { onchange(cb.checked); });
+      lb.appendChild(cb); lb.appendChild(document.createTextNode(' ' + label)); return lb;
+    }
+    [1, 2, 3].forEach(function (n) {
+      if (exportScope && exportScope !== n) return;
+      var sec = chk(SECS[n], 't1', secOn(n), function (v) { if (v) delete INC['sec' + n]; else INC['sec' + n] = false; markDirty(); syncIncBoxes(); });
+      tree.appendChild(sec);
+      BLOCKS.filter(function (b) { return b.sec === n; }).forEach(function (b) {
+        tree.appendChild(chk(b.name, 't2', incOn(b.id), function (v) { if (v) delete INC[b.id]; else INC[b.id] = false; markDirty(); syncIncBoxes(); }));
+        if (b.id === 'blk-days') {
+          DY.days.forEach(function (d) { tree.appendChild(chk(d.name || 'Day', 't3', d.inc !== false, function (v) { d.inc = v; markDirty(); if (curDay() === d) renderDays(); })); });
+        }
+      });
     });
+    var pl = $('#pdfdlg-plans'); pl.replaceChildren();
+    var needPlans = PL.parts.length > 1 && (!exportScope || exportScope === 3);
+    $('#pdfdlg-plans-h').hidden = !needPlans; pl.hidden = !needPlans;
+    if (needPlans) PL.parts.forEach(function (p, i) {
+      var lb = el('label', 'chk t2'), cb = el('input', null, { type: 'checkbox' }); cb.value = String(i); cb.checked = i === PL.active;
+      lb.appendChild(cb); lb.appendChild(document.createTextNode(' ' + planLabel(p, i) + (p.date ? ' (' + fmtDate(p.date) + ')' : ''))); pl.appendChild(lb);
+    });
+    $('#pdfdlg-h').textContent = exportScope ? 'Download PDF: ' + SECS[exportScope] : 'Download PDF';
     $('#pdfdlg').hidden = false;
-    var f = list.querySelector('input'); if (f) f.focus();
+    var f = tree.querySelector('input'); if (f) f.focus();
   }
+  $('#btn-pdf').addEventListener('click', function () { if (!$('#btn-pdf').disabled) openExport(null); });
+  $$('.sidepdf').forEach(function (b) { b.addEventListener('click', function () { if (!$('#btn-pdf').disabled) openExport(+b.getAttribute('data-pdf')); }); });
   $('#pdfdlg-cancel').addEventListener('click', function () { $('#pdfdlg').hidden = true; });
   $('#pdfdlg').addEventListener('click', function (e) { if (e.target === this) this.hidden = true; });
-  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') $('#pdfdlg').hidden = true; });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { $('#pdfdlg').hidden = true; $('#fooddlg').hidden = true; } });
   $('#pdfdlg-go').addEventListener('click', function () {
-    var sel = [].slice.call($('#pdfdlg-list').querySelectorAll('input:checked')).map(function (c) { return +c.value; });
-    if (!sel.length) { setStatus('Select at least one plan to export.', true); return; }
-    $('#pdfdlg').hidden = true; exportPDF(sel);
+    var plans = $('#pdfdlg-plans').hidden ? [PL.active] : [].slice.call($('#pdfdlg-plans').querySelectorAll('input:checked')).map(function (c) { return +c.value; });
+    var secs = exportScope ? [exportScope] : [1, 2, 3];
+    var usable = secs.filter(function (n) { return secOn(n); });
+    if (!usable.length) { setStatus('Tick at least one section to export.', true); return; }
+    if (usable.indexOf(3) >= 0 && !plans.length) { setStatus('Select at least one plan to export.', true); return; }
+    $('#pdfdlg').hidden = true; exportPDF({ secs: usable, plans: plans });
   });
+
+  async function exportPDF(opt) {
+    var btn = $('#btn-pdf');
+    if (btn.disabled) return;
+    var secs = opt.secs, plans = opt.plans.slice().sort(function (a, b) { return a - b; });
+    var multiPlan = secs.indexOf(3) >= 0 && plans.length > 1;
+    setStatus('');
+    closePops();
+    if (!window.html2canvas || !window.jspdf) { setStatus('The PDF tools did not load. Check your connection and try again.', true); return; }
+    btn.disabled = true; btn.textContent = 'Preparing PDF…';
+    var origActive = PL.active, origDay = DY.active, origDirty = dirty, origView = VIEW, ph = $('#blk-planhead');
+    var hiddenNodes = [];
+    function hideNode(id) { var n = document.getElementById(id); if (n) { hiddenNodes.push([n, n.style.display]); n.style.display = 'none'; } }
+    function restoreHidden() { hiddenNodes.forEach(function (x) { x[0].style.display = x[1]; }); hiddenNodes = []; }
+    try {
+      PL.parts[PL.active] = captureParsed(); stamp();
+      if (document.fonts && document.fonts.ready) await document.fonts.ready;
+
+      var shots = [];
+      async function snap(ids, brk) {
+        for (var i = 0; i < ids.length; i++) {
+          var node = document.getElementById(ids[i]), canvas, sc = 3;
+          try { canvas = await shoot(node, 3); }
+          catch (err) { sc = 2; canvas = await shoot(node, 2); }
+          shots.push({ canvas: canvas, h: canvas.height / sc, brk: !!(brk && i === 0) });
+        }
+      }
+      var pageBreaks = secs.length > 1 || multiPlan;
+
+      /* section 1: logo, intro and clinical history */
+      if (secs.indexOf(1) >= 0) {
+        var ids1 = [];
+        if (incOn('blk-head')) ids1.push('blk-head');
+        var pOn = incOn('blk-medp') && historyHas('mp-', MED_P), fOn = incOn('blk-medf') && historyHas('mf-', MED_F);
+        if (pOn || fOn) {
+          if (!pOn) hideNode('blk-medp'); if (!fOn) hideNode('blk-medf');
+          $('#blk-medgrid').classList.toggle('one', !(pOn && fOn)); ids1.push('blk-medgrid');
+        }
+        if (incOn('blk-weights') && weightsHas()) ids1.push('blk-weights');
+        if (incOn('blk-habits') && HB.some(function (h) { return !habEmpty(h); })) {
+          var hide = []; ids1.push('blk-habits');
+          $$('#hab tbody tr').forEach(function (tr) { var h = HB.filter(function (x) { return x.id === tr.dataset.id; })[0]; if (h && habEmpty(h)) { hiddenNodes.push([tr, tr.style.display]); tr.style.display = 'none'; } });
+        }
+        await snap(ids1, pageBreaks);
+        restoreHidden(); $('#blk-medgrid').classList.remove('one');
+      }
+
+      /* section 2: progress records and charts (4 per page) */
+      if (secs.indexOf(2) >= 0 && hasRecordData()) {
+        renderCharts(true);
+        var ids2 = [];
+        if (incOn('blk-progress')) ids2.push('blk-progress');
+        var vis = CHART_IDS.filter(function (id) { return !$('#c-' + id).hidden && incOn('blk-chart-' + id); });
+        vis.forEach(function (id, n) { (n < 4 ? $('#blk-cg1') : $('#blk-cg2')).appendChild($('#blk-chart-' + id)); });
+        CHART_IDS.forEach(function (id) { if (vis.indexOf(id) < 0) hideNode('blk-chart-' + id); });
+        if (vis.length) ids2.push('blk-cg1');
+        if (vis.length > 4) ids2.push('blk-cg2');
+        await snap(ids2, pageBreaks);
+        restoreHidden(); restoreCharts();
+      }
+
+      /* section 3: each selected plan */
+      if (secs.indexOf(3) >= 0) {
+        for (var n = 0; n < plans.length; n++) {
+          var idx = plans[n];
+          if (idx !== PL.active) { PL.active = idx; applyPart(PL.parts[idx]); }
+          normalizeCells(); stamp();
+          var ec = updateEnergy();
+          var ids3 = [];
+          if (multiPlan) {
+            var p = PL.parts[idx];
+            $('#ph-t').textContent = planLabel(p, idx) + (p.date ? ' • ' + fmtDate(p.date) : '');
+            ph.hidden = false; ids3.push('blk-planhead');
+          }
+          if (incOn('blk-banner')) ids3.push('blk-banner');
+          if (incOn('blk-energy') && ec.bmr !== null) ids3.push('blk-energy');
+          if (ec.base !== null) { if (incOn('blk-meals')) ids3.push('blk-meals'); if (incOn('blk-macros')) ids3.push('blk-macros'); }
+          await snap(ids3, pageBreaks);
+          ph.hidden = true;
+          if (incOn('blk-days')) {
+            for (var di = 0; di < DY.days.length; di++) {
+              var dd = DY.days[di];
+              if (dd.inc === false || !dd.meals.some(function (m) { return m.items.some(function (it) { return it.food.trim(); }); })) continue;
+              DY.active = di; renderDays(); updateDays(true); stamp();
+              await snap(['blk-day'], true);
+            }
+          }
+          var ids4 = [];
+          if (incOn('blk-table')) ids4.push('blk-table');
+          if (incOn('blk-notes') && hasText('f-notes')) ids4.push('blk-notes');
+          if (incOn('blk-tips') && T.some(tipHasContent)) ids4.push('blk-tips');
+          if (incOn('blk-foot') && hasText('f-foot')) ids4.push('blk-foot');
+          await snap(ids4, true);
+        }
+      }
+      if (!shots.length) { setStatus('Nothing to export: the ticked sections have no content yet.', true); return; }
+
+      var jsPDF = window.jspdf.jsPDF;
+      var pdf = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4', compress: true });
+      var PW = 297, PH = 210, M = 8, GAP = 4;
+      var cw = PW - 2 * M, ch = PH - 2 * M, k = cw / EXPORT_W;
+      var hs = shots.map(function (s) { return s.h * k; });
+      function bg() { pdf.setFillColor(255, 255, 255); pdf.rect(0, 0, PW, PH, 'F'); }
+      function put(shot, x, y, w, h) { pdf.addImage(shot.canvas.toDataURL('image/png'), 'PNG', x, y, w, h, undefined, 'FAST'); }
+      bg();
+      var y = M, first = true;
+      shots.forEach(function (s, i) {
+        var h = hs[i], w2 = cw;
+        if (h > ch) { var f = ch / h; h = ch; w2 = cw * f; }
+        if (!first && (s.brk || y + h > M + ch)) { pdf.addPage(); bg(); y = M; }
+        put(s, M + (cw - w2) / 2, y, w2, h); y += h + GAP; first = false;
+      });
+
+      var res = await deliver(fileStem() + '.pdf', pdf.output('arraybuffer'), 'application/pdf');
+      setStatus(res && res.status === 'saved' ? 'PDF saved.' : 'PDF sent.');
+    } catch (err) {
+      var code = err && err.code;
+      if (code === 'declined') setStatus('Download cancelled.');
+      else if (code === 'rate_limited') setStatus('Another save prompt is open. Answer it, then try again.', true);
+      else setStatus('Could not create the PDF. Try again.', true);
+    } finally {
+      ph.hidden = true; restoreHidden(); $('#blk-medgrid').classList.remove('one');
+      try {
+        if (PL.active !== origActive) { PL.active = origActive; applyPart(PL.parts[origActive]); }
+        DY.active = Math.min(origDay, DY.days.length - 1); renderDays(); updateDays();
+        restoreCharts(); renderCharts(false);
+      } catch (e2) { /* ignore */ }
+      dirty = origDirty;
+      btn.disabled = false; btn.textContent = 'Download PDF';
+    }
+  }
+
   /* ---------- start ---------- */
-  freshTable(); freshTips(); freshRecords(); freshEnergy(); renderTable(); renderTips(); updateAge(); renderNewSections(); renderPlanBar(); initChartTips(); agAll();
+  freshTable(); freshTips(); freshRecords(); freshEnergy(); freshHabits(); freshDays(); renderTable(); renderTips(); updateAge(); renderNewSections(); renderHabits(); renderDays(); updateDays(); renderPlanBar(); addIncBoxes(); syncIncBoxes(); initChartTips(); agAll();
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { agSoon(); scheduleRecalc(); });
   window.addEventListener('resize', agSoon);
   window.addEventListener('load', agSoon);
 
-  window.__plan = { calcAge: calcAge, bulletize: bulletize, fmtDate: fmtDate, serialize: serialize, stamp: stamp, transformClone: transformClone, tipHasContent: tipHasContent, derive: derive, getPL: function () { return PL; }, captureParsed: captureParsed, energyCalc: energyCalc, recalc: recalc, parsePlan: parsePlan, getR: function () { return R; }, getE: function () { return E; } };
+  window.__plan = { calcAge: calcAge, bulletize: bulletize, fmtDate: fmtDate, serialize: serialize, stamp: stamp, transformClone: transformClone, tipHasContent: tipHasContent, derive: derive, getDY: function () { return DY; }, dayCalc: dayCalc, getINC: function () { return INC; }, getHB: function () { return HB; }, getCF: function () { return CF; }, showView: showView, getPL: function () { return PL; }, captureParsed: captureParsed, energyCalc: energyCalc, recalc: recalc, parsePlan: parsePlan, getR: function () { return R; }, getE: function () { return E; } };
 })();
 </script>
 </body>
