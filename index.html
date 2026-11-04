@@ -537,7 +537,7 @@ div.rich[contenteditable]:empty::before{content:attr(data-ph);opacity:.55;pointe
 <div class="bar" id="bar">
   <div class="bar-t">
     <strong class="bar-name">Meal plan builder</strong>
-    <span class="bar-hint">Everything is editable. Save file keeps all sections, plans and added foods in one file you can reopen.</span>
+    <span class="bar-hint">Everything is editable. Save file keeps all sections, plans and added foods in one file you can reopen. A copy is also downloaded automatically every 15 minutes if something changed.</span>
   </div>
   <div class="bar-a">
     <span id="status" class="status" role="status" aria-live="polite"></span>
@@ -3243,13 +3243,32 @@ div.rich[contenteditable]:empty::before{content:attr(data-ph);opacity:.55;pointe
     }
   }
 
+
+  /* ---------- autosave: download the .json every 15 minutes when something changed ---------- */
+  var AUTOSAVE_MS = 15 * 60 * 1000, autoBusy = false;
+  async function autosaveNow() {
+    if (!dirty || autoBusy || $('#btn-save').disabled || $('#btn-pdf').disabled) return false;
+    autoBusy = true;
+    try {
+      PL.parts[PL.active] = captureParsed();
+      var res = await deliver(fileStem() + '_autosave.json', JSON.stringify(serialize(), null, 2), 'application/json');
+      if (res && res.status === 'saved') {
+        dirty = false;
+        var d = new Date(); setStatus('Autosaved at ' + pad2(d.getHours()) + ':' + pad2(d.getMinutes()) + '.');
+        return true;
+      }
+    } catch (err) { /* a declined or blocked automatic download is retried at the next interval */ }
+    finally { autoBusy = false; }
+    return false;
+  }
+  setInterval(autosaveNow, AUTOSAVE_MS);
   /* ---------- start ---------- */
   freshTable(); freshTips(); freshRecords(); freshEnergy(); freshHabits(); freshDays(); renderTable(); renderTips(); updateAge(); renderNewSections(); renderHabits(); renderDays(); updateDays(); renderPlanBar(); addIncBoxes(); syncIncBoxes(); initChartTips(); agAll();
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { agSoon(); scheduleRecalc(); });
   window.addEventListener('resize', agSoon);
   window.addEventListener('load', agSoon);
 
-  window.__plan = { calcAge: calcAge, bulletize: bulletize, fmtDate: fmtDate, serialize: serialize, stamp: stamp, transformClone: transformClone, tipHasContent: tipHasContent, derive: derive, renderCharts: renderCharts, getDY: function () { return DY; }, dayCalc: dayCalc, getINC: function () { return INC; }, getHB: function () { return HB; }, getCF: function () { return CF; }, showView: showView, getPL: function () { return PL; }, captureParsed: captureParsed, energyCalc: energyCalc, recalc: recalc, parsePlan: parsePlan, getR: function () { return R; }, getE: function () { return E; } };
+  window.__plan = { calcAge: calcAge, bulletize: bulletize, fmtDate: fmtDate, serialize: serialize, stamp: stamp, transformClone: transformClone, tipHasContent: tipHasContent, derive: derive, renderCharts: renderCharts, autosaveNow: function () { return autosaveNow(); }, getDY: function () { return DY; }, dayCalc: dayCalc, getINC: function () { return INC; }, getHB: function () { return HB; }, getCF: function () { return CF; }, showView: showView, getPL: function () { return PL; }, captureParsed: captureParsed, energyCalc: energyCalc, recalc: recalc, parsePlan: parsePlan, getR: function () { return R; }, getE: function () { return E; } };
 })();
 </script>
 </body>
