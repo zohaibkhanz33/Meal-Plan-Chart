@@ -503,6 +503,16 @@ div.rich[contenteditable]:empty::before{content:attr(data-ph);opacity:.55;pointe
 .exporting .cgrid.c3{grid-template-columns:repeat(3,minmax(0,1fr))}
 .orient{display:flex;gap:16px}
 
+/* skinfolds */
+.subh{margin:10px 14px 0;font-family:var(--font-display);font-weight:700;font-size:14px;letter-spacing:.08em;text-transform:uppercase;color:var(--green-deep)}
+.skf{min-width:900px}
+.skf th{font-size:11px;padding:8px 3px}
+.skf .dv{min-width:70px}
+.skd{font-variant-numeric:tabular-nums;font-weight:700;white-space:nowrap;color:var(--green-deep)}
+.cgrid{grid-auto-flow:row dense}
+.cgrid .tall{grid-row:span 2}
+@media (max-width:760px){.cgrid .tall{grid-row:auto}}
+
 /* ---------- export (PDF) state ---------- */
 .exporting{max-width:none;border-radius:0;box-shadow:none;background:#fff}
 .exporting .sheet-in{padding:0}
@@ -639,14 +649,22 @@ div.rich[contenteditable]:empty::before{content:attr(data-ph);opacity:.55;pointe
     <section class="card" id="blk-progress" aria-labelledby="pg-h">
       <h2 class="card-h" id="pg-h">Progress records</h2>
       <div class="tw"><table class="dt" id="rec"></table></div>
+      <h3 class="subh">Skinfolds</h3>
+      <div class="tw"><table class="dt skf" id="skf"></table></div>
       <div class="tact pad no-export">
         <button class="btn" id="btn-addrec" type="button">+ Add record</button>
         <button class="btn" id="btn-sortrec" type="button">Sort by date</button>
       </div>
-      <p class="hint pad no-export">BMI, WHR and WHtR are calculated automatically. BMI and WHtR use the height from Patient details.</p>
+      <p class="hint pad no-export">BMI, WHR, WHtR and the sum of the 8 skinfolds are calculated automatically. BMI and WHtR use the height from Patient details. Each skinfold row belongs to the record with the same date above.</p>
     </section>
 
     <div class="cgrid" id="blk-cg1">
+        <section class="card ccard tall" id="blk-chart-skin" aria-labelledby="ch-skin-h">
+          <h2 class="card-h" id="ch-skin-h">Skinfolds over time</h2>
+          <div class="cwrap"><canvas class="ccanvas" id="c-skin" role="img" aria-label="Line chart of eight skinfold measurements in millimeters over time"></canvas><p class="cempty" id="e-skin" hidden></p><div class="ctip no-export" hidden></div></div>
+          <div class="legend" id="l-skin" hidden></div>
+          <p class="cnote" id="n-skin" hidden></p>
+        </section>
         <section class="card ccard" id="blk-chart-weight" aria-labelledby="ch-weight-h">
           <h2 class="card-h" id="ch-weight-h">Weight over time</h2>
           <div class="cwrap"><canvas class="ccanvas" id="c-weight" role="img" aria-label="Line chart of weight in kilograms over time"></canvas><p class="cempty" id="e-weight" hidden></p><div class="ctip no-export" hidden></div></div>
@@ -671,9 +689,6 @@ div.rich[contenteditable]:empty::before{content:attr(data-ph);opacity:.55;pointe
           <div class="legend" id="l-armcalf" hidden></div>
           <p class="cnote" id="n-armcalf" hidden></p>
         </section>
-    </div>
-
-    <div class="cgrid" id="blk-cg2">
         <section class="card ccard" id="blk-chart-whr" aria-labelledby="ch-whr-h">
           <h2 class="card-h" id="ch-whr-h">Waist-to-hip ratio (WHR)</h2>
           <div class="cwrap"><canvas class="ccanvas" id="c-whr" role="img" aria-label="Line chart of waist-to-hip ratio over time with colored risk ranges"></canvas><p class="cempty" id="e-whr" hidden></p><div class="ctip no-export" hidden></div></div>
@@ -1524,8 +1539,14 @@ div.rich[contenteditable]:empty::before{content:attr(data-ph);opacity:.55;pointe
 
   /* ---------- progress records table ---------- */
   function freshRecords() { R = [newRec(), newRec(), newRec()]; }
-  function newRec() { return { id: nid(), date: '', w: '', waist: '', hip: '', arm: '', calf: '' }; }
-  function recIsEmpty(r) { return !r.date && !r.w && !r.waist && !r.hip && !r.arm && !r.calf; }
+  var SKF = [
+    ['tri', 'Triceps', 'Triceps', 'triceps', '#B92526', 'circle'], ['sub', 'Subscapular', 'Subscapular', 'subscapular', '#14532D', 'square'],
+    ['bic', 'Biceps', 'Biceps', 'biceps', '#D98A1C', 'triangle'], ['ili', 'Iliac crest', 'Iliac crest', 'iliacCrest', '#4F6D8F', 'diamond'],
+    ['sup', 'Supraspinal', 'Supraspinal', 'supraspinal', '#7B3FA0', 'circle'], ['abd', 'Abdominal', 'Abdominal', 'abdominal', '#0E8C8C', 'square'],
+    ['thi', 'Thigh', 'Thigh', 'thigh', '#8C5A2B', 'triangle'], ['leg', 'Leg (calf)', 'Leg (calf)', 'leg', '#D1558A', 'diamond']
+  ];
+  function newRec() { var o = { id: nid(), date: '', w: '', waist: '', hip: '', arm: '', calf: '' }; SKF.forEach(function (f) { o[f[0]] = ''; }); return o; }
+  function recIsEmpty(r) { return !r.date && !r.w && !r.waist && !r.hip && !r.arm && !r.calf && SKF.every(function (f) { return !r[f[0]]; }); }
 
   function cellInput(r, key, type, label, ph) {
     var td = el('td');
@@ -1572,9 +1593,37 @@ div.rich[contenteditable]:empty::before{content:attr(data-ph);opacity:.55;pointe
       body.appendChild(tr);
     });
     tb.appendChild(body);
+    renderSkinfolds();
     if (focusId) {
       var f = tb.querySelector('tr[data-id="' + focusId + '"] input'); if (f) f.focus();
     }
+  }
+  function skfSum(r) {
+    var s = 0;
+    for (var i = 0; i < SKF.length; i++) { var v = pos(pnum(r[SKF[i][0]])); if (!v) return null; s += v; }
+    return s;
+  }
+  function renderSkinfolds() {
+    var tb = $('#skf'); if (!tb) return; tb.replaceChildren();
+    var thead = el('thead'), hr = el('tr');
+    ['Date'].concat(SKF.map(function (f) { return f[1] + ' (mm)'; }), ['Sum of 8 (mm)']).forEach(function (h) { var th = el('th', null, { scope: 'col' }); th.textContent = h; hr.appendChild(th); });
+    thead.appendChild(hr); tb.appendChild(thead);
+    var body = el('tbody');
+    R.forEach(function (r) {
+      var tr = el('tr'); tr.dataset.id = r.id;
+      var dt = el('td', 'skd'); dt.dataset.k = 'skd'; tr.appendChild(dt);
+      SKF.forEach(function (f) { tr.appendChild(cellInput(r, f[0], 'number', f[2] + ' skinfold in millimeters', 'mm')); });
+      var sm = el('td', 'dv'); sm.dataset.k = 'skfsum'; sm.appendChild(el('span', 'dvv')); tr.appendChild(sm);
+      body.appendChild(tr);
+    });
+    tb.appendChild(body); updateSkinfoldCells();
+  }
+  function updateSkinfoldCells() {
+    $$('#skf tbody tr').forEach(function (tr) {
+      var r = R.filter(function (x) { return x.id === tr.dataset.id; })[0]; if (!r) return;
+      tr.querySelector('[data-k=skd]').textContent = r.date ? fmtDate(r.date) : '–';
+      var s = skfSum(r); tr.querySelector('[data-k=skfsum] .dvv').textContent = s === null ? '–' : String(round(s, 1));
+    });
   }
   function setDerived(td, text, band) {
     td.querySelector('.dvv').textContent = text;
@@ -1585,6 +1634,7 @@ div.rich[contenteditable]:empty::before{content:attr(data-ph);opacity:.55;pointe
     }
   }
   function updateRecDerived() {
+    updateSkinfoldCells();
     $$('#rec tbody tr').forEach(function (tr) {
       var r = R.filter(function (x) { return x.id === tr.dataset.id; })[0]; if (!r) return;
       var d = derive(r);
@@ -1629,7 +1679,16 @@ div.rich[contenteditable]:empty::before{content:attr(data-ph);opacity:.55;pointe
     if (!all.length) return false;
 
     var small = W < 520, fs = small ? 11 : 12.5, multi = o.series.length > 1;
-    var m = { l: small ? 46 : 58, r: small ? 14 : 24, t: multi ? 42 : 24, b: 52 };
+    var m = { l: small ? 46 : 58, r: small ? 14 : 24, t: 24, b: 52 }, legRows = [[]];
+    if (multi) {
+      ctx.font = fs + 'px ' + FONT; var rw = 0, availW = W - m.l - m.r + 10;
+      o.series.forEach(function (s) {
+        var w = 16 + ctx.measureText(s.name).width + 22;
+        if (rw + w > availW && legRows[legRows.length - 1].length) { legRows.push([]); rw = 0; }
+        legRows[legRows.length - 1].push(s); rw += w;
+      });
+      m.t = 22 + 20 * legRows.length;
+    }
     var pw = W - m.l - m.r, ph = H - m.t - m.b;
     var tMin = Infinity, tMax = -Infinity, vMin = Infinity, vMax = -Infinity, seen = {}, times = [];
     all.forEach(function (p) {
@@ -1719,10 +1778,13 @@ div.rich[contenteditable]:empty::before{content:attr(data-ph);opacity:.55;pointe
     });
 
     if (multi) {
-      var lx = m.l; ctx.font = fs + 'px ' + FONT; ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
-      o.series.forEach(function (s) {
-        drawMarker(ctx, s.shape, lx + 6, 15, 4.6); ctx.fillStyle = '#fff'; ctx.fill(); ctx.lineWidth = 2.4; ctx.strokeStyle = s.color; ctx.stroke();
-        ctx.fillStyle = INK; ctx.fillText(s.name, lx + 16, 15); lx += 16 + ctx.measureText(s.name).width + 22;
+      ctx.font = fs + 'px ' + FONT; ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+      legRows.forEach(function (row, ri) {
+        var lx = m.l, ly = 15 + 20 * ri;
+        row.forEach(function (s) {
+          drawMarker(ctx, s.shape, lx + 6, ly, 4.6); ctx.fillStyle = '#fff'; ctx.fill(); ctx.lineWidth = 2.4; ctx.strokeStyle = s.color; ctx.stroke();
+          ctx.fillStyle = INK; ctx.fillText(s.name, lx + 16, ly); lx += 16 + ctx.measureText(s.name).width + 22;
+        });
       });
     }
     return true;
@@ -1743,7 +1805,8 @@ div.rich[contenteditable]:empty::before{content:attr(data-ph);opacity:.55;pointe
       arm: pts(function (x) { return pos(pnum(x.r.arm)); }),
       calf: pts(function (x) { return pos(pnum(x.r.calf)); }),
       whr: pts(function (x) { return x.d.whr; }),
-      whtr: pts(function (x) { return x.d.whtr; })
+      whtr: pts(function (x) { return x.d.whtr; }),
+      skf: SKF.map(function (f) { return pts(function (x) { return pos(pnum(x.r[f[0]])); }); })
     };
   }
   function chartSize(canvas, forExport) {
@@ -1751,11 +1814,11 @@ div.rich[contenteditable]:empty::before{content:attr(data-ph);opacity:.55;pointe
     var w = Math.max(260, Math.floor(canvas.parentNode.clientWidth - 24)) || 480;
     return { W: w, H: Math.round(Math.min(340, Math.max(230, w * 0.55))), dpr: Math.min(window.devicePixelRatio || 1, 2.5) };
   }
-  var CHART_IDS = ['weight', 'bmi', 'waisthip', 'armcalf', 'whr', 'whtr'];
+  var CHART_IDS = ['skin', 'weight', 'bmi', 'waisthip', 'armcalf', 'whr', 'whtr'];
   function restoreCharts() {
     CHART_IDS.forEach(function (id, n) {
       var card = $('#blk-chart-' + id);
-      $(n < 4 ? '#blk-cg1' : '#blk-cg2').appendChild(card);
+      $('#blk-cg1').appendChild(card);
       card.style.display = '';
     });
   }
@@ -1779,6 +1842,9 @@ div.rich[contenteditable]:empty::before{content:attr(data-ph);opacity:.55;pointe
         ].filter(function (s) { return s.pts.length; }),
         bands: null, minSpan: 10, unit: 'Measurement (cm)', valUnit: 'cm', fmt: function (v) { return String(round(v, 1)); },
         empty: 'Add a date and an arm or calf measurement to see this chart.' },
+      skin: { series: SKF.map(function (f, i) { return { name: f[1], color: f[4], shape: f[5], pts: D.skf[i] }; }).filter(function (s) { return s.pts.length; }),
+        bands: null, minSpan: 10, unit: 'Skinfold (mm)', valUnit: 'mm', fmt: function (v) { return String(round(v, 1)); },
+        empty: 'Add a date and at least one skinfold in Progress records to see this chart.' },
       whr: { series: S1('WHR', D.whr), bands: whrBands(g), minSpan: 0.1, unit: 'WHR', valUnit: '', fmt: function (v) { return v.toFixed(2); },
         empty: 'Add a date, a waist and a hip measurement in Progress records to see this chart.' },
       whtr: { series: S1('WHtR', D.whtr), bands: WHTR_BANDS, minSpan: 0.1, unit: 'WHtR', valUnit: '', fmt: function (v) { return v.toFixed(2); },
@@ -1802,6 +1868,7 @@ div.rich[contenteditable]:empty::before{content:attr(data-ph);opacity:.55;pointe
       note.textContent = msg; note.hidden = !msg;
       if (has) {
         var sz = chartSize(canvas, forExport);
+        if (id === 'skin') sz.H = forExport ? 700 : Math.round(sz.H * 2 + 150);
         drawChart(canvas, { W: sz.W, H: sz.H, dpr: sz.dpr, series: c.series, bands: c.bands, minSpan: c.minSpan, unit: c.unit, valUnit: c.valUnit, fmt: c.fmt });
       }
     });
@@ -2052,6 +2119,7 @@ div.rich[contenteditable]:empty::before{content:attr(data-ph);opacity:.55;pointe
     { sec: 2, id: 'blk-chart-bmi', name: 'BMI chart' },
     { sec: 2, id: 'blk-chart-waisthip', name: 'Waist and hip chart' },
     { sec: 2, id: 'blk-chart-armcalf', name: 'Arm and calf chart' },
+    { sec: 2, id: 'blk-chart-skin', name: 'Skinfolds chart' },
     { sec: 2, id: 'blk-chart-whr', name: 'WHR chart' },
     { sec: 2, id: 'blk-chart-whtr', name: 'WHtR chart' },
     { sec: 3, id: 'blk-banner', name: 'Plan title' },
@@ -2721,7 +2789,8 @@ div.rich[contenteditable]:empty::before{content:attr(data-ph);opacity:.55;pointe
       }),
       bloodTests: BT.filter(function (b) { return !btEmpty(b); }).map(function (b) { return { date: b.date || '', text: b.text }; }),
       records: R.filter(function (r) { return !recIsEmpty(r); }).map(function (r) {
-        return { date: r.date || '', weightKg: pnum(r.w), waistCm: pnum(r.waist), hipCm: pnum(r.hip), armCm: pnum(r.arm), calfCm: pnum(r.calf) };
+        var sk = {}; SKF.forEach(function (f) { sk[f[3]] = pnum(r[f[0]]); });
+        return { date: r.date || '', weightKg: pnum(r.w), waistCm: pnum(r.waist), hipCm: pnum(r.hip), armCm: pnum(r.arm), calfCm: pnum(r.calf), skinfoldsMm: sk };
       }),
       customFoods: CF.map(function (f) { return { name: f.name, edible: f.edible, kcalPer100g: f.kcal, carbs: f.c, protein: f.p, fat: f.f, fiber: f.fib }; }),
       pdfInclude: { hidden: SEC_IDS.filter(function (id) { return INC[id] === false; }) },
@@ -2809,11 +2878,14 @@ div.rich[contenteditable]:empty::before{content:attr(data-ph);opacity:.55;pointe
     parts.forEach(function (p, i) { if (!p.name.trim()) p.name = 'Plan ' + (i + 1); });
     var rec = (Array.isArray(d.records) ? d.records.slice(0, 300) : []).map(function (r) {
       r = r && typeof r === 'object' ? r : {};
-      return {
+      var o = {
         id: nid(), date: typeof r.date === 'string' && dateTime(r.date) !== null ? r.date : '',
         w: inRange(r.weightKg, 20, 400), waist: inRange(r.waistCm, 5, 300), hip: inRange(r.hipCm, 5, 300),
         arm: inRange(r.armCm, 5, 300), calf: inRange(r.calfCm, 5, 300)
       };
+      var sk = r.skinfoldsMm && typeof r.skinfoldsMm === 'object' ? r.skinfoldsMm : {};
+      SKF.forEach(function (f) { o[f[0]] = inRange(sk[f[3]], 0.1, 150); });
+      return o;
     });
     var hid = {};
     var pi = d.pdfInclude && typeof d.pdfInclude === 'object' ? d.pdfInclude : {};
