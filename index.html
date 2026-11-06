@@ -512,6 +512,21 @@ div.rich[contenteditable]:empty::before{content:attr(data-ph);opacity:.55;pointe
 .exporting #blk-skf,.exporting #blk-chart-skin{margin-top:0}
 .exporting #blk-chart-skin .cwrap{padding-bottom:12px}
 
+/* progress photos */
+.phd{font-size:13px;color:var(--muted)}
+.phg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;padding:12px 14px 14px}
+@media (max-width:640px){.phg{grid-template-columns:minmax(0,1fr)}}
+.phs{display:grid;gap:6px;align-content:start;min-width:0}
+.phl{font-family:var(--font-display);font-weight:700;font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--green-deep);text-align:center}
+.phf{aspect-ratio:3/4;background:#F4F8F1 center/contain no-repeat;border:1.5px dashed var(--green-line);border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:14px}
+.pha{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.pha .btn{padding:5px 12px;font-size:13px}
+.exporting .phf{border-style:solid}
+#blk-photos{margin-top:16px}
+.exporting #blk-photos{margin-top:0;border:0;padding:0}
+.exporting #blk-photos .card-h{display:none}
+.exporting .phc{margin-bottom:12px}
+
 /* ---------- export (PDF) state ---------- */
 .exporting{max-width:none;border-radius:0;box-shadow:none;background:#fff}
 .exporting .sheet-in{padding:0}
@@ -590,8 +605,6 @@ div.rich[contenteditable]:empty::before{content:attr(data-ph);opacity:.55;pointe
               <option value="Manage a health condition">Manage a health condition</option>
               <option value="Other">Other</option>
             </select></div>
-          <div class="pr stack"><label for="f-cond">Conditions and other details</label>
-            <textarea class="fld ag rt" id="f-cond" rows="2" placeholder="Medical conditions, allergies, preferences, anything relevant"></textarea></div>
         </div>
       </div>
 
@@ -713,6 +726,16 @@ div.rich[contenteditable]:empty::before{content:attr(data-ph);opacity:.55;pointe
           <div class="legend" id="l-skin" hidden></div>
           <p class="cnote" id="n-skin" hidden></p>
         </section>
+
+    <section class="card" id="blk-photos" aria-labelledby="ph-h">
+      <h2 class="card-h" id="ph-h">Progress photos</h2>
+      <div class="habs" id="photos"></div>
+      <div class="tact pad no-export">
+        <button class="btn" id="btn-addph" type="button">+ Add date</button>
+        <button class="btn" id="btn-sortph" type="button">Sort by date</button>
+      </div>
+      <p class="hint pad no-export">Choose the date and upload the front, side and back photos. Photos are resized to keep the saved file light and are stored inside it.</p>
+    </section>
 
     </div>
 
@@ -1370,7 +1393,7 @@ div.rich[contenteditable]:empty::before{content:attr(data-ph);opacity:.55;pointe
       ag(t);
     });
   });
-  ['f-notes', 'f-cond'].forEach(function (id) {
+  ['f-notes'].forEach(function (id) {
     var t = document.getElementById(id); t.addEventListener('input', function () { ag(t); });
   });
 
@@ -2135,7 +2158,7 @@ div.rich[contenteditable]:empty::before{content:attr(data-ph);opacity:.55;pointe
   function renderNewSections() {
     renderRecords(); renderEnergyInputs(); renderMeals(); renderMacros(); recalc();
   }
-  function hasRecordData() { return R.some(function (r) { return !recIsEmpty(r); }) || SK.some(function (s) { return !skEmpty(s); }); }
+  function hasRecordData() { return R.some(function (r) { return !recIsEmpty(r); }) || SK.some(function (s) { return !skEmpty(s); }) || PHOTOS.some(function (x) { return !phEmpty(x); }); }
 
   /* ---------- sections: sidebar views and PDF-include ticks ---------- */
   var VIEW = 1;
@@ -2156,6 +2179,7 @@ div.rich[contenteditable]:empty::before{content:attr(data-ph);opacity:.55;pointe
     { sec: 2, id: 'blk-chart-whtr', name: 'WHtR chart' },
     { sec: 2, id: 'blk-skf', name: 'Skinfolds table' },
     { sec: 2, id: 'blk-chart-skin', name: 'Skinfolds chart' },
+    { sec: 2, id: 'blk-photos', name: 'Progress photos' },
     { sec: 3, id: 'blk-banner', name: 'Plan title' },
     { sec: 3, id: 'blk-energy', name: 'Energy expenditure calculations' },
     { sec: 3, id: 'blk-meals', name: 'Energy distribution by meals' },
@@ -2248,7 +2272,7 @@ div.rich[contenteditable]:empty::before{content:attr(data-ph);opacity:.55;pointe
   var HB = [];
   function newHab() { var o = { id: nid(), date: '' }; HAB_FIELDS.forEach(function (f) { o[f[0]] = ''; }); return o; }
   function habEmpty(h) { return !h.date && HAB_FIELDS.every(function (f) { return !String(h[f[0]]).trim(); }); }
-  function freshHabits() { HB = [newHab()]; freshBlood(); freshSk(); }
+  function freshHabits() { HB = [newHab()]; freshBlood(); freshSk(); freshPh(); }
   function renderHabits(focusId) {
     var box = $('#hab'); box.replaceChildren();
     HB.forEach(function (h) {
@@ -2270,7 +2294,7 @@ div.rich[contenteditable]:empty::before{content:attr(data-ph);opacity:.55;pointe
     });
     agSoon();
     if (focusId) { var f = box.querySelector('.habc[data-id="' + focusId + '"] input'); if (f) f.focus(); }
-    renderBlood(); renderSkinfolds();
+    renderBlood(); renderSkinfolds(); renderPhotos();
   }
   $('#btn-addhab').addEventListener('click', function () { var h = newHab(); HB.push(h); markDirty(); renderHabits(h.id); setStatus(''); });
   $('#btn-sorthab').addEventListener('click', function () {
@@ -2309,6 +2333,72 @@ div.rich[contenteditable]:empty::before{content:attr(data-ph);opacity:.55;pointe
       if (x === null && y === null) return 0; if (x === null) return 1; if (y === null) return -1; return x - y;
     });
     markDirty(); renderBlood(); setStatus('Dates sorted.');
+  });
+
+  /* ---------- progress photos: front, side and back for each date ---------- */
+  var PHOTOS = [], PH_SLOTS = [['front', 'Front'], ['side', 'Side'], ['back', 'Back']];
+  function newPh() { return { id: nid(), date: '', front: '', side: '', back: '' }; }
+  function phEmpty(x) { return !x.date && !x.front && !x.side && !x.back; }
+  function freshPh() { PHOTOS = [newPh()]; }
+  function readPhoto(file, cb) {
+    var url = URL.createObjectURL(file), img = new Image();
+    img.onload = function () {
+      var max = 1200, sc = Math.min(1, max / Math.max(img.naturalWidth, img.naturalHeight)), w = Math.max(1, Math.round(img.naturalWidth * sc)), h = Math.max(1, Math.round(img.naturalHeight * sc));
+      var c = document.createElement('canvas'); c.width = w; c.height = h;
+      var x = c.getContext('2d'); x.fillStyle = '#fff'; x.fillRect(0, 0, w, h); x.drawImage(img, 0, 0, w, h);
+      URL.revokeObjectURL(url); cb(c.toDataURL('image/jpeg', 0.85));
+    };
+    img.onerror = function () { URL.revokeObjectURL(url); cb(null); };
+    img.src = url;
+  }
+  function renderPhotos(focusId) {
+    var box = $('#photos'); if (!box) return; box.replaceChildren();
+    PHOTOS.forEach(function (x) {
+      var c = el('div', 'habc phc', { id: 'phe-' + x.id }); c.dataset.id = x.id;
+      var head = el('div', 'habh'), tt = el('span', 'habl'); tt.textContent = 'Progress photos';
+      var dl = el('span', 'phd'); dl.textContent = 'Date';
+      var d = el('input', 'fld', { type: 'date', 'aria-label': 'Photo date' }); d.value = x.date;
+      d.addEventListener('input', function () { x.date = d.value; });
+      var rm = el('button', 'rmt no-export', { type: 'button', 'aria-label': 'Remove this date', title: 'Remove this date' }); rm.textContent = '×'; rm.disabled = PHOTOS.length <= 1;
+      rm.addEventListener('click', function () { PHOTOS = PHOTOS.filter(function (q) { return q.id !== x.id; }); markDirty(); renderPhotos(); setStatus('Photo entry removed.'); });
+      head.appendChild(tt); head.appendChild(dl); head.appendChild(d); head.appendChild(rm); c.appendChild(head);
+      var g = el('div', 'phg');
+      PH_SLOTS.forEach(function (s) {
+        var key = s[0], col = el('div', 'phs'), t = el('div', 'phl'); t.textContent = s[1];
+        var fr = el('div', 'phf');
+        if (x[key]) { fr.style.backgroundImage = 'url("' + x[key] + '")'; fr.setAttribute('role', 'img'); fr.setAttribute('aria-label', s[1] + ' photo'); }
+        else { var no = el('span', 'phn no-export'); no.textContent = 'No photo'; fr.appendChild(no); }
+        var act = el('div', 'pha no-export');
+        var inp = el('input', null, { type: 'file', accept: 'image/*', hidden: '', 'aria-label': 'Upload ' + s[1] + ' photo' });
+        var up = el('button', 'btn', { type: 'button' }); up.textContent = x[key] ? 'Replace' : 'Upload';
+        up.addEventListener('click', function () { inp.click(); });
+        inp.addEventListener('change', function () {
+          var f = inp.files && inp.files[0]; if (!f) return;
+          setStatus('Processing photo...');
+          readPhoto(f, function (data) {
+            if (!data) { setStatus('Could not read that image. Use a JPG or PNG file.', true); return; }
+            x[key] = data; markDirty(); renderPhotos(); setStatus(s[1] + ' photo added.');
+          });
+        });
+        act.appendChild(up); act.appendChild(inp);
+        if (x[key]) {
+          var del = el('button', 'btn', { type: 'button' }); del.textContent = 'Remove';
+          del.addEventListener('click', function () { x[key] = ''; markDirty(); renderPhotos(); setStatus(s[1] + ' photo removed.'); });
+          act.appendChild(del);
+        }
+        col.appendChild(t); col.appendChild(fr); col.appendChild(act); g.appendChild(col);
+      });
+      c.appendChild(g); box.appendChild(c);
+    });
+    if (focusId) { var f = box.querySelector('.phc[data-id="' + focusId + '"] input'); if (f) f.focus(); }
+  }
+  $('#btn-addph').addEventListener('click', function () { var x = newPh(); PHOTOS.push(x); markDirty(); renderPhotos(x.id); setStatus(''); });
+  $('#btn-sortph').addEventListener('click', function () {
+    PHOTOS.sort(function (a, b) {
+      var x = dateTime(a.date), y = dateTime(b.date);
+      if (x === null && y === null) return 0; if (x === null) return 1; if (y === null) return -1; return x - y;
+    });
+    markDirty(); renderPhotos(); setStatus('Photo entries sorted by date.');
   });
 
   /* ---------- food database (built in, hidden; user additions are kept) ---------- */
@@ -2813,8 +2903,7 @@ div.rich[contenteditable]:empty::before{content:attr(data-ph);opacity:.55;pointe
         heightCm: num('#f-height'),
         heightMm: num('#f-height-mm') || 0,
         currentWeightKg: num('#f-cw'),
-        goal: $('#f-goal').value,
-        conditions: $('#f-cond').value
+        goal: $('#f-goal').value
       },
       history: readHistory(),
       weights: { highestKg: num('#w-high'), lowestKg: num('#w-low'), previousDiets: $('#w-diets').value },
@@ -2823,6 +2912,7 @@ div.rich[contenteditable]:empty::before{content:attr(data-ph);opacity:.55;pointe
       }),
       bloodTests: BT.filter(function (b) { return !btEmpty(b); }).map(function (b) { return { date: b.date || '', text: b.text }; }),
       skinfolds: SK.filter(function (s) { return !skEmpty(s); }).map(function (s) { var o = { date: s.date || '' }; SKF.forEach(function (f) { o[f[3]] = pnum(s[f[0]]); }); return o; }),
+      photos: PHOTOS.filter(function (x) { return !phEmpty(x); }).map(function (x) { return { date: x.date || '', front: x.front, side: x.side, back: x.back }; }),
       records: R.filter(function (r) { return !recIsEmpty(r); }).map(function (r) {
         return { date: r.date || '', weightKg: pnum(r.w), waistCm: pnum(r.waist), hipCm: pnum(r.hip), armCm: pnum(r.arm), calfCm: pnum(r.calf) };
       }),
@@ -2948,6 +3038,13 @@ div.rich[contenteditable]:empty::before{content:attr(data-ph);opacity:.55;pointe
       SKF.forEach(function (f) { o[f[0]] = inRange(s[f[3]], 0.1, 150); });
       return o;
     });
+    var PHRE = /^data:image\/(?:jpeg|png|webp);base64,[A-Za-z0-9+\/=]+$/;
+    var phs = (Array.isArray(d.photos) ? d.photos.slice(0, 60) : []).map(function (x) {
+      x = x && typeof x === 'object' ? x : {};
+      var o = newPh(); o.date = typeof x.date === 'string' && dateTime(x.date) !== null ? x.date : '';
+      ['front', 'side', 'back'].forEach(function (k) { o[k] = typeof x[k] === 'string' && x[k].length < 8000000 && PHRE.test(x[k]) ? x[k] : ''; });
+      return o;
+    });
     var cfs = (Array.isArray(d.customFoods) ? d.customFoods.slice(0, 5000) : []).map(function (f) {
       f = f && typeof f === 'object' ? f : {};
       return cleanFood({ name: f.name, edible: f.edible, kcal: f.kcalPer100g, c: f.carbs, p: f.protein, f: f.fat, fib: f.fiber });
@@ -2957,13 +3054,13 @@ div.rich[contenteditable]:empty::before{content:attr(data-ph);opacity:.55;pointe
         name: str(pt.name, 120),
         dob: typeof pt.dateOfBirth === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(pt.dateOfBirth) ? pt.dateOfBirth : '',
         gender: pt.gender, height: pt.heightCm, heightMm: pt.heightMm,
-        cw: inRange(pt.currentWeightKg, 20, 400),
-        conditions: str(pt.conditions, 8000)
+        cw: inRange(pt.currentWeightKg, 20, 400)
       },
       history: history,
       weights: { high: inRange(wt.highestKg, 20, 400), low: inRange(wt.lowestKg, 20, 400), diets: str(wt.previousDiets, 8000) },
       habits: hab.length ? hab : [newHab()],
       bloodTests: bts.length ? bts : [newBt()],
+      photos: phs.length ? phs : [newPh()],
       skinfolds: sks.length ? sks : [newSk()],
       records: rec.length ? rec : [newRec()],
       customFoods: cfs,
@@ -3010,10 +3107,9 @@ div.rich[contenteditable]:empty::before{content:attr(data-ph);opacity:.55;pointe
     setSelectValue('f-height-mm', p.patient.heightMm === undefined ? 0 : p.patient.heightMm);
     if (!$('#f-height-mm').value) $('#f-height-mm').value = '0';
     $('#f-cw').value = p.patient.cw;
-    $('#f-cond').value = p.patient.conditions;
     writeHistory(p.history);
     $('#w-high').value = p.weights.high; $('#w-low').value = p.weights.low; $('#w-diets').value = p.weights.diets;
-    HB = p.habits; BT = p.bloodTests; SK = p.skinfolds; R = p.records;
+    HB = p.habits; BT = p.bloodTests; SK = p.skinfolds; PHOTOS = p.photos; R = p.records;
     mergeCF(p.customFoods);
     INC = p.inc;
     PL = { parts: p.parts, active: p.active };
@@ -3067,7 +3163,7 @@ div.rich[contenteditable]:empty::before{content:attr(data-ph);opacity:.55;pointe
     freshTable(); freshTips(); freshEnergy(); freshDays();
   }
   function resetAll() {
-    ['f-name', 'f-dob', 'f-age', 'f-gender', 'f-height', 'f-cw', 'f-cond', 'w-high', 'w-low', 'w-diets'].forEach(function (id) { document.getElementById(id).value = ''; });
+    ['f-name', 'f-dob', 'f-age', 'f-gender', 'f-height', 'f-cw', 'w-high', 'w-low', 'w-diets'].forEach(function (id) { document.getElementById(id).value = ''; });
     $('#f-height-mm').value = '0';
     writeHistory(null);
     freshRecords(); freshHabits(); INC = {};
@@ -3089,7 +3185,7 @@ div.rich[contenteditable]:empty::before{content:attr(data-ph);opacity:.55;pointe
   fileIn.addEventListener('change', function () {
     var f = fileIn.files && fileIn.files[0];
     if (!f) return;
-    if (f.size > 2 * 1024 * 1024) { setStatus('That file is too large to be a saved meal plan.', true); return; }
+    if (f.size > 120 * 1024 * 1024) { setStatus('That file is too large to be a saved meal plan.', true); return; }
     var rd = new FileReader();
     rd.onerror = function () { setStatus('Could not read that file. Try again.', true); };
     rd.onload = function () {
@@ -3280,7 +3376,13 @@ div.rich[contenteditable]:empty::before{content:attr(data-ph);opacity:.55;pointe
           await snap(['blk-skf'], first2 ? pageBreaks : true);
           restoreHidden(); first2 = false;
         }
-        if (!$('#c-skin').hidden && incOn('blk-chart-skin')) await snap(['blk-chart-skin'], first2 ? pageBreaks : true);
+        if (!$('#c-skin').hidden && incOn('blk-chart-skin')) { await snap(['blk-chart-skin'], first2 ? pageBreaks : true); first2 = false; }
+        if (incOn('blk-photos') && PHOTOS.some(function (x) { return !phEmpty(x); })) {
+          var phIds = [];
+          PHOTOS.forEach(function (x) { var nd = $('#phe-' + x.id); if (!nd) return; if (phEmpty(x)) { hiddenNodes.push([nd, nd.style.display]); nd.style.display = 'none'; } else phIds.push('phe-' + x.id); });
+          await snap(phIds, first2 ? pageBreaks : true);
+          restoreHidden();
+        }
       }
 
       /* section 3: each selected plan */
@@ -3344,6 +3446,7 @@ div.rich[contenteditable]:empty::before{content:attr(data-ph);opacity:.55;pointe
       var res = await deliver(fileStem() + '.pdf', pdf.output('arraybuffer'), 'application/pdf');
       setStatus(res && res.status === 'saved' ? 'PDF saved.' : 'PDF sent.');
     } catch (err) {
+      console.error('EXPORT', err && (err.stack || err));
       var code = err && err.code;
       if (code === 'declined') setStatus('Download cancelled.');
       else if (code === 'rate_limited') setStatus('Another save prompt is open. Answer it, then try again.', true);
