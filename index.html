@@ -526,6 +526,7 @@ div.rich[contenteditable]:empty::before{content:attr(data-ph);opacity:.55;pointe
 .exporting #blk-photos{margin-top:0;border:0;padding:0}
 .exporting #blk-photos .card-h{display:none}
 .exporting .phc{margin-bottom:12px}
+.lang{padding:6px 8px;font:inherit;cursor:pointer;min-height:34px}
 
 /* ---------- export (PDF) state ---------- */
 .exporting{max-width:none;border-radius:0;box-shadow:none;background:#fff}
@@ -565,6 +566,7 @@ div.rich[contenteditable]:empty::before{content:attr(data-ph);opacity:.55;pointe
   </div>
   <div class="bar-a">
     <span id="status" class="status" role="status" aria-live="polite"></span>
+    <select class="btn lang" id="lang" aria-label="Language"><option value="en">English</option><option value="es">Español</option></select>
     <button class="btn" id="btn-new" type="button">New file</button>
     <button class="btn" id="btn-open" type="button">Open file</button>
     <button class="btn" id="btn-save" type="button">Save file</button>
@@ -915,6 +917,167 @@ div.rich[contenteditable]:empty::before{content:attr(data-ph);opacity:.55;pointe
     { id: 'exercise', text: 'Exercise 1 hour daily (5 times a week).', icon: 'exercise' }
   ];
   function recById(id) { for (var i = 0; i < RECS.length; i++) if (RECS[i].id === id) return RECS[i]; return null; }
+
+  /* ---------- language: English / Español ---------- */
+  var LANG = 'en';
+  var ES_DICT = {"Meal plan builder": "Creador de planes de comidas", "Everything is editable. Save file keeps all sections, plans and added foods in one file you can reopen. A copy is also downloaded automatically every 15 minutes if something changed.": "Todo es editable. «Guardar archivo» conserva todas las secciones, planes y alimentos añadidos en un solo archivo que puedes reabrir. Además, se descarga una copia automática cada 15 minutos si hay cambios.", "New file": "Archivo nuevo", "Open file": "Abrir archivo", "Save file": "Guardar archivo", "Download PDF": "Descargar PDF", "Sections": "Secciones", "Include section 1 in the PDF": "Incluir la sección 1 en el PDF", "Include section 2 in the PDF": "Incluir la sección 2 en el PDF", "Include section 3 in the PDF": "Incluir la sección 3 en el PDF", "Clinical History": "Historia clínica", "Progress records": "Registros de progreso", "Energy & meal plan": "Energía y plan de comidas", "Download this section as a PDF": "Descargar esta sección como PDF", "PDF": "PDF", "Tick a section or a box to include it in the PDF. The PDF button next to a section downloads only that section.": "Marca una sección o un cuadro para incluirlo en el PDF. El botón PDF junto a una sección descarga solo esa sección.", "Patient details": "Datos del paciente", "Include in the PDF": "Incluir en el PDF", "Name": "Nombre", "Full name": "Nombre completo", "Date of birth": "Fecha de nacimiento", "Age": "Edad", "Automatic": "Automática", "Gender": "Sexo", "Select": "Seleccionar", "Male": "Hombre", "Female": "Mujer", "Height": "Altura", "Height, centimeters": "Altura, centímetros", "Height, additional millimeters": "Altura, milímetros adicionales", "Goal": "Objetivo", "Lose body fat/weight": "Perder grasa corporal/peso", "Build muscle": "Ganar masa muscular", "Improve overall health and energy": "Mejorar la salud general y la energía", "Manage a health condition": "Manejar una condición de salud", "Other": "Otro", "Zohaib Khan logo: a watermelon slice shaped like the letter Z": "Logotipo de Zohaib Khan: una rodaja de sandía con forma de letra Z", "Nutritionist & Dietitian": "Nutricionista y Dietista", "Medical history: personal": "Historial médico: personal", "Allergies": "Alergias", "Intolerances": "Intolerancias", "Digestive diseases (diarrhea, constipation, etc.)": "Enfermedades digestivas (diarrea, estreñimiento, etc.)", "Pregnant / recent delivery / breastfeeding": "Embarazo / parto reciente / lactancia", "Menarche / menopause": "Menarquia / menopausia", "Other diseases (HTA, DMT1/DMT2, etc.)": "Otras enfermedades (HTA, DM1/DM2, etc.)", "Medical treatments": "Tratamientos médicos", "Recent interventions": "Intervenciones recientes", "Other info": "Otra información", "Medical history: family": "Historial médico: familiar", "Hypertension (HTA)": "Hipertensión (HTA)", "Diabetes (DMT1/DMT2)": "Diabetes (DM1/DM2)", "Obesity": "Obesidad", "Heart attacks": "Infartos", "Weights & previous diets": "Pesos y dietas previas", "Current weight": "Peso actual", "Highest weight": "Peso máximo", "Lowest weight": "Peso mínimo", "e.g. 72.5": "p. ej. 72,5", "e.g. 95": "p. ej. 95", "e.g. 60": "p. ej. 60", "Previous diets (fat burners, pills, medications, etc.)": "Dietas previas (quemagrasas, pastillas, medicamentos, etc.)", "Describe previous diets, supplements and medications used for weight management": "Describe las dietas, suplementos y medicamentos usados anteriormente para el control del peso", "Habits & lifestyle log": "Registro de hábitos y estilo de vida", "Date": "Fecha", "Entry date": "Fecha de la entrada", "Remove this date": "Quitar esta fecha", "Habits": "Hábitos", "Exercise (type and frequency)": "Ejercicio (tipo y frecuencia)", "Walking (daily steps)": "Caminar (pasos diarios)", "Sleep hours": "Horas de sueño", "Work schedule": "Horario de trabajo", "+ Add date": "+ Añadir fecha", "Sort by date": "Ordenar por fecha", "Each date has its own box: note habits, exercise (type and frequency), walking (daily steps), sleep hours, work schedule and anything else relevant.": "Cada fecha tiene su propio cuadro: anota hábitos, ejercicio (tipo y frecuencia), caminar (pasos diarios), horas de sueño, horario de trabajo y cualquier otro dato relevante.", "Blood test & other reports log": "Registro de análisis de sangre y otros informes", "Report date": "Fecha del informe", "Blood test and other reports": "Análisis de sangre y otros informes", "Write results, reference values, dates of studies, imaging or any other report": "Escribe resultados, valores de referencia, fechas de estudios, imágenes o cualquier otro informe", "Each date has one free-text box: write blood test results, imaging or any other report. Select text to make it bold, underlined or coloured.": "Cada fecha tiene un cuadro de texto libre: escribe resultados de análisis, imágenes o cualquier otro informe. Selecciona texto para ponerlo en negrita, subrayado o de color.", "Weight (kg)": "Peso (kg)", "BMI": "IMC", "Waist (cm)": "Cintura (cm)", "Hip (cm)": "Cadera (cm)", "Arm (cm)": "Brazo (cm)", "Calf (cm)": "Pantorrilla (cm)", "WHR": "ICC", "WHtR": "ICA", "Record date": "Fecha del registro", "Weight in kilograms": "Peso en kilogramos", "Waist in centimeters": "Cintura en centímetros", "Hip in centimeters": "Cadera en centímetros", "Arm in centimeters": "Brazo en centímetros", "Calf in centimeters": "Pantorrilla en centímetros", "Remove this record": "Quitar este registro", "Remove": "Quitar", "+ Add record": "+ Añadir registro", "BMI, WHR and WHtR are calculated automatically. BMI and WHtR use the height from Patient details.": "El IMC, el ICC y el ICA se calculan automáticamente. El IMC y el ICA usan la altura de los datos del paciente.", "Weight over time": "Peso a lo largo del tiempo", "Line chart of weight in kilograms over time": "Gráfico de líneas del peso en kilogramos a lo largo del tiempo", "BMI over time": "IMC a lo largo del tiempo", "Line chart of body mass index over time with colored BMI ranges": "Gráfico de líneas del índice de masa corporal con rangos de IMC en colores", "Waist and hip over time": "Cintura y cadera a lo largo del tiempo", "Line chart of waist and hip measurements in centimeters over time": "Gráfico de líneas de cintura y cadera en centímetros a lo largo del tiempo", "Arm and calf over time": "Brazo y pantorrilla a lo largo del tiempo", "Line chart of arm and calf measurements in centimeters over time": "Gráfico de líneas de brazo y pantorrilla en centímetros a lo largo del tiempo", "Waist-to-hip ratio (WHR)": "Índice cintura-cadera (ICC)", "Line chart of waist-to-hip ratio over time with colored risk ranges": "Gráfico de líneas del índice cintura-cadera con rangos de riesgo en colores", "Waist-to-height ratio (WHtR)": "Índice cintura-altura (ICA)", "Line chart of waist-to-height ratio over time with colored risk ranges": "Gráfico de líneas del índice cintura-altura con rangos de riesgo en colores", "Skinfolds": "Pliegues cutáneos", "Triceps (mm)": "Tríceps (mm)", "Subscapular (mm)": "Subescapular (mm)", "Biceps (mm)": "Bíceps (mm)", "Iliac crest (mm)": "Cresta ilíaca (mm)", "Supraspinal (mm)": "Supraespinal (mm)", "Abdominal (mm)": "Abdominal (mm)", "Thigh (mm)": "Muslo (mm)", "Leg (calf) (mm)": "Pierna (pantorrilla) (mm)", "Sum of 8 (mm)": "Suma de 8 (mm)", "Skinfold date": "Fecha del pliegue", "Triceps skinfold in millimeters": "Pliegue del tríceps en milímetros", "Subscapular skinfold in millimeters": "Pliegue subescapular en milímetros", "Biceps skinfold in millimeters": "Pliegue del bíceps en milímetros", "Iliac crest skinfold in millimeters": "Pliegue de la cresta ilíaca en milímetros", "Supraspinal skinfold in millimeters": "Pliegue supraespinal en milímetros", "Abdominal skinfold in millimeters": "Pliegue abdominal en milímetros", "Thigh skinfold in millimeters": "Pliegue del muslo en milímetros", "Leg (calf) skinfold in millimeters": "Pliegue de la pierna (pantorrilla) en milímetros", "Remove this skinfold record": "Quitar este registro de pliegues", "Pick the date of each skinfold assessment and enter the eight folds in millimeters. The sum of the 8 is calculated when all of them are filled.": "Elige la fecha de cada valoración de pliegues e introduce los ocho pliegues en milímetros. La suma de los 8 se calcula cuando todos están rellenos.", "Skinfolds over time": "Pliegues cutáneos a lo largo del tiempo", "Line chart of eight skinfold measurements in millimeters over time": "Gráfico de líneas de ocho pliegues cutáneos en milímetros a lo largo del tiempo", "Progress photos": "Fotos de progreso", "Photo date": "Fecha de la foto", "Front": "Frente", "Side": "Lado", "Back": "Espalda", "No photo": "Sin foto", "Upload": "Subir", "Upload Front photo": "Subir foto de frente", "Upload Side photo": "Subir foto de lado", "Upload Back photo": "Subir foto de espalda", "Choose the date and upload the front, side and back photos. Photos are resized to keep the saved file light and are stored inside it.": "Elige la fecha y sube las fotos de frente, de lado y de espalda. Las fotos se redimensionan para que el archivo guardado sea ligero y se guardan dentro de él.", "Meal plans": "Planes de comidas", "Copy the current plan into a new one": "Copiar el plan actual en uno nuevo", "+ Duplicate plan": "+ Duplicar plan", "Start a new plan with an empty table": "Empezar un plan nuevo con una tabla vacía", "+ Blank plan": "+ Plan en blanco", "Plan name": "Nombre del plan", "Plan date": "Fecha del plan", "Delete plan": "Eliminar plan", "Goal, meal table, energy, notes and recommendations belong to each plan. Patient details, clinical history and progress records are shared.": "El objetivo, la tabla de comidas, la energía, las notas y las recomendaciones pertenecen a cada plan. Los datos del paciente, la historia clínica y los registros de progreso son compartidos.", "Plan title": "Título del plan", "7-Day Meal Plan": "Plan de comidas de 7 días", "Add a subtitle, for example the daily energy target": "Añade un subtítulo, por ejemplo el objetivo energético diario", "Plan subtitle": "Subtítulo del plan", "Energy expenditure calculations": "Cálculos de gasto energético", "Activity factor (AF)": "Factor de actividad (FA)", "e.g. 1.55": "p. ej. 1,55", "Calorie deficit": "Déficit calórico", "Missing for the calculation: gender, date of birth, height, weight.": "Faltan para el cálculo: sexo, fecha de nacimiento, altura, peso.", "BMR": "TMB", "Harris-Benedict (1919)": "Harris-Benedict (1919)", "TEF": "ETA", "10% of BMR": "10 % de la TMB", "TDEE": "GET", "BMR × AF + TEF": "TMB × FA + ETA", "kcal per day": "kcal al día", "Energy distribution by meals": "Distribución de la energía por comidas", "Meal": "Comida", "Min %": "% mín.", "Max %": "% máx.", "Energy (kcal)": "Energía (kcal)", "Meal name": "Nombre de la comida", "Remove this meal": "Quitar esta comida", "TOTAL": "TOTAL", "+ Add meal": "+ Añadir comida", "Type the minimum and maximum percentage for each meal.": "Escribe el porcentaje mínimo y máximo de cada comida.", "Energy distribution by macros": "Distribución de la energía por macronutrientes", "Macros in grams": "Macronutrientes en gramos", "Macro": "Macronutriente", "Grams (g)": "Gramos (g)", "Carbohydrates": "Hidratos de carbono", "Protein": "Proteínas", "Lipids": "Lípidos", "Fiber goal (g/day)": "Objetivo de fibra (g/día)", "e.g. 25-30 g": "p. ej. 25-30 g", "Daily meal plans": "Planes de comidas diarios", "Days": "Días", "+ Add day": "+ Añadir día", "Day name": "Nombre del día", "Duplicate day": "Duplicar día", "Delete day": "Eliminar día", "Include this day in the PDF": "Incluir este día en el PDF", "Remove meal": "Quitar comida", "Food": "Alimento", "Amount (g)": "Cantidad (g)", "Edible portion": "Porción comestible", "Carbs (g)": "Hidratos (g)", "Protein (g)": "Proteínas (g)", "Fat (g)": "Grasas (g)", "Fiber (g)": "Fibra (g)", "Search food": "Buscar alimento", "Amount in grams": "Cantidad en gramos", "Remove this food": "Quitar este alimento", "+ Add food": "+ Añadir alimento", "Energy": "Energía", "Carbs": "Hidratos", "Fat": "Grasas", "Fiber": "Fibra", "TOTAL (g)": "TOTAL (g)", "TOTAL (kcal)": "TOTAL (kcal)", "TOTAL (%)": "TOTAL (%)", "Energy used by meal": "Energía usada por comida", "Add foods and amounts to see this chart.": "Añade alimentos y cantidades para ver este gráfico.", "Macronutrient proportions": "Proporciones de macronutrientes", "Manage food database": "Gestionar base de datos de alimentos", "Search foods by name and type the amount in grams. Energy and macros are calculated from the food database, using the edible portion.": "Busca alimentos por nombre y escribe la cantidad en gramos. La energía y los macronutrientes se calculan a partir de la base de datos de alimentos, usando la porción comestible.", "Weekly overview": "Resumen semanal", "Fill from daily plans": "Rellenar desde los planes diarios", "No dashes": "Sin guiones", "Builds this table in English from the foods and amounts in the daily meal plans (food names are translated). You can still edit every cell.": "Genera esta tabla a partir de los alimentos y cantidades de los planes diarios, con los nombres de los alimentos en español. Puedes seguir editando cada celda.", "Row header title": "Título del encabezado de fila", "Column header": "Encabezado de columna", "Row header": "Encabezado de fila", "Foods and portions, one per line": "Alimentos y porciones, uno por línea", "Rows are days, columns are meals. Rename any header, and use × to remove one.": "Las filas son días y las columnas son comidas. Cambia el nombre de cualquier encabezado y usa × para quitarlo.", "Comments & notes": "Comentarios y notas", "Comments and notes": "Comentarios y notas", "Add comments, instructions or details for the patient": "Añade comentarios, instrucciones o detalles para el paciente", "Recommendations": "Recomendaciones", "Icons": "Iconos", "Oil spray bottle": "Pulverizador de aceite", "Kitchen scale": "Báscula de cocina", "Salt shaker": "Salero", "Water": "Agua", "Footsteps": "Pasos", "Dumbbell": "Mancuerna", "Fruit": "Fruta", "Meals": "Comidas", "Vegetables": "Verduras", "Heart health": "Salud del corazón", "Timing": "Horarios", "Sleep": "Sueño", "Supplements": "Suplementos", "Tea and coffee": "Té y café", "Morning routine": "Rutina matutina", "Recommendation": "Recomendación", "Select a recommendation": "Selecciona una recomendación", "Use oil spray bottle while frying.": "Usa pulverizador de aceite al freír.", "Use the scale to measure the foods.": "Usa la báscula para medir los alimentos.", "Add salt and pepper to taste.": "Añade sal y pimienta al gusto.", "Drink 2-2.5 L water daily.": "Bebe 2-2,5 L de agua al día.", "Walk 10-12k steps daily.": "Camina 10-12 mil pasos al día.", "Exercise 1 hour daily (5 times a week).": "Haz ejercicio 1 hora al día (5 veces a la semana).", "Other (write your own)": "Otra (escribe la tuya)", "Remove this recommendation": "Quitar esta recomendación", "+ Add recommendation": "+ Añadir recomendación", "Footer note": "Nota al pie", "This meal plan is for educational purposes. Follow the advice of your healthcare provider.": "Este plan de comidas tiene fines educativos. Sigue los consejos de tu profesional sanitario.", "Plans to include": "Planes a incluir", "Page orientation (A4)": "Orientación de página (A4)", "Landscape": "Horizontal", "Portrait": "Vertical", "Cancel": "Cancelar", "Food database": "Base de datos de alimentos", "Add a food (values per 100 g)": "Añadir un alimento (valores por 100 g)", "Food name": "Nombre del alimento", "Edible portion (1 = 100%)": "Porción comestible (1 = 100 %)", "Kcal / 100 g": "Kcal / 100 g", "Carbohydrates (g)": "Hidratos de carbono (g)", "Add food": "Añadir alimento", "Import or export": "Importar o exportar", "CSV columns in the same order as your Excel: Food, Edible portion, Kcal/100 g, Carbohydrates, Protein, Fat, Fiber. Semicolon, comma or tab separated.": "Columnas CSV en el mismo orden que tu Excel: Alimento, Porción comestible, Kcal/100 g, Hidratos de carbono, Proteínas, Grasas, Fibra. Separadas por punto y coma, coma o tabulador.", "Import CSV…": "Importar CSV…", "Download my added foods (CSV)": "Descargar mis alimentos añadidos (CSV)", "Foods you added": "Alimentos que has añadido", "Close": "Cerrar", "Monday": "Lunes", "Tuesday": "Martes", "Wednesday": "Miércoles", "Thursday": "Jueves", "Friday": "Viernes", "Saturday": "Sábado", "Sunday": "Domingo", "Breakfast": "Desayuno", "Mid-morning snack": "Media mañana", "Lunch": "Almuerzo", "Afternoon snack": "Merienda", "Evening snack": "Tentempié de la tarde", "Dinner": "Cena", "Day": "Día", "Plan": "Plan", "Photo": "Foto", "A day can hold up to 12 meals.": "Un día puede tener hasta 12 comidas.", "A meal can hold up to 40 foods.": "Una comida puede tener hasta 40 alimentos.", "A plan can hold up to 31 days.": "Un plan puede tener hasta 31 días.", "Add a date and a waist measurement in Progress records to see this chart.": "Añade una fecha y una medida de cintura en Registros de progreso para ver este gráfico.", "Add a date and a waist or hip measurement to see this chart.": "Añade una fecha y una medida de cintura o cadera para ver este gráfico.", "Add a date and a weight in Progress records to see this chart.": "Añade una fecha y un peso en Registros de progreso para ver este gráfico.", "Add a date and an arm or calf measurement to see this chart.": "Añade una fecha y una medida de brazo o pantorrilla para ver este gráfico.", "Add a date and at least one skinfold in the Skinfolds table to see this chart.": "Añade una fecha y al menos un pliegue en la tabla de pliegues cutáneos para ver este gráfico.", "Add a date, a waist and a hip measurement in Progress records to see this chart.": "Añade una fecha, una medida de cintura y una de cadera en Registros de progreso para ver este gráfico.", "Add meals to the daily plans first.": "Primero añade comidas a los planes diarios.", "Another save prompt is open. Answer it, then try again.": "Hay otro aviso de guardado abierto. Respóndelo e inténtalo de nuevo.", "Arm": "Brazo", "Calf": "Pantorrilla", "Waist": "Cintura", "Hip": "Cadera", "Weight": "Peso", "Triceps": "Tríceps", "Subscapular": "Subescapular", "Biceps": "Bíceps", "Iliac crest": "Cresta ilíaca", "Supraspinal": "Supraespinal", "Abdominal": "Abdominal", "Thigh": "Muslo", "Leg (calf)": "Pierna (pantorrilla)", "Arm and calf chart": "Gráfico de brazo y pantorrilla", "Waist and hip chart": "Gráfico de cintura y cadera", "BMI chart": "Gráfico de IMC", "WHR chart": "Gráfico de ICC", "WHtR chart": "Gráfico de ICA", "Weight chart": "Gráfico de peso", "Skinfolds chart": "Gráfico de pliegues cutáneos", "Skinfolds table": "Tabla de pliegues cutáneos", "Progress records table": "Tabla de registros de progreso", "BMI (kg/m²)": "IMC (kg/m²)", "Measurement (cm)": "Medida (cm)", "Skinfold (mm)": "Pliegue (mm)", "Check date": "Revisa la fecha", "Check the values: name required, edible portion 0.01–5, kcal 0–950, macros and fiber 0–100 g per 100 g.": "Revisa los valores: nombre obligatorio, porción comestible 0,01–5, kcal 0–950, macronutrientes y fibra 0–100 g por 100 g.", "Clear": "Quitar", "Clear formatting of the selection": "Quitar el formato de la selección", "Bold": "Negrita", "Underline": "Subrayado", "Text formatting": "Formato de texto", "Custom recommendation": "Recomendación personalizada", "Click again to clear everything": "Pulsa de nuevo para borrarlo todo", "Click again to delete": "Pulsa de nuevo para eliminar", "Click again to replace the table": "Pulsa de nuevo para reemplazar la tabla", "Replace what is on screen?": "¿Reemplazar lo que hay en pantalla?", "Column removed.": "Columna quitada.", "Row removed.": "Fila quitada.", "Complete the energy calculation (Energy expenditure) to compare with the target.": "Completa el cálculo de energía (gasto energético) para compararlo con el objetivo.", "Could not create the PDF. Try again.": "No se pudo crear el PDF. Inténtalo de nuevo.", "Could not read that file.": "No se pudo leer ese archivo.", "Could not read that file. Try again.": "No se pudo leer ese archivo. Inténtalo de nuevo.", "Could not read that image. Use a JPG or PNG file.": "No se pudo leer esa imagen. Usa un archivo JPG o PNG.", "Could not save the file.": "No se pudo guardar el archivo.", "Could not save the plan. Try again.": "No se pudo guardar el plan. Inténtalo de nuevo.", "Dates sorted.": "Fechas ordenadas.", "Day added.": "Día añadido.", "Day deleted.": "Día eliminado.", "Day duplicated.": "Día duplicado.", "Download cancelled.": "Descarga cancelada.", "Entry removed.": "Entrada quitada.", "File ready.": "Archivo listo.", "File saved. Use Open file to continue editing it later.": "Archivo guardado. Usa «Abrir archivo» para seguir editándolo más adelante.", "High risk": "Riesgo alto", "Increased risk": "Riesgo aumentado", "Low risk": "Riesgo bajo", "Moderate risk": "Riesgo moderado", "No increased risk": "Sin riesgo aumentado", "Underweight": "Bajo peso", "Normal weight": "Normopeso", "Overweight": "Sobrepeso", "Obesity grade 1": "Obesidad grado 1", "Obesity grade 2": "Obesidad grado 2", "Obesity grade 3": "Obesidad grado 3", "Logo & patient details": "Logotipo y datos del paciente", "Macros": "Macronutrientes", "Maximum": "Máximo", "Minimum": "Mínimo", "Meal removed.": "Comida quitada.", "No recommendations yet. Use the button below to add one.": "Aún no hay recomendaciones. Usa el botón de abajo para añadir una.", "None yet.": "Aún no hay ninguno.", "Not in the food database. Pick a food from the list, or add it with Manage food database.": "No está en la base de datos de alimentos. Elige un alimento de la lista o añádelo con «Gestionar base de datos de alimentos».", "Nothing to export: the ticked sections have no content yet.": "Nada que exportar: las secciones marcadas aún no tienen contenido.", "PDF saved.": "PDF guardado.", "PDF sent.": "PDF enviado.", "Plan sent.": "Plan enviado.", "Patient": "Paciente", "Photo entries sorted by date.": "Entradas de fotos ordenadas por fecha.", "Photo entry removed.": "Entrada de fotos quitada.", "Preparing PDF…": "Preparando PDF…", "Processing photo...": "Procesando foto...", "Recommendation removed.": "Recomendación quitada.", "Record removed.": "Registro quitado.", "Records sorted by date.": "Registros ordenados por fecha.", "Remaining": "Restante", "Replace": "Reemplazar", "Select at least one plan to export.": "Selecciona al menos un plan para exportar.", "Select the patient’s gender in Patient details to show the WHR risk ranges.": "Selecciona el sexo del paciente en los datos del paciente para mostrar los rangos de riesgo del ICC.", "Select the patient’s height in Patient details to calculate BMI.": "Selecciona la altura del paciente en los datos del paciente para calcular el IMC.", "Select the patient’s height in Patient details to calculate WHtR.": "Selecciona la altura del paciente en los datos del paciente para calcular el ICA.", "Skinfold record removed.": "Registro de pliegues quitado.", "Skinfold records sorted by date.": "Registros de pliegues ordenados por fecha.", "Started a new patient file.": "Se ha iniciado un archivo de paciente nuevo.", "That file is not a saved patient file. Open a .json file created with Save file.": "Ese archivo no es un archivo de paciente guardado. Abre un archivo .json creado con «Guardar archivo».", "That file is too large to be a saved meal plan.": "Ese archivo es demasiado grande para ser un plan de comidas guardado.", "That file is too large.": "Ese archivo es demasiado grande.", "The PDF tools did not load. Check your connection and try again.": "No se cargaron las herramientas de PDF. Revisa tu conexión e inténtalo de nuevo.", "These ranges cannot add up to 100% of the energy target.": "Estos rangos no pueden sumar el 100 % del objetivo energético.", "This file is damaged or incomplete. Nothing was changed.": "Este archivo está dañado o incompleto. No se ha cambiado nada.", "This file was saved with a newer version of the page and cannot be opened here.": "Este archivo se guardó con una versión más reciente de la página y no se puede abrir aquí.", "Tick at least one section to export.": "Marca al menos una sección para exportar.", "Weekly overview filled from the daily plans.": "Resumen semanal rellenado desde los planes diarios.", "Write the recommendation for this patient": "Escribe la recomendación para este paciente", "You have not added any foods yet.": "Todavía no has añadido ningún alimento.", "% of energy": "% de la energía", "Download PDF: ": "Descargar PDF: "};
+  var ES_MON = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+  var EN_MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  ES_DICT['Language'] = 'Idioma';
+  ES_DICT['Evening snack'] = 'Merienda (tarde)'; ES_DICT['Afternoon snack'] = 'Merienda'; ES_DICT['Lunch'] = 'Almuerzo'; ES_DICT['Meal'] = 'Comida';
+  var ES_RULES = [
+    [/^(Day|Meal|Plan) (\d+)$/, function (m) { return trCore(m[1]) + ' ' + m[2]; }],
+    [/^Autosaved at (.+)\.$/, function (m) { return 'Autoguardado a las ' + m[1] + '.'; }],
+    [/^Opened (.+)\.$/, function (m) { return 'Abierto: ' + m[1] + '.'; }],
+    [/^Showing (.+)\.$/, function (m) { return 'Mostrando: ' + m[1] + '.'; }],
+    [/^Deleted (.+)\.$/, function (m) { return 'Eliminado: ' + m[1] + '.'; }],
+    [/^Blank plan added: (.+)$/, function (m) { return 'Plan en blanco añadido: ' + m[1]; }],
+    [/^Plan duplicated: (.+)$/, function (m) { return 'Plan duplicado: ' + m[1]; }],
+    [/^Added (.+)\. It now appears in the food search\.$/, function (m) { return 'Añadido: ' + m[1] + '. Ya aparece en la búsqueda de alimentos.'; }],
+    [/^Imported (\d+) foods\.$/, function (m) { return 'Importados ' + m[1] + ' alimentos.'; }],
+    [/^Imported (\d+) foods; skipped (\d+) rows with missing or out-of-range values\.$/, function (m) { return 'Importados ' + m[1] + ' alimentos; omitidas ' + m[2] + ' filas con valores ausentes o fuera de rango.'; }],
+    [/^Missing for the calculation: (.+)\.$/, function (m) { return 'Faltan para el cálculo: ' + m[1].replace('gender', 'sexo').replace('date of birth', 'fecha de nacimiento').replace('height', 'altura').replace('weight', 'peso') + '.'; }],
+    [/^Based on (.+) kg \((.+)\), (.+) cm, (\d+) years, (male|female)\.( Enter the activity factor \(AF\) to calculate TDEE\.)?$/i, function (m) { return 'Basado en ' + m[1] + ' kg (' + m[2].replace('latest record, ', 'último registro, ').replace('current weight', 'peso actual').replace(/(\d{1,2})\/(\d{2})\/(\d{4})/, '$1/$2/$3') + '), ' + m[3] + ' cm, ' + m[4] + ' años, ' + (/^male$/i.test(m[5]) ? 'hombre' : 'mujer') + '.' + (m[6] ? ' Introduce el factor de actividad (FA) para calcular el GET.' : ''); }],
+    [/^Harris-Benedict \(1919\), (male|female)$/i, function (m) { return 'Harris-Benedict (1919), ' + (/^male$/i.test(m[1]) ? 'hombre' : 'mujer'); }],
+    [/^Over the target by (.+) kcal$/, function (m) { return 'Supera el objetivo en ' + m[1] + ' kcal'; }],
+    [/^Target: (.+) kcal \(TDEE with (.+) kcal deficit\)$/, function (m) { return 'Objetivo: ' + m[1] + ' kcal (GET con ' + m[2] + ' kcal de déficit)'; }],
+    [/^(.+) kcal target$/, function (m) { return 'Objetivo: ' + m[1] + ' kcal'; }],
+    [/^TDEE with (.+) kcal deficit$/, function (m) { return 'GET con ' + m[1] + ' kcal de déficit'; }],
+    [/^Fiber: (.+) g( \(goal: .+\))?$/, function (m) { return 'Fibra: ' + m[1] + ' g' + (m[2] ? m[2].replace('goal', 'objetivo') : ''); }],
+    [/^Minimum is higher than maximum for: (.+)$/, function (m) { return 'El mínimo es mayor que el máximo en: ' + m[1]; }],
+    [/^Enter the activity factor \(AF\) to calculate TDEE\.$/, function () { return 'Introduce el factor de actividad (FA) para calcular el GET.'; }],
+    [/^Minimum percentage (?:for|of) (.+)$/, function (m) { return 'Porcentaje mínimo de ' + trCore(m[1]); }],
+    [/^Maximum percentage (?:for|of) (.+)$/, function (m) { return 'Porcentaje máximo de ' + trCore(m[1]); }],
+    [/^Remove column (.+)$/, function (m) { return 'Quitar la columna ' + trCore(m[1]); }],
+    [/^Remove row (.+)$/, function (m) { return 'Quitar la fila ' + trCore(m[1]); }],
+    [/^Choose icon, current: (.+)$/, function (m) { return 'Elegir icono, actual: ' + trCore(m[1]); }],
+    [/^Text color (.+)$/, function (m) { return 'Color de texto ' + trCore(m[1]); }],
+    [/^Highlight (.+)$/, function (m) { return 'Resaltado ' + trCore(m[1]); }],
+    [/^(\d+) years?$/, function (m) { return m[1] + (m[1] === '1' ? ' año' : ' años'); }],
+    [/^(\d+) months?$/, function (m) { return m[1] + (m[1] === '1' ? ' mes' : ' meses'); }],
+    [/^(\d+) years?, (\d+) months?$/, function (m) { return m[1] + (m[1] === '1' ? ' año' : ' años') + ', ' + m[2] + (m[2] === '1' ? ' mes' : ' meses'); }],
+    [/^(.+) photo added\.$/, function (m) { return 'Foto añadida: ' + trCore(m[1]) + '.'; }],
+    [/^(.+) photo removed\.$/, function (m) { return 'Foto quitada: ' + trCore(m[1]) + '.'; }],
+    [/^Upload (.+) photo$/, function (m) { return 'Subir foto: ' + trCore(m[1]); }],
+    [/^(\d+) built-in foods(.*)$/, function (m) { return m[1] + ' alimentos incluidos' + m[2]; }],
+    [/^(.+) skinfold in millimeters$/, function (m) { return 'Pliegue ' + trCore(m[1]).toLowerCase() + ' en milímetros'; }],
+    [/^(\d{1,2}) (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)( \d{2,4})?$/, function (m) { return m[1] + ' ' + ES_MON[EN_MON.indexOf(m[2])] + (m[3] || ''); }]
+  ];
+  function trCore(c) {
+    if (Object.prototype.hasOwnProperty.call(ES_DICT, c)) return ES_DICT[c];
+    for (var i = 0; i < ES_RULES.length; i++) { var m = ES_RULES[i][0].exec(c); if (m) return ES_RULES[i][1](m); }
+    if (c.indexOf(', ') > 0) {
+      var parts = c.split(', '), ch = false, out = parts.map(function (p) { var q = trCore(p); if (q !== p) ch = true; return q; });
+      if (ch) return out.join(', ');
+    }
+    var sp = /^(.+?)( \(.*)$/.exec(c);
+    if (sp) { var q2 = trCore(sp[1]); if (q2 !== sp[1]) return q2 + sp[2]; }
+    return c;
+  }
+  function tx(s) {
+    var m = /^(\s*)([\s\S]*?)(\s*)$/.exec(s);
+    if (!m[2]) return s;
+    var r = trCore(m[2]);
+    return r === m[2] ? s : m[1] + r + m[3];
+  }
+  function tl(s) { return LANG === 'es' && typeof s === 'string' ? tx(s) : s; }
+  function isEs() { return LANG === 'es'; }
+  /* canvas text follows the language */
+  (function () {
+    var P = window.CanvasRenderingContext2D && CanvasRenderingContext2D.prototype; if (!P) return;
+    ['fillText', 'strokeText', 'measureText'].forEach(function (k) {
+      var orig = P[k];
+      P[k] = function (t) { var a = Array.prototype.slice.call(arguments); if (typeof a[0] === 'string') a[0] = tl(a[0]); return orig.apply(this, a); };
+    });
+  })();
+  /* DOM translation: text nodes and attributes keep their English original so the language can be switched back */
+  var X_NODES = new WeakMap(), X_ATTRS = new WeakMap(), X_OBS = null;
+  var X_SKIP = 'textarea,script,style,.rich,[contenteditable="true"],datalist,[data-notr]';
+  var X_ATTR_LIST = ['placeholder', 'aria-label', 'title', 'alt'];
+  function xSkip(n) { var e = n.nodeType === 3 ? n.parentElement : n; return !e || !!(e.closest && e.closest(X_SKIP)); }
+  function xText(n) {
+    if (xSkip(n)) return;
+    var rec = X_NODES.get(n), v = n.nodeValue;
+    if (LANG === 'es') {
+      if (rec && v === rec.es) return;
+      var es = tx(v);
+      if (es !== v) { X_NODES.set(n, { en: v, es: es }); n.nodeValue = es; } else if (rec) X_NODES.delete(n);
+    } else if (rec && v === rec.es) { n.nodeValue = rec.en; X_NODES.delete(n); }
+  }
+  function xAttr(e, a) {
+    if (!e.getAttribute) return;
+    var v = e.getAttribute(a); if (v === null) return;
+    var m = X_ATTRS.get(e); if (!m) { m = {}; X_ATTRS.set(e, m); }
+    var rec = m[a];
+    if (LANG === 'es') {
+      if (rec && v === rec.es) return;
+      var es = tx(v);
+      if (es !== v) { m[a] = { en: v, es: es }; e.setAttribute(a, es); } else if (rec) delete m[a];
+    } else if (rec && v === rec.es) { e.setAttribute(a, rec.en); delete m[a]; }
+  }
+  function xTree(root) {
+    if (!root) return;
+    if (root.nodeType === 3) { xText(root); return; }
+    if (root.nodeType !== 1) return;
+    var w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null), n, list = [];
+    while ((n = w.nextNode())) list.push(n);
+    list.forEach(xText);
+    var els = root.querySelectorAll ? Array.prototype.slice.call(root.querySelectorAll('[placeholder],[aria-label],[title],[alt]')) : [];
+    if (root.getAttribute) els.unshift(root);
+    els.forEach(function (e) { X_ATTR_LIST.forEach(function (a) { xAttr(e, a); }); });
+  }
+  /* default names typed into fields (days, meals, plan names, default texts) follow the language too */
+  var X_DEF = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday', 'Breakfast', 'Mid-morning snack', 'Lunch', 'Afternoon snack', 'Evening snack', 'Dinner',
+    '7-Day Meal Plan', 'This meal plan is for educational purposes. Follow the advice of your healthcare provider.',
+    'Use oil spray bottle while frying.', 'Use the scale to measure the foods.', 'Add salt and pepper to taste.', 'Drink 2-2.5 L water daily.', 'Walk 10-12k steps daily.', 'Exercise 1 hour daily (5 times a week).'];
+  var X_NUM = { Day: 'Día', Meal: 'Comida', Plan: 'Plan' };
+  function defToEs(v) {
+    if (X_DEF.indexOf(v) >= 0) return ES_DICT[v];
+    var m = /^(Day|Meal|Plan) (\d+)$/.exec(v); return m ? X_NUM[m[1]] + ' ' + m[2] : null;
+  }
+  function defToEn(v) {
+    for (var i = 0; i < X_DEF.length; i++) if (ES_DICT[X_DEF[i]] === v) return X_DEF[i];
+    var m = /^(Día|Comida|Plan) (\d+)$/.exec(v);
+    if (m) return ({ 'Día': 'Day', 'Comida': 'Meal', 'Plan': 'Plan' })[m[1]] + ' ' + m[2];
+    return null;
+  }
+  function xValue(e) {
+    if (e.closest && e.closest('.rich,[data-notr]')) return;
+    var v = e.value; if (typeof v !== 'string' || !v) return;
+    var out = LANG === 'es' ? defToEs(v) : defToEn(v);
+    if (out !== null && out !== v) { e.value = out; e.dispatchEvent(new Event('input', { bubbles: true })); e.dispatchEvent(new Event('change', { bubbles: true })); }
+  }
+  function xValues(root) {
+    Array.prototype.slice.call((root || document).querySelectorAll ? (root || document).querySelectorAll('input[type=text],input:not([type]),textarea:not(.rt)') : []).forEach(xValue);
+  }
+  function setLang(l, keepStore) {
+    LANG = l === 'es' ? 'es' : 'en';
+    try { if (!keepStore) localStorage.setItem('zk-lang', LANG); } catch (e) { /* ignore */ }
+    document.documentElement.lang = LANG;
+    var sel = document.getElementById('lang'); if (sel && sel.value !== LANG) sel.value = LANG;
+    if (X_OBS) { X_OBS.disconnect(); X_OBS = null; }
+    xTree(document.body);
+    xValues(document);
+    if (LANG === 'es' && window.MutationObserver) {
+      X_OBS = new MutationObserver(function (list) {
+        var added = [];
+        list.forEach(function (r) {
+          if (r.type === 'characterData') xText(r.target);
+          else if (r.type === 'attributes') xAttr(r.target, r.attributeName);
+          else r.addedNodes.forEach(function (n) { xTree(n); if (n.nodeType === 1) added.push(n); });
+        });
+        added.forEach(function (n) { xValues(n); if (n.matches && n.matches('input,textarea')) xValue(n); });
+      });
+      X_OBS.observe(document.body, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: X_ATTR_LIST });
+    }
+    try { renderCharts(); updateDays(); agSoon(); } catch (e) { /* charts redraw on the next change */ }
+  }
+  function initLang() {
+    var sel = document.getElementById('lang');
+    if (sel) sel.addEventListener('change', function () { setLang(sel.value); });
+    var saved = null; try { saved = localStorage.getItem('zk-lang'); } catch (e) { /* ignore */ }
+    if (saved === 'es') setLang('es', true);
+  }
 
   /* ---------- helpers ---------- */
   var uid = 0;
@@ -1527,7 +1690,7 @@ div.rich[contenteditable]:empty::before{content:attr(data-ph);opacity:.55;pointe
     return cm + (pnum($('#f-height-mm').value) || 0) / 10;
   }
   function genderVal() { var g = $('#f-gender').value; return g === 'male' || g === 'female' ? g : ''; }
-  function fmtN(n) { return Number(n).toLocaleString('en-US', { maximumFractionDigits: 0 }); }
+  function fmtN(n) { return Number(n).toLocaleString(LANG === 'es' ? 'es-ES' : 'en-US', { maximumFractionDigits: 0 }); }
   function fmtRange(lo, hi, f) { return round(lo, 6) === round(hi, 6) ? f(lo) : f(lo) + '–' + f(hi); }
 
   function mk(id, name, from, to, lo, hi, range, dot) {
@@ -2515,7 +2678,7 @@ div.rich[contenteditable]:empty::before{content:attr(data-ph);opacity:.55;pointe
     var del = el('button', 'btn no-export', { type: 'button' }); del.textContent = 'Delete day'; del.disabled = DY.days.length < 2;
     var timer = null;
     del.addEventListener('click', function () {
-      if (del.textContent === 'Delete day') { del.textContent = 'Click again to delete'; clearTimeout(timer); timer = setTimeout(function () { del.textContent = 'Delete day'; }, 5000); return; }
+      if (del.textContent === 'Delete day' || del.textContent === tl('Delete day')) { del.textContent = 'Click again to delete'; clearTimeout(timer); timer = setTimeout(function () { del.textContent = 'Delete day'; }, 5000); return; }
       DY.days.splice(DY.active, 1); DY.active = Math.min(DY.active, DY.days.length - 1); markDirty(); renderDays(); updateDays(); setStatus('Day deleted.');
     });
     head.appendChild(dup); head.appendChild(del);
@@ -2730,7 +2893,7 @@ div.rich[contenteditable]:empty::before{content:attr(data-ph);opacity:.55;pointe
       var row = { id: nid(), name: d.name || '' }; S.rows.push(row);
       d.meals.forEach(function (m) {
         var j = idx[fkey(m.name)]; if (j === undefined) return;
-        var lines = m.items.filter(function (it) { return it.food.trim() && pnum(it.g) > 0; }).map(function (it) { var fm = FMAP[fkey(it.food)], nm = fm && fm.en ? fm.en : it.food.trim(); return '• ' + nm + (noDash ? ' ' : ' – ') + round(pnum(it.g), 1) + ' g'; });
+        var lines = m.items.filter(function (it) { return it.food.trim() && pnum(it.g) > 0; }).map(function (it) { var fm = FMAP[fkey(it.food)], nm = fm && (LANG === 'es' ? fm.name : fm.en) ? (LANG === 'es' ? fm.name : fm.en) : it.food.trim(); return '• ' + nm + (noDash ? ' ' : ' – ') + round(pnum(it.g), 1) + ' g'; });
         if (lines.length) { var key = row.id + ':' + S.cols[j].id; S.cells[key] = (S.cells[key] ? S.cells[key] + '\n' : '') + lines.join('\n'); }
       });
     });
@@ -3148,7 +3311,7 @@ div.rich[contenteditable]:empty::before{content:attr(data-ph);opacity:.55;pointe
     var api = {
       btn: btn,
       reset: function () { clearTimeout(timer); btn.textContent = idle; btn.className = 'btn'; },
-      isArmed: function () { return btn.textContent === armedLabel; },
+      isArmed: function () { return btn.textContent === armedLabel || btn.textContent === tl(armedLabel); },
       arm: function () { btn.textContent = armedLabel; btn.className = 'btn danger'; clearTimeout(timer); timer = setTimeout(api.reset, 5000); }
     };
     steps.push(api); return api;
@@ -3489,7 +3652,8 @@ div.rich[contenteditable]:empty::before{content:attr(data-ph);opacity:.55;pointe
   window.addEventListener('resize', agSoon);
   window.addEventListener('load', agSoon);
 
-  window.__plan = { calcAge: calcAge, bulletize: bulletize, fmtDate: fmtDate, serialize: serialize, stamp: stamp, transformClone: transformClone, tipHasContent: tipHasContent, derive: derive, renderCharts: renderCharts, autosaveNow: function () { return autosaveNow(); }, getDY: function () { return DY; }, dayCalc: dayCalc, getINC: function () { return INC; }, getHB: function () { return HB; }, getCF: function () { return CF; }, showView: showView, getPL: function () { return PL; }, captureParsed: captureParsed, energyCalc: energyCalc, recalc: recalc, parsePlan: parsePlan, getR: function () { return R; }, getE: function () { return E; } };
+  initLang();
+  window.__plan = { setLang: setLang, tl: tl, calcAge: calcAge, bulletize: bulletize, fmtDate: fmtDate, serialize: serialize, stamp: stamp, transformClone: transformClone, tipHasContent: tipHasContent, derive: derive, renderCharts: renderCharts, autosaveNow: function () { return autosaveNow(); }, getDY: function () { return DY; }, dayCalc: dayCalc, getINC: function () { return INC; }, getHB: function () { return HB; }, getCF: function () { return CF; }, showView: showView, getPL: function () { return PL; }, captureParsed: captureParsed, energyCalc: energyCalc, recalc: recalc, parsePlan: parsePlan, getR: function () { return R; }, getE: function () { return E; } };
 })();
 </script>
 </body>
