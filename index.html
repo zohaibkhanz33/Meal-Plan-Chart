@@ -3561,6 +3561,20 @@ div.rich[contenteditable]:empty::before{content:attr(data-ph);opacity:.55;pointe
         }
       }
       var pageBreaks = secs.length > 1 || multiPlan;
+      async function snapCards(blockId, cardSel, list, isEmpty, brk) {
+        var all = $$(cardSel), head = document.querySelector('#' + blockId + ' .card-h'), saved = all.map(function (c) { return c.style.display; }), hs = head ? head.style.display : '';
+        var keep = all.filter(function (c) { var h = list.filter(function (x) { return x.id === c.dataset.id; })[0]; return h && !isEmpty(h); });
+        try {
+          for (var i = 0; i < keep.length; i++) {
+            all.forEach(function (c) { c.style.display = c === keep[i] ? '' : 'none'; });
+            if (head) head.style.display = i === 0 ? '' : 'none';
+            await snap([blockId], i === 0 ? brk : false);
+          }
+        } finally {
+          all.forEach(function (c, j) { c.style.display = saved[j]; });
+          if (head) head.style.display = hs;
+        }
+      }
 
       /* section 1: logo, intro and clinical history */
       if (secs.indexOf(1) >= 0) {
@@ -3572,16 +3586,13 @@ div.rich[contenteditable]:empty::before{content:attr(data-ph);opacity:.55;pointe
           $('#blk-medgrid').classList.toggle('one', !(pOn && fOn)); ids1.push('blk-medgrid');
         }
         if (incOn('blk-weights') && weightsHas()) ids1.push('blk-weights');
-        if (incOn('blk-habits') && HB.some(function (h) { return !habEmpty(h); })) {
-          idsR.push('blk-habits');
-          $$('#hab .habc').forEach(function (c) { var h = HB.filter(function (x) { return x.id === c.dataset.id; })[0]; if (h && habEmpty(h)) { hiddenNodes.push([c, c.style.display]); c.style.display = 'none'; } });
-        }
-        if (incOn('blk-blood') && BT.some(function (x) { return !btEmpty(x); })) {
-          idsR.push('blk-blood');
-          $$('#blood .habc').forEach(function (c) { var h = BT.filter(function (x) { return x.id === c.dataset.id; })[0]; if (h && btEmpty(h)) { hiddenNodes.push([c, c.style.display]); c.style.display = 'none'; } });
-        }
-        await snap(ids1, pageBreaks, 'p1');
-        await snap(idsR, !ids1.length && pageBreaks);
+        var habOn = incOn('blk-habits') && HB.some(function (h) { return !habEmpty(h); });
+        var bloodOn = incOn('blk-blood') && BT.some(function (x) { return !btEmpty(x); });
+        /* no shrinking and no cramming: every sub-section and every dated box flows to the next page when it does not fit */
+        await snap(ids1, pageBreaks);
+        var brkR = !ids1.length && pageBreaks;
+        if (habOn) { await snapCards('blk-habits', '#hab .habc', HB, habEmpty, brkR); brkR = false; }
+        if (bloodOn) await snapCards('blk-blood', '#blood .habc', BT, btEmpty, brkR);
         restoreHidden(); $('#blk-medgrid').classList.remove('one');
       }
 
