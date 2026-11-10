@@ -2978,7 +2978,7 @@ div.rich[contenteditable]:empty::before{content:attr(data-ph);opacity:.55;pointe
       meals.push({ tot: mt, items: items });
     });
     var mk = { c: tot.c * 4, p: tot.p * 4, f: tot.f * 9 };
-    var pct = tot.kcal > 0 ? { c: mk.c * 100 / tot.kcal, p: mk.p * 100 / tot.kcal, f: mk.f * 100 / tot.kcal } : null;
+    var mkS = mk.c + mk.p + mk.f, pct = mkS > 0 ? { c: mk.c * 100 / mkS, p: mk.p * 100 / mkS, f: mk.f * 100 / mkS } : null;
     return { tot: tot, meals: meals, mk: mk, pct: pct };
   }
   function f1(n) { return n === undefined || n === null ? '' : (Math.round(n * 10) / 10).toFixed(1); }
@@ -3198,7 +3198,8 @@ div.rich[contenteditable]:empty::before{content:attr(data-ph);opacity:.55;pointe
     var lx = el('div', 'plegend');
     var mx = [['carbs', 'Carbohydrates', mk.c, tot.c], ['protein', 'Protein', mk.p, tot.p], ['fat', 'Lipids', mk.f, tot.f]];
     drawDonut(cx, { W: SZ, H: SZ, dpr: dpr, slices: mx.map(function (x) { return { v: x[2], color: MACRO_COL[x[0]] }; }), c1: 'Macros', c2: '% of energy' });
-    mx.forEach(function (x) { lx.appendChild(legRow(MACRO_COL[x[0]], x[1], f1(x[2] * 100 / tot.kcal) + '%', f1(x[3]) + ' g')); });
+    var mkSum = mk.c + mk.p + mk.f;
+    mx.forEach(function (x) { lx.appendChild(legRow(MACRO_COL[x[0]], x[1], (mkSum > 0 ? f1(x[2] * 100 / mkSum) : '0.0') + '%', f1(x[3]) + ' g')); });
     body.appendChild(cx); body.appendChild(lx);
     outer.appendChild(ovBars(tot, avgN));
     card.appendChild(outer); return card;
