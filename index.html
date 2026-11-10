@@ -2688,7 +2688,7 @@ div.rich[contenteditable]:empty::before{content:attr(data-ph);opacity:.55;pointe
   ];
   /* micronutrients: [key, full name, short name, unit, group] */
   var MICRO = [
-    ['vitA', 'Vitamin A (retinol eq.)', 'Vit. A', 'µg', 'v'], ['retinol', 'Retinol', 'Retinol', 'µg', 'v'], ['carot', 'Carotenoids (β-carotene eq.)', 'Carotenoids', 'µg', 'v'],
+    ['vitA', 'Vitamin A (retinol eq.)', 'Vit. A', 'µg', 'v'],
     ['vitD', 'Vitamin D (calciferol)', 'Vit. D', 'µg', 'v'], ['vitE', 'Vitamin E (tocopherol)', 'Vit. E', 'mg', 'v'], ['vitK', 'Vitamin K (phylloquinone)', 'Vit. K', 'µg', 'v'],
     ['b1', 'Vitamin B1 (thiamin)', 'Vit. B1', 'mg', 'v'], ['b2', 'Vitamin B2 (riboflavin)', 'Vit. B2', 'mg', 'v'], ['b3', 'Vitamin B3 (niacin)', 'Vit. B3', 'mg', 'v'],
     ['b5', 'Vitamin B5 (pantothenic acid)', 'Vit. B5', 'mg', 'v'], ['b6', 'Vitamin B6 (pyridoxine)', 'Vit. B6', 'mg', 'v'], ['biotin', 'Vitamin B7 (biotin)', 'Vit. B7', 'µg', 'v'],
@@ -3168,7 +3168,7 @@ div.rich[contenteditable]:empty::before{content:attr(data-ph);opacity:.55;pointe
         h.appendChild(el2('b', null, fmtMicro(v) + (t ? ' / ' + fmtMicro(t) + ' · ' + Math.round(pct) + '%' : '')));
         row.appendChild(h);
         var bar = el('div', 'mbar'), fill = el('i'); fill.style.width = (t ? Math.min(100, pct) : 0) + '%';
-        fill.style.background = t && pct >= 100 ? '#14532D' : '#6FA23C';
+        fill.style.background = t && pct >= 100 ? '#14532D' : t && pct < 50 ? '#B92526' : '#6FA23C';
         bar.appendChild(fill); row.appendChild(bar); wrap.appendChild(row);
       });
     });
