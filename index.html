@@ -608,6 +608,45 @@ div.rich[contenteditable]:empty::before{content:attr(data-ph);opacity:.55;pointe
 .shoptab .num{text-align:right;white-space:nowrap}
 .shoptab .cb{width:34px;text-align:center}
 .shoptab tr.done td:not(.cb){text-decoration:line-through;color:#8a8f86}
+.trow{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.trow .chk{flex:1;min-width:0}
+.fsw{display:inline-flex;align-items:center;gap:3px;font-size:12px;color:var(--muted);flex:none}
+.fsz,#pdf-fs-all{width:62px;padding:2px 4px;border:1px solid #c9d3c4;border-radius:6px;font:inherit;font-size:12px;text-align:right}
+.fsz:disabled{background:#f1f3ef}
+.fsall{display:flex;align-items:center;gap:6px}
+body.ped-open{overflow:hidden}
+.ped{position:fixed;inset:0;z-index:70;background:#e9ece6;display:flex;flex-direction:column}
+.ped[hidden]{display:none}
+.ped-top{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:10px 16px;background:#fff;border-bottom:1.5px solid var(--green-deep)}
+.ped-top h3{margin:0;font-family:var(--font-display);color:var(--green-deep);font-size:18px}
+.ped-a{display:flex;gap:8px;flex-wrap:wrap}
+.ped-main{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1fr) 320px}
+.ped-pages{overflow:auto;padding:14px;display:flex;flex-direction:column;align-items:center}
+.ped-pw{margin-bottom:16px}
+.ped-pl{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0 0 4px}
+.ped-pg{position:relative;background:#fff;box-shadow:0 2px 10px rgba(20,30,24,.25);overflow:hidden}
+.ped-mg{position:absolute;border:1px dashed #b9c6b3;pointer-events:none}
+.ped-it{position:absolute;box-sizing:border-box;cursor:grab;touch-action:none;outline:1px solid rgba(20,83,45,.25);background:#fff}
+.ped-it img{width:100%;height:100%;display:block;pointer-events:none;user-select:none}
+.ped-it.sel{outline:2px solid var(--green-deep);z-index:5}
+.ped-it.ov{outline:2px solid #B92526}
+.ped-it.off{outline:2px dashed #B92526}
+.ped-it.drag{cursor:grabbing;opacity:.9;z-index:8}
+.ped-t{position:absolute;left:0;top:0;max-width:100%;padding:1px 6px;font-size:10px;font-weight:700;background:rgba(20,83,45,.88);color:#fff;border-radius:0 0 6px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;opacity:0;pointer-events:none}
+.ped-it:hover .ped-t,.ped-it.sel .ped-t{opacity:1}
+.ped-h{position:absolute;right:-1px;bottom:-1px;width:16px;height:16px;background:var(--green-deep);border-radius:6px 0 0 0;cursor:nwse-resize;opacity:0}
+.ped-it:hover .ped-h,.ped-it.sel .ped-h{opacity:.9}
+.ped-side{overflow:auto;padding:12px 14px;background:#fff;border-left:1.5px solid var(--green-deep);display:grid;gap:8px;align-content:start}
+.ped-row{display:flex;gap:8px;flex-wrap:wrap;align-items:end}
+.ped-row label,.ped-fl{display:grid;gap:2px;font-size:12px;color:var(--muted);flex:1;min-width:90px}
+.ped-side input[type=number],.ped-side select{font:inherit;font-size:13px;padding:4px 6px;border:1px solid #c9d3c4;border-radius:6px;width:100%;box-sizing:border-box}
+.ped-wb .btn{flex:1;padding:5px 6px}
+.ped-sn{margin:0;font-weight:700;font-size:13px;color:var(--green-deep)}
+.ped-warn{margin:0;font-size:12px;color:#B92526;font-weight:700}
+.ped-list{max-height:260px;overflow:auto}
+.ped-list .chk{display:flex;align-items:center;gap:4px;font-size:12.5px}
+.ped-pp{margin-left:auto;color:var(--muted);font-size:11px}
+@media(max-width:860px){.ped-main{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr) 42vh}.ped-side{border-left:0;border-top:1.5px solid var(--green-deep)}}
 
 /* ---------- export (PDF) state ---------- */
 .exporting{max-width:none;border-radius:0;box-shadow:none;background:#fff}
@@ -980,7 +1019,40 @@ div.rich[contenteditable]:empty::before{content:attr(data-ph);opacity:.55;pointe
     <div class="tree" id="pdfdlg-plans" hidden></div>
     <div class="dlg-sec">Page orientation (A4)</div>
     <div class="tree"><label class="chk t2"><input type="radio" name="pdf-orient" value="landscape" checked> Landscape</label><label class="chk t2"><input type="radio" name="pdf-orient" value="portrait"> Portrait</label></div>
-    <div class="dlg-a"><button class="btn" id="pdfdlg-cancel" type="button">Cancel</button><button class="btn primary" id="pdfdlg-go" type="button">Download PDF</button></div>
+    <div class="dlg-sec">Text size</div>
+    <label class="chk t2 fsall">All blocks <input type="number" id="pdf-fs-all" min="50" max="200" step="5" value="100" aria-label="Text size of all blocks (%)"> %</label>
+    <p class="dlg-n">Each box above has its own text size (%). A bigger text size re-wraps that block; charts keep their size. Next you can move and resize every block on the pages.</p>
+    <div class="dlg-a"><button class="btn" id="pdfdlg-cancel" type="button">Cancel</button><button class="btn primary" id="pdfdlg-go" type="button">Next: arrange pages</button></div>
+  </div>
+</div>
+
+<div class="ped" id="ped" hidden role="dialog" aria-modal="true" aria-labelledby="ped-h">
+  <div class="ped-top">
+    <h3 id="ped-h">Arrange the PDF pages</h3>
+    <div class="ped-a"><button class="btn" id="ped-back" type="button">Back</button><button class="btn" id="ped-cancel" type="button">Cancel</button><button class="btn primary" id="ped-go" type="button">Download PDF</button></div>
+  </div>
+  <div class="ped-main">
+    <div class="ped-pages" id="ped-pages"></div>
+    <aside class="ped-side">
+      <div class="dlg-sec">Pages</div>
+      <div class="ped-row"><label>Margin (mm) <input type="number" id="ped-m" min="0" max="30" step="1"></label><label>Gap (mm) <input type="number" id="ped-g" min="0" max="30" step="1"></label></div>
+      <label class="ped-fl">Automatic arrangement <select id="ped-mode"><option value="order">Keep the order, new page when it does not fit</option><option value="fill">Fill the gaps (move later blocks up)</option></select></label>
+      <button class="btn" id="ped-auto" type="button">Re-arrange automatically</button>
+      <div class="ped-row"><button class="btn" id="ped-addpage" type="button">+ Add page</button><button class="btn" id="ped-rmempty" type="button">Remove empty pages</button></div>
+      <label class="chk"><input type="checkbox" id="ped-pn"> Page numbers</label>
+      <p class="ped-warn" id="ped-warn" hidden></p>
+      <div class="dlg-sec">Selected block</div>
+      <p class="dlg-n" id="ped-nosel">Click a block on a page. Drag it to move it (also to another page) and drag its corner to resize it. Arrow keys nudge it; + and - resize it.</p>
+      <div id="ped-sel" hidden>
+        <p class="ped-sn" id="ped-selname"></p>
+        <div class="ped-row"><label>Page <input type="number" id="ped-pgn" min="1" max="99" step="1"></label><label>Width (mm) <input type="number" id="ped-w" min="15" max="297" step="1"></label></div>
+        <div class="ped-row"><label>X (mm) <input type="number" id="ped-x" step="1"></label><label>Y (mm) <input type="number" id="ped-y" step="1"></label></div>
+        <div class="ped-row ped-wb"><button class="btn" id="ped-w1" type="button">Full</button><button class="btn" id="ped-w23" type="button">2/3</button><button class="btn" id="ped-w2" type="button">1/2</button><button class="btn" id="ped-w3" type="button">1/3</button></div>
+        <div class="ped-row"><button class="btn" id="ped-ctr" type="button">Center horizontally</button><button class="btn" id="ped-hide" type="button">Remove from PDF</button></div>
+      </div>
+      <div class="dlg-sec">Blocks in the PDF</div>
+      <div class="tree ped-list" id="ped-list"></div>
+    </aside>
   </div>
 </div>
 
@@ -1054,7 +1126,7 @@ div.rich[contenteditable]:empty::before{content:attr(data-ph);opacity:.55;pointe
 
   /* ---------- language: English / Español ---------- */
   var LANG = 'en';
-  var ES_DICT = {"Meal plan builder": "Creador de planes de comidas", "Everything is editable. Save file keeps all sections, plans and added foods in one file you can reopen. A copy is also downloaded automatically every 15 minutes if something changed.": "Todo es editable. «Guardar archivo» conserva todas las secciones, planes y alimentos añadidos en un solo archivo que puedes reabrir. Además, se descarga una copia automática cada 15 minutos si hay cambios.", "New file": "Archivo nuevo", "Open file": "Abrir archivo", "Save file": "Guardar archivo", "Download PDF": "Descargar PDF", "Sections": "Secciones", "Include section 1 in the PDF": "Incluir la sección 1 en el PDF", "Include section 2 in the PDF": "Incluir la sección 2 en el PDF", "Include section 3 in the PDF": "Incluir la sección 3 en el PDF", "Clinical History": "Historia clínica", "Progress records": "Registros de progreso", "Energy & meal plan": "Energía y plan de comidas", "Download this section as a PDF": "Descargar esta sección como PDF", "PDF": "PDF", "Tick a section or a box to include it in the PDF. The PDF button next to a section downloads only that section.": "Marca una sección o un cuadro para incluirlo en el PDF. El botón PDF junto a una sección descarga solo esa sección.", "Patient details": "Datos del paciente", "Include in the PDF": "Incluir en el PDF", "Name": "Nombre", "Full name": "Nombre completo", "Date of birth": "Fecha de nacimiento", "Age": "Edad", "Automatic": "Automática", "Gender": "Sexo", "Select": "Seleccionar", "Male": "Hombre", "Female": "Mujer", "Height": "Altura", "Height, centimeters": "Altura, centímetros", "Height, additional millimeters": "Altura, milímetros adicionales", "Goal": "Objetivo", "Lose body fat/weight": "Perder grasa corporal/peso", "Build muscle": "Ganar masa muscular", "Improve overall health and energy": "Mejorar la salud general y la energía", "Manage a health condition": "Manejar una condición de salud", "Other": "Otro", "Zohaib Khan logo: a watermelon slice shaped like the letter Z": "Logotipo de Zohaib Khan: una rodaja de sandía con forma de letra Z", "Nutritionist & Dietitian": "Nutricionista y Dietista", "Medical history: personal": "Historial médico: personal", "Allergies": "Alergias", "Intolerances": "Intolerancias", "Digestive diseases (diarrhea, constipation, etc.)": "Enfermedades digestivas (diarrea, estreñimiento, etc.)", "Pregnant / recent delivery / breastfeeding": "Embarazo / parto reciente / lactancia", "Menarche / menopause": "Menarquia / menopausia", "Other diseases (HTA, DMT1/DMT2, etc.)": "Otras enfermedades (HTA, DM1/DM2, etc.)", "Medical treatments": "Tratamientos médicos", "Recent interventions": "Intervenciones recientes", "Other info": "Otra información", "Medical history: family": "Historial médico: familiar", "Hypertension (HTA)": "Hipertensión (HTA)", "Diabetes (DMT1/DMT2)": "Diabetes (DM1/DM2)", "Obesity": "Obesidad", "Heart attacks": "Infartos", "Weights & previous diets": "Pesos y dietas previas", "Current weight": "Peso actual", "Highest weight": "Peso máximo", "Lowest weight": "Peso mínimo", "e.g. 72.5": "p. ej. 72,5", "e.g. 95": "p. ej. 95", "e.g. 60": "p. ej. 60", "Previous diets (fat burners, pills, medications, etc.)": "Dietas previas (quemagrasas, pastillas, medicamentos, etc.)", "Describe previous diets, supplements and medications used for weight management": "Describe las dietas, suplementos y medicamentos usados anteriormente para el control del peso", "Habits & lifestyle log": "Registro de hábitos y estilo de vida", "Date": "Fecha", "Entry date": "Fecha de la entrada", "Remove this date": "Quitar esta fecha", "Habits": "Hábitos", "Exercise (type and frequency)": "Ejercicio (tipo y frecuencia)", "Walking (daily steps)": "Caminar (pasos diarios)", "Sleep hours": "Horas de sueño", "Work schedule": "Horario de trabajo", "+ Add date": "+ Añadir fecha", "Sort by date": "Ordenar por fecha", "Each date has its own box: note habits, exercise (type and frequency), walking (daily steps), sleep hours, work schedule and anything else relevant.": "Cada fecha tiene su propio cuadro: anota hábitos, ejercicio (tipo y frecuencia), caminar (pasos diarios), horas de sueño, horario de trabajo y cualquier otro dato relevante.", "Blood test & other reports log": "Registro de análisis de sangre y otros informes", "Report date": "Fecha del informe", "Blood test and other reports": "Análisis de sangre y otros informes", "Write results, reference values, dates of studies, imaging or any other report": "Escribe resultados, valores de referencia, fechas de estudios, imágenes o cualquier otro informe", "Each date has one free-text box: write blood test results, imaging or any other report. Select text to make it bold, underlined or coloured.": "Cada fecha tiene un cuadro de texto libre: escribe resultados de análisis, imágenes o cualquier otro informe. Selecciona texto para ponerlo en negrita, subrayado o de color.", "Weight (kg)": "Peso (kg)", "BMI": "IMC", "Waist (cm)": "Cintura (cm)", "Hip (cm)": "Cadera (cm)", "Arm (cm)": "Brazo (cm)", "Calf (cm)": "Pantorrilla (cm)", "WHR": "ICC", "WHtR": "ICA", "Record date": "Fecha del registro", "Weight in kilograms": "Peso en kilogramos", "Waist in centimeters": "Cintura en centímetros", "Hip in centimeters": "Cadera en centímetros", "Arm in centimeters": "Brazo en centímetros", "Calf in centimeters": "Pantorrilla en centímetros", "Remove this record": "Quitar este registro", "Remove": "Quitar", "+ Add record": "+ Añadir registro", "BMI, WHR and WHtR are calculated automatically. BMI and WHtR use the height from Patient details.": "El IMC, el ICC y el ICA se calculan automáticamente. El IMC y el ICA usan la altura de los datos del paciente.", "Weight over time": "Peso a lo largo del tiempo", "Line chart of weight in kilograms over time": "Gráfico de líneas del peso en kilogramos a lo largo del tiempo", "BMI over time": "IMC a lo largo del tiempo", "Line chart of body mass index over time with colored BMI ranges": "Gráfico de líneas del índice de masa corporal con rangos de IMC en colores", "Waist and hip over time": "Cintura y cadera a lo largo del tiempo", "Line chart of waist and hip measurements in centimeters over time": "Gráfico de líneas de cintura y cadera en centímetros a lo largo del tiempo", "Arm and calf over time": "Brazo y pantorrilla a lo largo del tiempo", "Line chart of arm and calf measurements in centimeters over time": "Gráfico de líneas de brazo y pantorrilla en centímetros a lo largo del tiempo", "Waist-to-hip ratio (WHR)": "Índice cintura-cadera (ICC)", "Line chart of waist-to-hip ratio over time with colored risk ranges": "Gráfico de líneas del índice cintura-cadera con rangos de riesgo en colores", "Waist-to-height ratio (WHtR)": "Índice cintura-altura (ICA)", "Line chart of waist-to-height ratio over time with colored risk ranges": "Gráfico de líneas del índice cintura-altura con rangos de riesgo en colores", "Skinfolds": "Pliegues cutáneos", "Triceps (mm)": "Tríceps (mm)", "Subscapular (mm)": "Subescapular (mm)", "Biceps (mm)": "Bíceps (mm)", "Iliac crest (mm)": "Cresta ilíaca (mm)", "Supraspinal (mm)": "Supraespinal (mm)", "Abdominal (mm)": "Abdominal (mm)", "Thigh (mm)": "Muslo (mm)", "Leg (calf) (mm)": "Pierna (pantorrilla) (mm)", "Sum of 8 (mm)": "Suma de 8 (mm)", "Skinfold date": "Fecha del pliegue", "Triceps skinfold in millimeters": "Pliegue del tríceps en milímetros", "Subscapular skinfold in millimeters": "Pliegue subescapular en milímetros", "Biceps skinfold in millimeters": "Pliegue del bíceps en milímetros", "Iliac crest skinfold in millimeters": "Pliegue de la cresta ilíaca en milímetros", "Supraspinal skinfold in millimeters": "Pliegue supraespinal en milímetros", "Abdominal skinfold in millimeters": "Pliegue abdominal en milímetros", "Thigh skinfold in millimeters": "Pliegue del muslo en milímetros", "Leg (calf) skinfold in millimeters": "Pliegue de la pierna (pantorrilla) en milímetros", "Remove this skinfold record": "Quitar este registro de pliegues", "Pick the date of each skinfold assessment and enter the eight folds in millimeters. The sum of the 8 is calculated when all of them are filled.": "Elige la fecha de cada valoración de pliegues e introduce los ocho pliegues en milímetros. La suma de los 8 se calcula cuando todos están rellenos.", "Skinfolds over time": "Pliegues cutáneos a lo largo del tiempo", "Line chart of eight skinfold measurements in millimeters over time": "Gráfico de líneas de ocho pliegues cutáneos en milímetros a lo largo del tiempo", "Progress photos": "Fotos de progreso", "Photo date": "Fecha de la foto", "Front": "Frente", "Side": "Lado", "Back": "Espalda", "No photo": "Sin foto", "Upload": "Subir", "Upload Front photo": "Subir foto de frente", "Upload Side photo": "Subir foto de lado", "Upload Back photo": "Subir foto de espalda", "Choose the date and upload the front, side and back photos. Photos are resized to keep the saved file light and are stored inside it.": "Elige la fecha y sube las fotos de frente, de lado y de espalda. Las fotos se redimensionan para que el archivo guardado sea ligero y se guardan dentro de él.", "Meal plans": "Planes de comidas", "Copy the current plan into a new one": "Copiar el plan actual en uno nuevo", "+ Duplicate plan": "+ Duplicar plan", "Start a new plan with an empty table": "Empezar un plan nuevo con una tabla vacía", "+ Blank plan": "+ Plan en blanco", "Plan name": "Nombre del plan", "Plan date": "Fecha del plan", "Delete plan": "Eliminar plan", "Goal, meal table, energy, notes and recommendations belong to each plan. Patient details, clinical history and progress records are shared.": "El objetivo, la tabla de comidas, la energía, las notas y las recomendaciones pertenecen a cada plan. Los datos del paciente, la historia clínica y los registros de progreso son compartidos.", "Plan title": "Título del plan", "7-Day Meal Plan": "Plan de comidas de 7 días", "Add a subtitle, for example the daily energy target": "Añade un subtítulo, por ejemplo el objetivo energético diario", "Plan subtitle": "Subtítulo del plan", "Energy expenditure calculations": "Cálculos de gasto energético", "Activity factor (AF)": "Factor de actividad (FA)", "e.g. 1.55": "p. ej. 1,55", "Calorie deficit": "Déficit calórico", "Missing for the calculation: gender, date of birth, height, weight.": "Faltan para el cálculo: sexo, fecha de nacimiento, altura, peso.", "BMR": "TMB", "Harris-Benedict (1919)": "Harris-Benedict (1919)", "TEF": "ETA", "10% of BMR": "10 % de la TMB", "TDEE": "GET", "BMR × AF + TEF": "TMB × FA + ETA", "kcal per day": "kcal al día", "Energy distribution by meals": "Distribución de la energía por comidas", "Meal": "Comida", "Min %": "% mín.", "Max %": "% máx.", "Energy (kcal)": "Energía (kcal)", "Meal name": "Nombre de la comida", "Remove this meal": "Quitar esta comida", "TOTAL": "TOTAL", "+ Add meal": "+ Añadir comida", "Type the minimum and maximum percentage for each meal.": "Escribe el porcentaje mínimo y máximo de cada comida.", "Energy distribution by macros": "Distribución de la energía por macronutrientes", "Macros in grams": "Macronutrientes en gramos", "Macro": "Macronutriente", "Grams (g)": "Gramos (g)", "Carbohydrates": "Hidratos de carbono", "Protein": "Proteínas", "Lipids": "Lípidos", "Fiber goal (g/day)": "Objetivo de fibra (g/día)", "e.g. 25-30 g": "p. ej. 25-30 g", "Daily meal plans": "Planes de comidas diarios", "Days": "Días", "+ Add day": "+ Añadir día", "Day name": "Nombre del día", "Duplicate day": "Duplicar día", "Delete day": "Eliminar día", "Include this day in the PDF": "Incluir este día en el PDF", "Remove meal": "Quitar comida", "Food": "Alimento", "Amount (g)": "Cantidad (g)", "Edible portion": "Porción comestible", "Carbs (g)": "Hidratos (g)", "Protein (g)": "Proteínas (g)", "Fat (g)": "Grasas (g)", "Fiber (g)": "Fibra (g)", "Search food": "Buscar alimento", "Amount in grams": "Cantidad en gramos", "Remove this food": "Quitar este alimento", "+ Add food": "+ Añadir alimento", "Energy": "Energía", "Carbs": "Hidratos", "Fat": "Grasas", "Fiber": "Fibra", "TOTAL (g)": "TOTAL (g)", "TOTAL (kcal)": "TOTAL (kcal)", "TOTAL (%)": "TOTAL (%)", "Energy used by meal": "Energía usada por comida", "Add foods and amounts to see this chart.": "Añade alimentos y cantidades para ver este gráfico.", "Macronutrient proportions": "Proporciones de macronutrientes", "Manage food database": "Gestionar base de datos de alimentos", "Search foods by name and type the amount in grams. Energy and macros are calculated from the food database, using the edible portion.": "Busca alimentos por nombre y escribe la cantidad en gramos. La energía y los macronutrientes se calculan a partir de la base de datos de alimentos, usando la porción comestible.", "Weekly overview": "Resumen semanal", "Fill from daily plans": "Rellenar desde los planes diarios", "No dashes": "Sin guiones", "Builds this table in English from the foods and amounts in the daily meal plans (food names are translated). You can still edit every cell.": "Genera esta tabla a partir de los alimentos y cantidades de los planes diarios, con los nombres de los alimentos en español. Puedes seguir editando cada celda.", "Row header title": "Título del encabezado de fila", "Column header": "Encabezado de columna", "Row header": "Encabezado de fila", "Foods and portions, one per line": "Alimentos y porciones, uno por línea", "Rows are days, columns are meals. Rename any header, and use × to remove one.": "Las filas son días y las columnas son comidas. Cambia el nombre de cualquier encabezado y usa × para quitarlo.", "Comments & notes": "Comentarios y notas", "Comments and notes": "Comentarios y notas", "Add comments, instructions or details for the patient": "Añade comentarios, instrucciones o detalles para el paciente", "Recommendations": "Recomendaciones", "Icons": "Iconos", "Oil spray bottle": "Pulverizador de aceite", "Kitchen scale": "Báscula de cocina", "Salt shaker": "Salero", "Water": "Agua", "Footsteps": "Pasos", "Dumbbell": "Mancuerna", "Fruit": "Fruta", "Meals": "Comidas", "Vegetables": "Verduras", "Heart health": "Salud del corazón", "Timing": "Horarios", "Sleep": "Sueño", "Supplements": "Suplementos", "Tea and coffee": "Té y café", "Morning routine": "Rutina matutina", "Recommendation": "Recomendación", "Select a recommendation": "Selecciona una recomendación", "Use oil spray bottle while frying.": "Usa pulverizador de aceite al freír.", "Use the scale to measure the foods.": "Usa la báscula para medir los alimentos.", "Add salt and pepper to taste.": "Añade sal y pimienta al gusto.", "Drink 2-2.5 L water daily.": "Bebe 2-2,5 L de agua al día.", "Walk 10-12k steps daily.": "Camina 10-12 mil pasos al día.", "Exercise 1 hour daily (5 times a week).": "Haz ejercicio 1 hora al día (5 veces a la semana).", "Other (write your own)": "Otra (escribe la tuya)", "Remove this recommendation": "Quitar esta recomendación", "+ Add recommendation": "+ Añadir recomendación", "Footer note": "Nota al pie", "This meal plan is for educational purposes. Follow the advice of your healthcare provider.": "Este plan de comidas tiene fines educativos. Sigue los consejos de tu profesional sanitario.", "Plans to include": "Planes a incluir", "Page orientation (A4)": "Orientación de página (A4)", "Landscape": "Horizontal", "Portrait": "Vertical", "Cancel": "Cancelar", "Food database": "Base de datos de alimentos", "Add a food (values per 100 g)": "Añadir un alimento (valores por 100 g)", "Food name": "Nombre del alimento", "Edible portion (1 = 100%)": "Porción comestible (1 = 100 %)", "Kcal / 100 g": "Kcal / 100 g", "Carbohydrates (g)": "Hidratos de carbono (g)", "Add food": "Añadir alimento", "Import or export": "Importar o exportar", "CSV columns in the same order as your Excel: Food, Edible portion, Kcal/100 g, Carbohydrates, Protein, Fat, Fiber. Semicolon, comma or tab separated.": "Columnas CSV en el mismo orden que tu Excel: Alimento, Porción comestible, Kcal/100 g, Hidratos de carbono, Proteínas, Grasas, Fibra. Separadas por punto y coma, coma o tabulador.", "Import CSV…": "Importar CSV…", "Download my added foods (CSV)": "Descargar mis alimentos añadidos (CSV)", "Foods you added": "Alimentos que has añadido", "Close": "Cerrar", "Monday": "Lunes", "Tuesday": "Martes", "Wednesday": "Miércoles", "Thursday": "Jueves", "Friday": "Viernes", "Saturday": "Sábado", "Sunday": "Domingo", "Breakfast": "Desayuno", "Mid-morning snack": "Media mañana", "Lunch": "Almuerzo", "Afternoon snack": "Merienda", "Evening snack": "Tentempié de la tarde", "Dinner": "Cena", "Day": "Día", "Plan": "Plan", "Daily charts and plan average": "Gráficos diarios y media del plan", "Plan average": "Media del plan", "No foods added yet.": "Aún no hay alimentos.", "One column per day with its energy by meal and macronutrient charts. The last column is the average of the days that have foods.": "Una columna por día con sus gráficos de energía por comida y de macronutrientes. La última columna es la media de los días que tienen alimentos.", "Photo": "Foto", "A day can hold up to 12 meals.": "Un día puede tener hasta 12 comidas.", "A meal can hold up to 40 foods.": "Una comida puede tener hasta 40 alimentos.", "A plan can hold up to 31 days.": "Un plan puede tener hasta 31 días.", "Add a date and a waist measurement in Progress records to see this chart.": "Añade una fecha y una medida de cintura en Registros de progreso para ver este gráfico.", "Add a date and a waist or hip measurement to see this chart.": "Añade una fecha y una medida de cintura o cadera para ver este gráfico.", "Add a date and a weight in Progress records to see this chart.": "Añade una fecha y un peso en Registros de progreso para ver este gráfico.", "Add a date and an arm or calf measurement to see this chart.": "Añade una fecha y una medida de brazo o pantorrilla para ver este gráfico.", "Add a date and at least one skinfold in the Skinfolds table to see this chart.": "Añade una fecha y al menos un pliegue en la tabla de pliegues cutáneos para ver este gráfico.", "Add a date, a waist and a hip measurement in Progress records to see this chart.": "Añade una fecha, una medida de cintura y una de cadera en Registros de progreso para ver este gráfico.", "Add meals to the daily plans first.": "Primero añade comidas a los planes diarios.", "Another save prompt is open. Answer it, then try again.": "Hay otro aviso de guardado abierto. Respóndelo e inténtalo de nuevo.", "Arm": "Brazo", "Calf": "Pantorrilla", "Waist": "Cintura", "Hip": "Cadera", "Weight": "Peso", "Triceps": "Tríceps", "Subscapular": "Subescapular", "Biceps": "Bíceps", "Iliac crest": "Cresta ilíaca", "Supraspinal": "Supraespinal", "Abdominal": "Abdominal", "Thigh": "Muslo", "Leg (calf)": "Pierna (pantorrilla)", "Arm and calf chart": "Gráfico de brazo y pantorrilla", "Waist and hip chart": "Gráfico de cintura y cadera", "BMI chart": "Gráfico de IMC", "WHR chart": "Gráfico de ICC", "WHtR chart": "Gráfico de ICA", "Weight chart": "Gráfico de peso", "Skinfolds chart": "Gráfico de pliegues cutáneos", "Skinfolds table": "Tabla de pliegues cutáneos", "Progress records table": "Tabla de registros de progreso", "BMI (kg/m²)": "IMC (kg/m²)", "Measurement (cm)": "Medida (cm)", "Skinfold (mm)": "Pliegue (mm)", "Check date": "Revisa la fecha", "Check the values: name required, edible portion 0.01–5, kcal 0–950, macros and fiber 0–100 g per 100 g.": "Revisa los valores: nombre obligatorio, porción comestible 0,01–5, kcal 0–950, macronutrientes y fibra 0–100 g por 100 g.", "Clear": "Quitar", "Clear formatting of the selection": "Quitar el formato de la selección", "Bold": "Negrita", "Underline": "Subrayado", "Text formatting": "Formato de texto", "Custom recommendation": "Recomendación personalizada", "Click again to clear everything": "Pulsa de nuevo para borrarlo todo", "Click again to delete": "Pulsa de nuevo para eliminar", "Click again to replace the table": "Pulsa de nuevo para reemplazar la tabla", "Replace what is on screen?": "¿Reemplazar lo que hay en pantalla?", "Column removed.": "Columna quitada.", "Row removed.": "Fila quitada.", "Complete the energy calculation (Energy expenditure) to compare with the target.": "Completa el cálculo de energía (gasto energético) para compararlo con el objetivo.", "Could not create the PDF. Try again.": "No se pudo crear el PDF. Inténtalo de nuevo.", "Could not read that file.": "No se pudo leer ese archivo.", "Could not read that file. Try again.": "No se pudo leer ese archivo. Inténtalo de nuevo.", "Could not read that image. Use a JPG or PNG file.": "No se pudo leer esa imagen. Usa un archivo JPG o PNG.", "Could not save the file.": "No se pudo guardar el archivo.", "Could not save the plan. Try again.": "No se pudo guardar el plan. Inténtalo de nuevo.", "Dates sorted.": "Fechas ordenadas.", "Day added.": "Día añadido.", "Day deleted.": "Día eliminado.", "Day duplicated.": "Día duplicado.", "Download cancelled.": "Descarga cancelada.", "Entry removed.": "Entrada quitada.", "File ready.": "Archivo listo.", "File saved. Use Open file to continue editing it later.": "Archivo guardado. Usa «Abrir archivo» para seguir editándolo más adelante.", "High risk": "Riesgo alto", "Increased risk": "Riesgo aumentado", "Low risk": "Riesgo bajo", "Moderate risk": "Riesgo moderado", "No increased risk": "Sin riesgo aumentado", "Underweight": "Bajo peso", "Normal weight": "Normopeso", "Overweight": "Sobrepeso", "Obesity grade 1": "Obesidad grado 1", "Obesity grade 2": "Obesidad grado 2", "Obesity grade 3": "Obesidad grado 3", "Logo & patient details": "Logotipo y datos del paciente", "Macros": "Macros", "Maximum": "Máximo", "Minimum": "Mínimo", "Meal removed.": "Comida quitada.", "No recommendations yet. Use the button below to add one.": "Aún no hay recomendaciones. Usa el botón de abajo para añadir una.", "None yet.": "Aún no hay ninguno.", "Not in the food database. Pick a food from the list, or add it with Manage food database.": "No está en la base de datos de alimentos. Elige un alimento de la lista o añádelo con «Gestionar base de datos de alimentos».", "Nothing to export: the ticked sections have no content yet.": "Nada que exportar: las secciones marcadas aún no tienen contenido.", "PDF saved.": "PDF guardado.", "PDF sent.": "PDF enviado.", "Plan sent.": "Plan enviado.", "Patient": "Paciente", "Photo entries sorted by date.": "Entradas de fotos ordenadas por fecha.", "Photo entry removed.": "Entrada de fotos quitada.", "Preparing PDF…": "Preparando PDF…", "Processing photo...": "Procesando foto...", "Recommendation removed.": "Recomendación quitada.", "Record removed.": "Registro quitado.", "Records sorted by date.": "Registros ordenados por fecha.", "Remaining": "Restante", "Replace": "Reemplazar", "Select at least one plan to export.": "Selecciona al menos un plan para exportar.", "Select the patient’s gender in Patient details to show the WHR risk ranges.": "Selecciona el sexo del paciente en los datos del paciente para mostrar los rangos de riesgo del ICC.", "Select the patient’s height in Patient details to calculate BMI.": "Selecciona la altura del paciente en los datos del paciente para calcular el IMC.", "Select the patient’s height in Patient details to calculate WHtR.": "Selecciona la altura del paciente en los datos del paciente para calcular el ICA.", "Skinfold record removed.": "Registro de pliegues quitado.", "Skinfold records sorted by date.": "Registros de pliegues ordenados por fecha.", "Started a new patient file.": "Se ha iniciado un archivo de paciente nuevo.", "That file is not a saved patient file. Open a .json file created with Save file.": "Ese archivo no es un archivo de paciente guardado. Abre un archivo .json creado con «Guardar archivo».", "That file is too large to be a saved meal plan.": "Ese archivo es demasiado grande para ser un plan guardado.", "That file is too large.": "Ese archivo es demasiado grande.", "The PDF tools did not load. Check your connection and try again.": "No se cargaron las herramientas de PDF. Revisa tu conexión e inténtalo de nuevo.", "These ranges cannot add up to 100% of the energy target.": "Estos rangos no pueden sumar el 100 % del objetivo energético.", "This file is damaged or incomplete. Nothing was changed.": "Este archivo está dañado o incompleto. No se ha cambiado nada.", "This file was saved with a newer version of the page and cannot be opened here.": "Este archivo se guardó con una versión más reciente de la página y no se puede abrir aquí.", "Tick at least one section to export.": "Marca al menos una sección para exportar.", "Weekly overview filled from the daily plans.": "Resumen semanal rellenado desde los planes diarios.", "Write the recommendation for this patient": "Escribe la recomendación para este paciente", "You have not added any foods yet.": "Todavía no has añadido ningún alimento.", "% of energy": "% de la energía", "Download PDF: ": "Descargar PDF: ", "Patient documents": "Documentos del paciente", "+ Upload documents": "+ Subir documentos", "Upload documents": "Subir documentos", "3 days food register": "Registro de alimentos de 3 días", "Activity factor": "Factor de actividad", "Food frequency questionnaire": "Cuestionario de frecuencia de consumo de alimentos", "Medical reports": "Informes médicos", "Informed consent and conditions of nutritional service": "Consentimiento informado y condiciones del servicio nutricional", "Personal data protection": "Protección de datos personales", "Others": "Otros", "Select document name": "Seleccionar nombre del documento", "Document name": "Nombre del documento", "Document date": "Fecha del documento", "Document icon": "Icono del documento", "Notes": "Notas", "Notes about this document": "Notas sobre este documento", "Open": "Abrir", "Download": "Descargar", "Remove document": "Quitar documento", "Click again to remove": "Pulsa de nuevo para quitar", "Food register": "Registro de alimentos", "Activity": "Actividad", "Questionnaire": "Cuestionario", "Medical report": "Informe médico", "Consent": "Consentimiento", "Data protection": "Protección de datos", "Document": "Documento", "Image": "Imagen", "Lab analysis": "Análisis de laboratorio", "Spreadsheet": "Hoja de cálculo", "No documents yet. Use the button below or drop files here.": "Aún no hay documentos. Usa el botón de abajo o suelta aquí los archivos.", "Upload PDF, Word, Excel, image or any other file (up to 15 MB each). Each file becomes a box where you choose its name, icon and date, open or download it in its original format, and write notes. Files are stored inside the saved patient file and are not included in the PDF.": "Sube PDF, Word, Excel, imágenes o cualquier otro archivo (hasta 15 MB cada uno). Cada archivo se convierte en un cuadro donde eliges su nombre, icono y fecha, lo abres o descargas en su formato original y escribes notas. Los archivos se guardan dentro del archivo del paciente y no se incluyen en el PDF.", "Reading files…": "Leyendo archivos…", "Document added.": "Documento añadido.", "Document removed.": "Documento quitado.", "Click again to remove this document.": "Pulsa de nuevo para quitar este documento.", "A patient file can hold up to 60 documents.": "Un archivo de paciente puede contener hasta 60 documentos.", "That file is larger than 15 MB.": "Ese archivo supera los 15 MB.", "Documents are too large to fit in one patient file (limit about 90 MB).": "Los documentos son demasiado grandes para un solo archivo de paciente (límite de unos 90 MB).", "Opened in a new tab.": "Abierto en una pestaña nueva.", "This file type cannot be previewed, so it was downloaded.": "Este tipo de archivo no se puede previsualizar, así que se ha descargado.", "Your browser blocked the new tab, so the file was downloaded.": "El navegador bloqueó la pestaña nueva, así que se ha descargado el archivo.", "Water (g)": "Agua (g)", "Alcohol (g)": "Alcohol (g)", "Starch (g)": "Almidón (g)", "Simple sugars (g)": "Azúcares sencillos (g)", "Free sugars (g)": "Azúcares libres (g)", "Total fat (g)": "Grasa total (g)", "SFA (g)": "AGS (g)", "MUFA (g)": "AGM (g)", "PUFA (g)": "AGP (g)", "Cholesterol (mg)": "Colesterol (mg)", "Micronutrient targets": "Objetivos de micronutrientes", "Vitamins": "Vitaminas", "Minerals": "Minerales", "Micronutrients": "Micronutrientes", "Type the daily target of each micronutrient (leave it empty if you do not need it). The bars under each day in Daily charts and plan average show how much of each target the day covers.": "Escribe el objetivo diario de cada micronutriente (déjalo vacío si no lo necesitas). Las barras bajo cada día en «Gráficos diarios y media del plan» muestran qué parte de cada objetivo cubre el día.", "* Some foods have no data for this nutrient (counted as 0).": "* Algunos alimentos no tienen datos de este nutriente (se cuentan como 0).", "Set the daily targets in Micronutrient targets to fill the bars.": "Fija los objetivos diarios en «Objetivos de micronutrientes» para llenar las barras.", "Vitamin A (retinol eq.)": "Vitamina A (eq. retinol)", "Retinol": "Retinol", "Carotenoids (β-carotene eq.)": "Carotenoides (eq. β-caroteno)", "Vitamin D (calciferol)": "Vitamina D (calciferol)", "Vitamin E (tocopherol)": "Vitamina E (tocoferol)", "Vitamin K (phylloquinone)": "Vitamina K (filoquinona)", "Vitamin B1 (thiamin)": "Vitamina B1 (tiamina)", "Vitamin B2 (riboflavin)": "Vitamina B2 (riboflavina)", "Vitamin B3 (niacin)": "Vitamina B3 (niacina)", "Vitamin B5 (pantothenic acid)": "Vitamina B5 (pantoténico)", "Vitamin B6 (pyridoxine)": "Vitamina B6 (piridoxina)", "Vitamin B7 (biotin)": "Vitamina B7 (biotina)", "Vitamin B9 (folate)": "Vitamina B9 (folato)", "Vitamin B12 (cobalamin)": "Vitamina B12 (cobalamina)", "Vitamin C (ascorbic acid)": "Vitamina C (ácido ascórbico)", "Calcium": "Calcio", "Phosphorus": "Fósforo", "Iron": "Hierro", "Iodine": "Yodo", "Zinc": "Cinc", "Magnesium": "Magnesio", "Sodium": "Sodio", "Potassium": "Potasio", "Manganese": "Manganeso", "Copper": "Cobre", "Selenium": "Selenio", "Carotenoids": "Carotenoides", "Vit. A": "Vit. A", "Vit. D": "Vit. D", "Vit. E": "Vit. E", "Vit. K": "Vit. K", "Vit. C": "Vit. C", "Vit. B1": "Vit. B1", "Vit. B2": "Vit. B2", "Vit. B3": "Vit. B3", "Vit. B5": "Vit. B5", "Vit. B6": "Vit. B6", "Vit. B7": "Vit. B7", "Vit. B9": "Vit. B9", "Vit. B12": "Vit. B12", "Shopping list": "Lista de la compra", "Total amount": "Cantidad total", "Add foods and amounts to the daily plans and the shopping list builds itself: the total grams of each food across the whole plan. Tick the foods as you buy them.": "Añade alimentos y cantidades a los planes diarios y la lista de la compra se genera sola: los gramos totales de cada alimento en todo el plan. Marca los alimentos según los vayas comprando.", "Amounts are the grams written in the daily plans (before the edible portion is applied).": "Las cantidades son los gramos escritos en los planes diarios (antes de aplicar la porción comestible).", "Daily charts: energy and macronutrients": "Gráficos diarios: energía y macronutrientes", "Daily charts: micronutrients": "Gráficos diarios: micronutrientes", "One column per day with its energy by meal and macronutrient charts.": "Una columna por día con sus gráficos de energía por comida y de macronutrientes.", "One column per day with the micronutrients it provides against the targets set in Micronutrient targets.": "Una columna por día con los micronutrientes que aporta frente a los objetivos fijados en «Objetivos de micronutrientes».", "Average of the days that have foods: energy by meal, macronutrients and micronutrients.": "Media de los días con alimentos: energía por comida, macronutrientes y micronutrientes.", "Phone number": "Teléfono", "E-mail": "Correo electrónico", "Address": "Domicilio", "e.g. +34 600 000 000": "p. ej. +34 600 000 000", "name@example.com": "nombre@ejemplo.com", "Street, number, city, postcode": "Calle, número, ciudad, código postal", "Export plan": "Exportar plan", "Import plan": "Importar plan", "Save only this plan as a template file": "Guarda solo este plan como archivo plantilla", "Add a plan from a template file to this patient file": "Añade a este archivo de paciente un plan desde un archivo plantilla", "Plan exported. Use Import plan to add it to any patient file.": "Plan exportado. Usa Importar plan para añadirlo al archivo de cualquier paciente.", "Export cancelled.": "Exportación cancelada.", "Could not export the plan. Try again.": "No se pudo exportar el plan. Inténtalo de nuevo.", "That is a full patient file. Use Open file for it; Import plan only takes a single exported plan.": "Ese es un archivo completo de paciente. Usa Abrir archivo; Importar plan solo acepta un plan exportado.", "This plan file is damaged or incomplete. Nothing was changed.": "Este archivo de plan está dañado o incompleto. No se ha cambiado nada.", "That file is not an exported meal plan. Use a .json file created with Export plan.": "Ese archivo no es un plan exportado. Usa un archivo .json creado con Exportar plan.", "That is a single exported meal plan. Use Import plan in the plans bar to add it to this patient file.": "Ese es un plan suelto exportado. Usa Importar plan en la barra de planes para añadirlo a este archivo de paciente.", "Goal, meal table, energy, notes and recommendations belong to each plan. Patient details and progress records are shared.": "El objetivo, la tabla de comidas, la energía, las notas y las recomendaciones pertenecen a cada plan. Los datos del paciente y los registros de progreso son compartidos."};
+  var ES_DICT = {"Meal plan builder": "Creador de planes de comidas", "Everything is editable. Save file keeps all sections, plans and added foods in one file you can reopen. A copy is also downloaded automatically every 15 minutes if something changed.": "Todo es editable. «Guardar archivo» conserva todas las secciones, planes y alimentos añadidos en un solo archivo que puedes reabrir. Además, se descarga una copia automática cada 15 minutos si hay cambios.", "New file": "Archivo nuevo", "Open file": "Abrir archivo", "Save file": "Guardar archivo", "Download PDF": "Descargar PDF", "Sections": "Secciones", "Include section 1 in the PDF": "Incluir la sección 1 en el PDF", "Include section 2 in the PDF": "Incluir la sección 2 en el PDF", "Include section 3 in the PDF": "Incluir la sección 3 en el PDF", "Clinical History": "Historia clínica", "Progress records": "Registros de progreso", "Energy & meal plan": "Energía y plan de comidas", "Download this section as a PDF": "Descargar esta sección como PDF", "PDF": "PDF", "Tick a section or a box to include it in the PDF. The PDF button next to a section downloads only that section.": "Marca una sección o un cuadro para incluirlo en el PDF. El botón PDF junto a una sección descarga solo esa sección.", "Patient details": "Datos del paciente", "Include in the PDF": "Incluir en el PDF", "Name": "Nombre", "Full name": "Nombre completo", "Date of birth": "Fecha de nacimiento", "Age": "Edad", "Automatic": "Automática", "Gender": "Sexo", "Select": "Seleccionar", "Male": "Hombre", "Female": "Mujer", "Height": "Altura", "Height, centimeters": "Altura, centímetros", "Height, additional millimeters": "Altura, milímetros adicionales", "Goal": "Objetivo", "Lose body fat/weight": "Perder grasa corporal/peso", "Build muscle": "Ganar masa muscular", "Improve overall health and energy": "Mejorar la salud general y la energía", "Manage a health condition": "Manejar una condición de salud", "Other": "Otro", "Zohaib Khan logo: a watermelon slice shaped like the letter Z": "Logotipo de Zohaib Khan: una rodaja de sandía con forma de letra Z", "Nutritionist & Dietitian": "Nutricionista y Dietista", "Medical history: personal": "Historial médico: personal", "Allergies": "Alergias", "Intolerances": "Intolerancias", "Digestive diseases (diarrhea, constipation, etc.)": "Enfermedades digestivas (diarrea, estreñimiento, etc.)", "Pregnant / recent delivery / breastfeeding": "Embarazo / parto reciente / lactancia", "Menarche / menopause": "Menarquia / menopausia", "Other diseases (HTA, DMT1/DMT2, etc.)": "Otras enfermedades (HTA, DM1/DM2, etc.)", "Medical treatments": "Tratamientos médicos", "Recent interventions": "Intervenciones recientes", "Other info": "Otra información", "Medical history: family": "Historial médico: familiar", "Hypertension (HTA)": "Hipertensión (HTA)", "Diabetes (DMT1/DMT2)": "Diabetes (DM1/DM2)", "Obesity": "Obesidad", "Heart attacks": "Infartos", "Weights & previous diets": "Pesos y dietas previas", "Current weight": "Peso actual", "Highest weight": "Peso máximo", "Lowest weight": "Peso mínimo", "e.g. 72.5": "p. ej. 72,5", "e.g. 95": "p. ej. 95", "e.g. 60": "p. ej. 60", "Previous diets (fat burners, pills, medications, etc.)": "Dietas previas (quemagrasas, pastillas, medicamentos, etc.)", "Describe previous diets, supplements and medications used for weight management": "Describe las dietas, suplementos y medicamentos usados anteriormente para el control del peso", "Habits & lifestyle log": "Registro de hábitos y estilo de vida", "Date": "Fecha", "Entry date": "Fecha de la entrada", "Remove this date": "Quitar esta fecha", "Habits": "Hábitos", "Exercise (type and frequency)": "Ejercicio (tipo y frecuencia)", "Walking (daily steps)": "Caminar (pasos diarios)", "Sleep hours": "Horas de sueño", "Work schedule": "Horario de trabajo", "+ Add date": "+ Añadir fecha", "Sort by date": "Ordenar por fecha", "Each date has its own box: note habits, exercise (type and frequency), walking (daily steps), sleep hours, work schedule and anything else relevant.": "Cada fecha tiene su propio cuadro: anota hábitos, ejercicio (tipo y frecuencia), caminar (pasos diarios), horas de sueño, horario de trabajo y cualquier otro dato relevante.", "Blood test & other reports log": "Registro de análisis de sangre y otros informes", "Report date": "Fecha del informe", "Blood test and other reports": "Análisis de sangre y otros informes", "Write results, reference values, dates of studies, imaging or any other report": "Escribe resultados, valores de referencia, fechas de estudios, imágenes o cualquier otro informe", "Each date has one free-text box: write blood test results, imaging or any other report. Select text to make it bold, underlined or coloured.": "Cada fecha tiene un cuadro de texto libre: escribe resultados de análisis, imágenes o cualquier otro informe. Selecciona texto para ponerlo en negrita, subrayado o de color.", "Weight (kg)": "Peso (kg)", "BMI": "IMC", "Waist (cm)": "Cintura (cm)", "Hip (cm)": "Cadera (cm)", "Arm (cm)": "Brazo (cm)", "Calf (cm)": "Pantorrilla (cm)", "WHR": "ICC", "WHtR": "ICA", "Record date": "Fecha del registro", "Weight in kilograms": "Peso en kilogramos", "Waist in centimeters": "Cintura en centímetros", "Hip in centimeters": "Cadera en centímetros", "Arm in centimeters": "Brazo en centímetros", "Calf in centimeters": "Pantorrilla en centímetros", "Remove this record": "Quitar este registro", "Remove": "Quitar", "+ Add record": "+ Añadir registro", "BMI, WHR and WHtR are calculated automatically. BMI and WHtR use the height from Patient details.": "El IMC, el ICC y el ICA se calculan automáticamente. El IMC y el ICA usan la altura de los datos del paciente.", "Weight over time": "Peso a lo largo del tiempo", "Line chart of weight in kilograms over time": "Gráfico de líneas del peso en kilogramos a lo largo del tiempo", "BMI over time": "IMC a lo largo del tiempo", "Line chart of body mass index over time with colored BMI ranges": "Gráfico de líneas del índice de masa corporal con rangos de IMC en colores", "Waist and hip over time": "Cintura y cadera a lo largo del tiempo", "Line chart of waist and hip measurements in centimeters over time": "Gráfico de líneas de cintura y cadera en centímetros a lo largo del tiempo", "Arm and calf over time": "Brazo y pantorrilla a lo largo del tiempo", "Line chart of arm and calf measurements in centimeters over time": "Gráfico de líneas de brazo y pantorrilla en centímetros a lo largo del tiempo", "Waist-to-hip ratio (WHR)": "Índice cintura-cadera (ICC)", "Line chart of waist-to-hip ratio over time with colored risk ranges": "Gráfico de líneas del índice cintura-cadera con rangos de riesgo en colores", "Waist-to-height ratio (WHtR)": "Índice cintura-altura (ICA)", "Line chart of waist-to-height ratio over time with colored risk ranges": "Gráfico de líneas del índice cintura-altura con rangos de riesgo en colores", "Skinfolds": "Pliegues cutáneos", "Triceps (mm)": "Tríceps (mm)", "Subscapular (mm)": "Subescapular (mm)", "Biceps (mm)": "Bíceps (mm)", "Iliac crest (mm)": "Cresta ilíaca (mm)", "Supraspinal (mm)": "Supraespinal (mm)", "Abdominal (mm)": "Abdominal (mm)", "Thigh (mm)": "Muslo (mm)", "Leg (calf) (mm)": "Pierna (pantorrilla) (mm)", "Sum of 8 (mm)": "Suma de 8 (mm)", "Skinfold date": "Fecha del pliegue", "Triceps skinfold in millimeters": "Pliegue del tríceps en milímetros", "Subscapular skinfold in millimeters": "Pliegue subescapular en milímetros", "Biceps skinfold in millimeters": "Pliegue del bíceps en milímetros", "Iliac crest skinfold in millimeters": "Pliegue de la cresta ilíaca en milímetros", "Supraspinal skinfold in millimeters": "Pliegue supraespinal en milímetros", "Abdominal skinfold in millimeters": "Pliegue abdominal en milímetros", "Thigh skinfold in millimeters": "Pliegue del muslo en milímetros", "Leg (calf) skinfold in millimeters": "Pliegue de la pierna (pantorrilla) en milímetros", "Remove this skinfold record": "Quitar este registro de pliegues", "Pick the date of each skinfold assessment and enter the eight folds in millimeters. The sum of the 8 is calculated when all of them are filled.": "Elige la fecha de cada valoración de pliegues e introduce los ocho pliegues en milímetros. La suma de los 8 se calcula cuando todos están rellenos.", "Skinfolds over time": "Pliegues cutáneos a lo largo del tiempo", "Line chart of eight skinfold measurements in millimeters over time": "Gráfico de líneas de ocho pliegues cutáneos en milímetros a lo largo del tiempo", "Progress photos": "Fotos de progreso", "Photo date": "Fecha de la foto", "Front": "Frente", "Side": "Lado", "Back": "Atrás", "No photo": "Sin foto", "Upload": "Subir", "Upload Front photo": "Subir foto de frente", "Upload Side photo": "Subir foto de lado", "Upload Back photo": "Subir foto de espalda", "Choose the date and upload the front, side and back photos. Photos are resized to keep the saved file light and are stored inside it.": "Elige la fecha y sube las fotos de frente, de lado y de espalda. Las fotos se redimensionan para que el archivo guardado sea ligero y se guardan dentro de él.", "Meal plans": "Planes de comidas", "Copy the current plan into a new one": "Copiar el plan actual en uno nuevo", "+ Duplicate plan": "+ Duplicar plan", "Start a new plan with an empty table": "Empezar un plan nuevo con una tabla vacía", "+ Blank plan": "+ Plan en blanco", "Plan name": "Nombre del plan", "Plan date": "Fecha del plan", "Delete plan": "Eliminar plan", "Goal, meal table, energy, notes and recommendations belong to each plan. Patient details, clinical history and progress records are shared.": "El objetivo, la tabla de comidas, la energía, las notas y las recomendaciones pertenecen a cada plan. Los datos del paciente, la historia clínica y los registros de progreso son compartidos.", "Plan title": "Título del plan", "7-Day Meal Plan": "Plan de comidas de 7 días", "Add a subtitle, for example the daily energy target": "Añade un subtítulo, por ejemplo el objetivo energético diario", "Plan subtitle": "Subtítulo del plan", "Energy expenditure calculations": "Cálculos de gasto energético", "Activity factor (AF)": "Factor de actividad (FA)", "e.g. 1.55": "p. ej. 1,55", "Calorie deficit": "Déficit calórico", "Missing for the calculation: gender, date of birth, height, weight.": "Faltan para el cálculo: sexo, fecha de nacimiento, altura, peso.", "BMR": "TMB", "Harris-Benedict (1919)": "Harris-Benedict (1919)", "TEF": "ETA", "10% of BMR": "10 % de la TMB", "TDEE": "GET", "BMR × AF + TEF": "TMB × FA + ETA", "kcal per day": "kcal al día", "Energy distribution by meals": "Distribución de la energía por comidas", "Meal": "Comida", "Min %": "% mín.", "Max %": "% máx.", "Energy (kcal)": "Energía (kcal)", "Meal name": "Nombre de la comida", "Remove this meal": "Quitar esta comida", "TOTAL": "TOTAL", "+ Add meal": "+ Añadir comida", "Type the minimum and maximum percentage for each meal.": "Escribe el porcentaje mínimo y máximo de cada comida.", "Energy distribution by macros": "Distribución de la energía por macronutrientes", "Macros in grams": "Macronutrientes en gramos", "Macro": "Macronutriente", "Grams (g)": "Gramos (g)", "Carbohydrates": "Hidratos de carbono", "Protein": "Proteínas", "Lipids": "Lípidos", "Fiber goal (g/day)": "Objetivo de fibra (g/día)", "e.g. 25-30 g": "p. ej. 25-30 g", "Daily meal plans": "Planes de comidas diarios", "Days": "Días", "+ Add day": "+ Añadir día", "Day name": "Nombre del día", "Duplicate day": "Duplicar día", "Delete day": "Eliminar día", "Include this day in the PDF": "Incluir este día en el PDF", "Remove meal": "Quitar comida", "Food": "Alimento", "Amount (g)": "Cantidad (g)", "Edible portion": "Porción comestible", "Carbs (g)": "Hidratos (g)", "Protein (g)": "Proteínas (g)", "Fat (g)": "Grasas (g)", "Fiber (g)": "Fibra (g)", "Search food": "Buscar alimento", "Amount in grams": "Cantidad en gramos", "Remove this food": "Quitar este alimento", "+ Add food": "+ Añadir alimento", "Energy": "Energía", "Carbs": "Hidratos", "Fat": "Grasas", "Fiber": "Fibra", "TOTAL (g)": "TOTAL (g)", "TOTAL (kcal)": "TOTAL (kcal)", "TOTAL (%)": "TOTAL (%)", "Energy used by meal": "Energía usada por comida", "Add foods and amounts to see this chart.": "Añade alimentos y cantidades para ver este gráfico.", "Macronutrient proportions": "Proporciones de macronutrientes", "Manage food database": "Gestionar base de datos de alimentos", "Search foods by name and type the amount in grams. Energy and macros are calculated from the food database, using the edible portion.": "Busca alimentos por nombre y escribe la cantidad en gramos. La energía y los macronutrientes se calculan a partir de la base de datos de alimentos, usando la porción comestible.", "Weekly overview": "Resumen semanal", "Fill from daily plans": "Rellenar desde los planes diarios", "No dashes": "Sin guiones", "Builds this table in English from the foods and amounts in the daily meal plans (food names are translated). You can still edit every cell.": "Genera esta tabla a partir de los alimentos y cantidades de los planes diarios, con los nombres de los alimentos en español. Puedes seguir editando cada celda.", "Row header title": "Título del encabezado de fila", "Column header": "Encabezado de columna", "Row header": "Encabezado de fila", "Foods and portions, one per line": "Alimentos y porciones, uno por línea", "Rows are days, columns are meals. Rename any header, and use × to remove one.": "Las filas son días y las columnas son comidas. Cambia el nombre de cualquier encabezado y usa × para quitarlo.", "Comments & notes": "Comentarios y notas", "Comments and notes": "Comentarios y notas", "Add comments, instructions or details for the patient": "Añade comentarios, instrucciones o detalles para el paciente", "Recommendations": "Recomendaciones", "Icons": "Iconos", "Oil spray bottle": "Pulverizador de aceite", "Kitchen scale": "Báscula de cocina", "Salt shaker": "Salero", "Water": "Agua", "Footsteps": "Pasos", "Dumbbell": "Mancuerna", "Fruit": "Fruta", "Meals": "Comidas", "Vegetables": "Verduras", "Heart health": "Salud del corazón", "Timing": "Horarios", "Sleep": "Sueño", "Supplements": "Suplementos", "Tea and coffee": "Té y café", "Morning routine": "Rutina matutina", "Recommendation": "Recomendación", "Select a recommendation": "Selecciona una recomendación", "Use oil spray bottle while frying.": "Usa pulverizador de aceite al freír.", "Use the scale to measure the foods.": "Usa la báscula para medir los alimentos.", "Add salt and pepper to taste.": "Añade sal y pimienta al gusto.", "Drink 2-2.5 L water daily.": "Bebe 2-2,5 L de agua al día.", "Walk 10-12k steps daily.": "Camina 10-12 mil pasos al día.", "Exercise 1 hour daily (5 times a week).": "Haz ejercicio 1 hora al día (5 veces a la semana).", "Other (write your own)": "Otra (escribe la tuya)", "Remove this recommendation": "Quitar esta recomendación", "+ Add recommendation": "+ Añadir recomendación", "Footer note": "Nota al pie", "This meal plan is for educational purposes. Follow the advice of your healthcare provider.": "Este plan de comidas tiene fines educativos. Sigue los consejos de tu profesional sanitario.", "Plans to include": "Planes a incluir", "Page orientation (A4)": "Orientación de página (A4)", "Landscape": "Horizontal", "Portrait": "Vertical", "Cancel": "Cancelar", "Food database": "Base de datos de alimentos", "Add a food (values per 100 g)": "Añadir un alimento (valores por 100 g)", "Food name": "Nombre del alimento", "Edible portion (1 = 100%)": "Porción comestible (1 = 100 %)", "Kcal / 100 g": "Kcal / 100 g", "Carbohydrates (g)": "Hidratos de carbono (g)", "Add food": "Añadir alimento", "Import or export": "Importar o exportar", "CSV columns in the same order as your Excel: Food, Edible portion, Kcal/100 g, Carbohydrates, Protein, Fat, Fiber. Semicolon, comma or tab separated.": "Columnas CSV en el mismo orden que tu Excel: Alimento, Porción comestible, Kcal/100 g, Hidratos de carbono, Proteínas, Grasas, Fibra. Separadas por punto y coma, coma o tabulador.", "Import CSV…": "Importar CSV…", "Download my added foods (CSV)": "Descargar mis alimentos añadidos (CSV)", "Foods you added": "Alimentos que has añadido", "Close": "Cerrar", "Monday": "Lunes", "Tuesday": "Martes", "Wednesday": "Miércoles", "Thursday": "Jueves", "Friday": "Viernes", "Saturday": "Sábado", "Sunday": "Domingo", "Breakfast": "Desayuno", "Mid-morning snack": "Media mañana", "Lunch": "Almuerzo", "Afternoon snack": "Merienda", "Evening snack": "Tentempié de la tarde", "Dinner": "Cena", "Day": "Día", "Plan": "Plan", "Daily charts and plan average": "Gráficos diarios y media del plan", "Plan average": "Media del plan", "No foods added yet.": "Aún no hay alimentos.", "One column per day with its energy by meal and macronutrient charts. The last column is the average of the days that have foods.": "Una columna por día con sus gráficos de energía por comida y de macronutrientes. La última columna es la media de los días que tienen alimentos.", "Photo": "Foto", "A day can hold up to 12 meals.": "Un día puede tener hasta 12 comidas.", "A meal can hold up to 40 foods.": "Una comida puede tener hasta 40 alimentos.", "A plan can hold up to 31 days.": "Un plan puede tener hasta 31 días.", "Add a date and a waist measurement in Progress records to see this chart.": "Añade una fecha y una medida de cintura en Registros de progreso para ver este gráfico.", "Add a date and a waist or hip measurement to see this chart.": "Añade una fecha y una medida de cintura o cadera para ver este gráfico.", "Add a date and a weight in Progress records to see this chart.": "Añade una fecha y un peso en Registros de progreso para ver este gráfico.", "Add a date and an arm or calf measurement to see this chart.": "Añade una fecha y una medida de brazo o pantorrilla para ver este gráfico.", "Add a date and at least one skinfold in the Skinfolds table to see this chart.": "Añade una fecha y al menos un pliegue en la tabla de pliegues cutáneos para ver este gráfico.", "Add a date, a waist and a hip measurement in Progress records to see this chart.": "Añade una fecha, una medida de cintura y una de cadera en Registros de progreso para ver este gráfico.", "Add meals to the daily plans first.": "Primero añade comidas a los planes diarios.", "Another save prompt is open. Answer it, then try again.": "Hay otro aviso de guardado abierto. Respóndelo e inténtalo de nuevo.", "Arm": "Brazo", "Calf": "Pantorrilla", "Waist": "Cintura", "Hip": "Cadera", "Weight": "Peso", "Triceps": "Tríceps", "Subscapular": "Subescapular", "Biceps": "Bíceps", "Iliac crest": "Cresta ilíaca", "Supraspinal": "Supraespinal", "Abdominal": "Abdominal", "Thigh": "Muslo", "Leg (calf)": "Pierna (pantorrilla)", "Arm and calf chart": "Gráfico de brazo y pantorrilla", "Waist and hip chart": "Gráfico de cintura y cadera", "BMI chart": "Gráfico de IMC", "WHR chart": "Gráfico de ICC", "WHtR chart": "Gráfico de ICA", "Weight chart": "Gráfico de peso", "Skinfolds chart": "Gráfico de pliegues cutáneos", "Skinfolds table": "Tabla de pliegues cutáneos", "Progress records table": "Tabla de registros de progreso", "BMI (kg/m²)": "IMC (kg/m²)", "Measurement (cm)": "Medida (cm)", "Skinfold (mm)": "Pliegue (mm)", "Check date": "Revisa la fecha", "Check the values: name required, edible portion 0.01–5, kcal 0–950, macros and fiber 0–100 g per 100 g.": "Revisa los valores: nombre obligatorio, porción comestible 0,01–5, kcal 0–950, macronutrientes y fibra 0–100 g por 100 g.", "Clear": "Quitar", "Clear formatting of the selection": "Quitar el formato de la selección", "Bold": "Negrita", "Underline": "Subrayado", "Text formatting": "Formato de texto", "Custom recommendation": "Recomendación personalizada", "Click again to clear everything": "Pulsa de nuevo para borrarlo todo", "Click again to delete": "Pulsa de nuevo para eliminar", "Click again to replace the table": "Pulsa de nuevo para reemplazar la tabla", "Replace what is on screen?": "¿Reemplazar lo que hay en pantalla?", "Column removed.": "Columna quitada.", "Row removed.": "Fila quitada.", "Complete the energy calculation (Energy expenditure) to compare with the target.": "Completa el cálculo de energía (gasto energético) para compararlo con el objetivo.", "Could not create the PDF. Try again.": "No se pudo crear el PDF. Inténtalo de nuevo.", "Could not read that file.": "No se pudo leer ese archivo.", "Could not read that file. Try again.": "No se pudo leer ese archivo. Inténtalo de nuevo.", "Could not read that image. Use a JPG or PNG file.": "No se pudo leer esa imagen. Usa un archivo JPG o PNG.", "Could not save the file.": "No se pudo guardar el archivo.", "Could not save the plan. Try again.": "No se pudo guardar el plan. Inténtalo de nuevo.", "Dates sorted.": "Fechas ordenadas.", "Day added.": "Día añadido.", "Day deleted.": "Día eliminado.", "Day duplicated.": "Día duplicado.", "Download cancelled.": "Descarga cancelada.", "Entry removed.": "Entrada quitada.", "File ready.": "Archivo listo.", "File saved. Use Open file to continue editing it later.": "Archivo guardado. Usa «Abrir archivo» para seguir editándolo más adelante.", "High risk": "Riesgo alto", "Increased risk": "Riesgo aumentado", "Low risk": "Riesgo bajo", "Moderate risk": "Riesgo moderado", "No increased risk": "Sin riesgo aumentado", "Underweight": "Bajo peso", "Normal weight": "Normopeso", "Overweight": "Sobrepeso", "Obesity grade 1": "Obesidad grado 1", "Obesity grade 2": "Obesidad grado 2", "Obesity grade 3": "Obesidad grado 3", "Logo & patient details": "Logotipo y datos del paciente", "Macros": "Macros", "Maximum": "Máximo", "Minimum": "Mínimo", "Meal removed.": "Comida quitada.", "No recommendations yet. Use the button below to add one.": "Aún no hay recomendaciones. Usa el botón de abajo para añadir una.", "None yet.": "Aún no hay ninguno.", "Not in the food database. Pick a food from the list, or add it with Manage food database.": "No está en la base de datos de alimentos. Elige un alimento de la lista o añádelo con «Gestionar base de datos de alimentos».", "Nothing to export: the ticked sections have no content yet.": "Nada que exportar: las secciones marcadas aún no tienen contenido.", "PDF saved.": "PDF guardado.", "PDF sent.": "PDF enviado.", "Plan sent.": "Plan enviado.", "Patient": "Paciente", "Photo entries sorted by date.": "Entradas de fotos ordenadas por fecha.", "Photo entry removed.": "Entrada de fotos quitada.", "Preparing PDF…": "Preparando PDF…", "Processing photo...": "Procesando foto...", "Recommendation removed.": "Recomendación quitada.", "Record removed.": "Registro quitado.", "Records sorted by date.": "Registros ordenados por fecha.", "Remaining": "Restante", "Replace": "Reemplazar", "Select at least one plan to export.": "Selecciona al menos un plan para exportar.", "Select the patient’s gender in Patient details to show the WHR risk ranges.": "Selecciona el sexo del paciente en los datos del paciente para mostrar los rangos de riesgo del ICC.", "Select the patient’s height in Patient details to calculate BMI.": "Selecciona la altura del paciente en los datos del paciente para calcular el IMC.", "Select the patient’s height in Patient details to calculate WHtR.": "Selecciona la altura del paciente en los datos del paciente para calcular el ICA.", "Skinfold record removed.": "Registro de pliegues quitado.", "Skinfold records sorted by date.": "Registros de pliegues ordenados por fecha.", "Started a new patient file.": "Se ha iniciado un archivo de paciente nuevo.", "That file is not a saved patient file. Open a .json file created with Save file.": "Ese archivo no es un archivo de paciente guardado. Abre un archivo .json creado con «Guardar archivo».", "That file is too large to be a saved meal plan.": "Ese archivo es demasiado grande para ser un plan guardado.", "That file is too large.": "Ese archivo es demasiado grande.", "The PDF tools did not load. Check your connection and try again.": "No se cargaron las herramientas de PDF. Revisa tu conexión e inténtalo de nuevo.", "These ranges cannot add up to 100% of the energy target.": "Estos rangos no pueden sumar el 100 % del objetivo energético.", "This file is damaged or incomplete. Nothing was changed.": "Este archivo está dañado o incompleto. No se ha cambiado nada.", "This file was saved with a newer version of the page and cannot be opened here.": "Este archivo se guardó con una versión más reciente de la página y no se puede abrir aquí.", "Tick at least one section to export.": "Marca al menos una sección para exportar.", "Weekly overview filled from the daily plans.": "Resumen semanal rellenado desde los planes diarios.", "Write the recommendation for this patient": "Escribe la recomendación para este paciente", "You have not added any foods yet.": "Todavía no has añadido ningún alimento.", "% of energy": "% de la energía", "Download PDF: ": "Descargar PDF: ", "Patient documents": "Documentos del paciente", "+ Upload documents": "+ Subir documentos", "Upload documents": "Subir documentos", "3 days food register": "Registro de alimentos de 3 días", "Activity factor": "Factor de actividad", "Food frequency questionnaire": "Cuestionario de frecuencia de consumo de alimentos", "Medical reports": "Informes médicos", "Informed consent and conditions of nutritional service": "Consentimiento informado y condiciones del servicio nutricional", "Personal data protection": "Protección de datos personales", "Others": "Otros", "Select document name": "Seleccionar nombre del documento", "Document name": "Nombre del documento", "Document date": "Fecha del documento", "Document icon": "Icono del documento", "Notes": "Notas", "Notes about this document": "Notas sobre este documento", "Open": "Abrir", "Download": "Descargar", "Remove document": "Quitar documento", "Click again to remove": "Pulsa de nuevo para quitar", "Food register": "Registro de alimentos", "Activity": "Actividad", "Questionnaire": "Cuestionario", "Medical report": "Informe médico", "Consent": "Consentimiento", "Data protection": "Protección de datos", "Document": "Documento", "Image": "Imagen", "Lab analysis": "Análisis de laboratorio", "Spreadsheet": "Hoja de cálculo", "No documents yet. Use the button below or drop files here.": "Aún no hay documentos. Usa el botón de abajo o suelta aquí los archivos.", "Upload PDF, Word, Excel, image or any other file (up to 15 MB each). Each file becomes a box where you choose its name, icon and date, open or download it in its original format, and write notes. Files are stored inside the saved patient file and are not included in the PDF.": "Sube PDF, Word, Excel, imágenes o cualquier otro archivo (hasta 15 MB cada uno). Cada archivo se convierte en un cuadro donde eliges su nombre, icono y fecha, lo abres o descargas en su formato original y escribes notas. Los archivos se guardan dentro del archivo del paciente y no se incluyen en el PDF.", "Reading files…": "Leyendo archivos…", "Document added.": "Documento añadido.", "Document removed.": "Documento quitado.", "Click again to remove this document.": "Pulsa de nuevo para quitar este documento.", "A patient file can hold up to 60 documents.": "Un archivo de paciente puede contener hasta 60 documentos.", "That file is larger than 15 MB.": "Ese archivo supera los 15 MB.", "Documents are too large to fit in one patient file (limit about 90 MB).": "Los documentos son demasiado grandes para un solo archivo de paciente (límite de unos 90 MB).", "Opened in a new tab.": "Abierto en una pestaña nueva.", "This file type cannot be previewed, so it was downloaded.": "Este tipo de archivo no se puede previsualizar, así que se ha descargado.", "Your browser blocked the new tab, so the file was downloaded.": "El navegador bloqueó la pestaña nueva, así que se ha descargado el archivo.", "Water (g)": "Agua (g)", "Alcohol (g)": "Alcohol (g)", "Starch (g)": "Almidón (g)", "Simple sugars (g)": "Azúcares sencillos (g)", "Free sugars (g)": "Azúcares libres (g)", "Total fat (g)": "Grasa total (g)", "SFA (g)": "AGS (g)", "MUFA (g)": "AGM (g)", "PUFA (g)": "AGP (g)", "Cholesterol (mg)": "Colesterol (mg)", "Micronutrient targets": "Objetivos de micronutrientes", "Vitamins": "Vitaminas", "Minerals": "Minerales", "Micronutrients": "Micronutrientes", "Type the daily target of each micronutrient (leave it empty if you do not need it). The bars under each day in Daily charts and plan average show how much of each target the day covers.": "Escribe el objetivo diario de cada micronutriente (déjalo vacío si no lo necesitas). Las barras bajo cada día en «Gráficos diarios y media del plan» muestran qué parte de cada objetivo cubre el día.", "* Some foods have no data for this nutrient (counted as 0).": "* Algunos alimentos no tienen datos de este nutriente (se cuentan como 0).", "Set the daily targets in Micronutrient targets to fill the bars.": "Fija los objetivos diarios en «Objetivos de micronutrientes» para llenar las barras.", "Vitamin A (retinol eq.)": "Vitamina A (eq. retinol)", "Retinol": "Retinol", "Carotenoids (β-carotene eq.)": "Carotenoides (eq. β-caroteno)", "Vitamin D (calciferol)": "Vitamina D (calciferol)", "Vitamin E (tocopherol)": "Vitamina E (tocoferol)", "Vitamin K (phylloquinone)": "Vitamina K (filoquinona)", "Vitamin B1 (thiamin)": "Vitamina B1 (tiamina)", "Vitamin B2 (riboflavin)": "Vitamina B2 (riboflavina)", "Vitamin B3 (niacin)": "Vitamina B3 (niacina)", "Vitamin B5 (pantothenic acid)": "Vitamina B5 (pantoténico)", "Vitamin B6 (pyridoxine)": "Vitamina B6 (piridoxina)", "Vitamin B7 (biotin)": "Vitamina B7 (biotina)", "Vitamin B9 (folate)": "Vitamina B9 (folato)", "Vitamin B12 (cobalamin)": "Vitamina B12 (cobalamina)", "Vitamin C (ascorbic acid)": "Vitamina C (ácido ascórbico)", "Calcium": "Calcio", "Phosphorus": "Fósforo", "Iron": "Hierro", "Iodine": "Yodo", "Zinc": "Cinc", "Magnesium": "Magnesio", "Sodium": "Sodio", "Potassium": "Potasio", "Manganese": "Manganeso", "Copper": "Cobre", "Selenium": "Selenio", "Carotenoids": "Carotenoides", "Vit. A": "Vit. A", "Vit. D": "Vit. D", "Vit. E": "Vit. E", "Vit. K": "Vit. K", "Vit. C": "Vit. C", "Vit. B1": "Vit. B1", "Vit. B2": "Vit. B2", "Vit. B3": "Vit. B3", "Vit. B5": "Vit. B5", "Vit. B6": "Vit. B6", "Vit. B7": "Vit. B7", "Vit. B9": "Vit. B9", "Vit. B12": "Vit. B12", "Shopping list": "Lista de la compra", "Total amount": "Cantidad total", "Add foods and amounts to the daily plans and the shopping list builds itself: the total grams of each food across the whole plan. Tick the foods as you buy them.": "Añade alimentos y cantidades a los planes diarios y la lista de la compra se genera sola: los gramos totales de cada alimento en todo el plan. Marca los alimentos según los vayas comprando.", "Amounts are the grams written in the daily plans (before the edible portion is applied).": "Las cantidades son los gramos escritos en los planes diarios (antes de aplicar la porción comestible).", "Daily charts: energy and macronutrients": "Gráficos diarios: energía y macronutrientes", "Daily charts: micronutrients": "Gráficos diarios: micronutrientes", "One column per day with its energy by meal and macronutrient charts.": "Una columna por día con sus gráficos de energía por comida y de macronutrientes.", "One column per day with the micronutrients it provides against the targets set in Micronutrient targets.": "Una columna por día con los micronutrientes que aporta frente a los objetivos fijados en «Objetivos de micronutrientes».", "Average of the days that have foods: energy by meal, macronutrients and micronutrients.": "Media de los días con alimentos: energía por comida, macronutrientes y micronutrientes.", "Phone number": "Teléfono", "E-mail": "Correo electrónico", "Address": "Domicilio", "e.g. +34 600 000 000": "p. ej. +34 600 000 000", "name@example.com": "nombre@ejemplo.com", "Street, number, city, postcode": "Calle, número, ciudad, código postal", "Export plan": "Exportar plan", "Import plan": "Importar plan", "Save only this plan as a template file": "Guarda solo este plan como archivo plantilla", "Add a plan from a template file to this patient file": "Añade a este archivo de paciente un plan desde un archivo plantilla", "Plan exported. Use Import plan to add it to any patient file.": "Plan exportado. Usa Importar plan para añadirlo al archivo de cualquier paciente.", "Export cancelled.": "Exportación cancelada.", "Could not export the plan. Try again.": "No se pudo exportar el plan. Inténtalo de nuevo.", "That is a full patient file. Use Open file for it; Import plan only takes a single exported plan.": "Ese es un archivo completo de paciente. Usa Abrir archivo; Importar plan solo acepta un plan exportado.", "This plan file is damaged or incomplete. Nothing was changed.": "Este archivo de plan está dañado o incompleto. No se ha cambiado nada.", "That file is not an exported meal plan. Use a .json file created with Export plan.": "Ese archivo no es un plan exportado. Usa un archivo .json creado con Exportar plan.", "That is a single exported meal plan. Use Import plan in the plans bar to add it to this patient file.": "Ese es un plan suelto exportado. Usa Importar plan en la barra de planes para añadirlo a este archivo de paciente.", "Goal, meal table, energy, notes and recommendations belong to each plan. Patient details and progress records are shared.": "El objetivo, la tabla de comidas, la energía, las notas y las recomendaciones pertenecen a cada plan. Los datos del paciente y los registros de progreso son compartidos.", "Text size": "Tamaño de letra", "All blocks": "Todos los bloques", "Text size (%)": "Tamaño de letra (%)", "Text size of all blocks (%)": "Tamaño de letra de todos los bloques (%)", "Each box above has its own text size (%). A bigger text size re-wraps that block; charts keep their size. Next you can move and resize every block on the pages.": "Cada caja de arriba tiene su propio tamaño de letra (%). Una letra mayor reajusta el bloque; los gráficos mantienen su tamaño. A continuación podrás mover y cambiar el tamaño de cada bloque en las páginas.", "Next: arrange pages": "Siguiente: organizar páginas", "Charts keep their size": "Los gráficos mantienen su tamaño", "Arrange the PDF pages": "Organizar las páginas del PDF", "Pages": "Páginas", "Margin (mm)": "Margen (mm)", "Gap (mm)": "Separación (mm)", "Automatic arrangement": "Organización automática", "Keep the order, new page when it does not fit": "Mantener el orden, página nueva si no cabe", "Fill the gaps (move later blocks up)": "Rellenar huecos (sube bloques posteriores)", "Re-arrange automatically": "Reorganizar automáticamente", "Replace my manual changes?": "¿Reemplazar mis cambios manuales?", "+ Add page": "+ Añadir página", "Remove empty pages": "Quitar páginas vacías", "Page numbers": "Numeración de páginas", "Selected block": "Bloque seleccionado", "Click a block on a page. Drag it to move it (also to another page) and drag its corner to resize it. Arrow keys nudge it; + and - resize it.": "Haz clic en un bloque de una página. Arrástralo para moverlo (también a otra página) y arrastra su esquina para cambiar el tamaño. Las flechas lo desplazan; + y - cambian el tamaño.", "Page": "Página", "Width (mm)": "Ancho (mm)", "X (mm)": "X (mm)", "Y (mm)": "Y (mm)", "Full width": "Ancho completo", "Center horizontally": "Centrar horizontalmente", "Remove from PDF": "Quitar del PDF", "Blocks in the PDF": "Bloques del PDF", "Drag to resize": "Arrastra para cambiar el tamaño", "Creating PDF…": "Creando PDF…", "Plan header": "Cabecera del plan", "Energy distribution by meals and macros": "Distribución de energía por comidas y macros", "Medical history": "Historia médica", "Progress charts": "Gráficos de progreso", "Daily meal plan": "Plan diario de comidas", "Full": "Completo"};
   var ES_MON = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
   var EN_MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   ES_DICT['Language'] = 'Idioma';
@@ -1097,6 +1169,11 @@ div.rich[contenteditable]:empty::before{content:attr(data-ph);opacity:.55;pointe
     [/^(\d+) built-in foods(.*)$/, function (m) { return m[1] + ' alimentos incluidos' + m[2]; }],
     [/^(.+) skinfold in millimeters$/, function (m) { return 'Pliegue ' + trCore(m[1]).toLowerCase() + ' en milímetros'; }],
     [/^Plan imported as (.+)\. Adjust it for this patient\.$/, function (m) { return 'Plan importado como ' + m[1] + '. Ajústalo a este paciente.'; }],
+    [/^Page (\d+)$/, function (m) { return 'Página ' + m[1]; }],
+    [/^p\. (\d+)$/, function (m) { return 'p. ' + m[1]; }],
+    [/^(\d+) blocks overlap\. ?(?:(\d+) blocks go outside the page\.)?$/, function (m) { return m[1] + ' bloques se solapan. ' + (m[2] ? m[2] + ' bloques salen de la página.' : ''); }],
+    [/^(\d+) blocks go outside the page\.$/, function (m) { return m[1] + ' bloques salen de la página.'; }],
+    [/^Day: (.+)$/, function (m) { return 'Día: ' + trCore(m[1]); }],
     [/^Bought: (.+)$/, function (m) { return 'Comprado: ' + m[1]; }],
     [/^(.+) \((µg|mg)\)( \*)?$/, function (m) { return trCore(m[1]) + ' (' + m[2] + ')' + (m[3] || ''); }],
     [/^Daily target: (.+) \((µg|mg)\)$/, function (m) { return 'Objetivo diario: ' + trCore(m[1]) + ' (' + m[2] + ')'; }],
@@ -3515,6 +3592,7 @@ div.rich[contenteditable]:empty::before{content:attr(data-ph);opacity:.55;pointe
       }),
       customFoods: CF.map(function (f) { return { name: f.name, edible: f.edible, kcalPer100g: f.kcal, carbs: f.c, protein: f.p, fat: f.f, fiber: f.fib }; }),
       pdfInclude: { hidden: SEC_IDS.filter(function (id) { return INC[id] === false; }) },
+      pdfLayout: PDFSET,
       activePlan: PL.active,
       plans: PL.parts.map(partToJson)
     };
@@ -3676,6 +3754,7 @@ div.rich[contenteditable]:empty::before{content:attr(data-ph);opacity:.55;pointe
       skinfolds: sks.length ? sks : [newSk()],
       records: rec.length ? rec : [newRec()],
       customFoods: cfs,
+      pdfLayout: pdfClean(d.pdfLayout),
       inc: hid,
       parts: parts, active: active
     };
@@ -3724,7 +3803,7 @@ div.rich[contenteditable]:empty::before{content:attr(data-ph);opacity:.55;pointe
     $('#w-high').value = p.weights.high; $('#w-low').value = p.weights.low; $('#w-diets').value = p.weights.diets;
     HB = p.habits; BT = p.bloodTests; SK = p.skinfolds; PHOTOS = p.photos; DOCS = p.documents; R = p.records;
     mergeCF(p.customFoods);
-    INC = p.inc;
+    INC = p.inc; PDFSET = p.pdfLayout || pdfDefaults();
     PL = { parts: p.parts, active: p.active };
     renderHabits(); applyPart(PL.parts[PL.active]); syncIncBoxes();
     dirty = false;
@@ -3780,7 +3859,7 @@ div.rich[contenteditable]:empty::before{content:attr(data-ph);opacity:.55;pointe
     ['f-name', 'f-phone', 'f-email', 'f-addr', 'f-dob', 'f-age', 'f-gender', 'f-height', 'f-cw', 'w-high', 'w-low', 'w-diets'].forEach(function (id) { document.getElementById(id).value = ''; });
     $('#f-height-mm').value = '0';
     writeHistory(null);
-    freshRecords(); freshHabits(); INC = {};
+    freshRecords(); freshHabits(); INC = {}; PDFSET = pdfDefaults();
     applyBlank();
     PL = { parts: [{ name: 'Plan 1', date: todayISO() }], active: 0 };
     renderTable(); renderTips(); renderNewSections(); renderHabits(); renderDays(); updateDays(); agAll(); renderPlanBar(); syncIncBoxes();
@@ -3930,6 +4009,282 @@ div.rich[contenteditable]:empty::before{content:attr(data-ph);opacity:.55;pointe
     rd.readAsText(f);
   });
 
+  /* ---------- PDF layout: text sizes, page arrangement and the page editor ---------- */
+  function pdfDefaults() { return { global: 100, blocks: {}, margin: 8, gap: 4, mode: 'order', pageNums: false, orient: 'landscape', items: {} }; }
+  var PDFSET = pdfDefaults();
+  var FS_MAP = { 'blk-medgrid': 'blk-medp', 'blk-dist': 'blk-meals', 'blk-planhead': 'blk-banner' };
+  function fsFixed(id) { return id === 'blk-cg1' || /^blk-chart-/.test(id || ''); }
+  function fsPctFor(id) {
+    if (!id || fsFixed(id)) return 100;
+    var b = /^phe-/.test(id) ? 'blk-photos' : (FS_MAP[id] || id);
+    return Math.max(40, Math.min(250, (PDFSET.global || 100) * ((PDFSET.blocks[b] || 100) / 100)));
+  }
+  function clampN(v, a, b, d) { v = Number(v); return isFinite(v) ? Math.max(a, Math.min(b, v)) : d; }
+  function pdfClean(src) {
+    var o = pdfDefaults();
+    if (!src || typeof src !== 'object') return o;
+    o.global = clampN(src.global, 50, 200, 100);
+    if (src.blocks && typeof src.blocks === 'object') BLOCKS.forEach(function (b) { if (src.blocks[b.id] !== undefined) { var v = clampN(src.blocks[b.id], 50, 200, 100); if (v !== 100) o.blocks[b.id] = v; } });
+    o.margin = clampN(src.margin, 0, 30, 8); o.gap = clampN(src.gap, 0, 30, 4);
+    o.mode = src.mode === 'fill' ? 'fill' : 'order'; o.pageNums = src.pageNums === true;
+    o.orient = src.orient === 'portrait' ? 'portrait' : 'landscape';
+    if (src.items && typeof src.items === 'object') Object.keys(src.items).slice(0, 600).forEach(function (k) {
+      var it = src.items[k]; if (!it || typeof it !== 'object' || k.length > 240) return;
+      o.items[k] = { page: Math.round(clampN(it.page, 0, 99, 0)), x: clampN(it.x, -50, 400, 0), y: clampN(it.y, -50, 400, 0), w: clampN(it.w, 10, 400, 100), hide: it.hide === true };
+    });
+    return o;
+  }
+
+  /* automatic arrangement: 'order' keeps the sections in order (a new page when something does not fit),
+     'fill' ignores forced breaks and pulls later blocks up to close the gaps */
+  function pdfArrange(items, mode, PW, PH, M, GAP) {
+    var cw = PW - 2 * M, ch = PH - 2 * M, page = 0, y = M, first = true, vis = items.filter(function (i) { return !i.hide; });
+    function put(it, x, yy, w, pg) { it.page = pg; it.x = Math.round(x * 10) / 10; it.y = Math.round(yy * 10) / 10; it.w = Math.round(w * 10) / 10; }
+    var si = 0, done = {};
+    while (si < vis.length) {
+      if (done[si]) { si++; continue; }
+      var s0 = vis[si], grp = [si];
+      if (s0.grp) while (si + grp.length < vis.length && vis[si + grp.length].grp === s0.grp) grp.push(si + grp.length);
+      var total = grp.reduce(function (a, i) { return a + cw * vis[i].ar; }, 0) + GAP * (grp.length - 1);
+      var fs = total > ch ? ch / total : 1;
+      var need = total * fs;
+      if (mode === 'fill' && !first && y + need > M + ch && y + need * 0.88 <= M + ch && fs === 1) fs = (M + ch - y) / total;   /* squeeze up to 12% rather than leave a gap */
+      need = total * fs;
+      if (!first && ((mode !== 'fill' && s0.brk) || y + need > M + ch + 0.01)) {
+        if (mode === 'fill') {
+          /* close the gap with later blocks that fit in what is left */
+          for (var j = si + grp.length, tries = 0; j < vis.length && tries < 10; j++, tries++) {
+            if (done[j] || vis[j].grp) continue;
+            var hj = cw * vis[j].ar;
+            if (y + hj <= M + ch + 0.01) { put(vis[j], M, y, cw, page); y += hj + GAP; done[j] = true; }
+          }
+        }
+        page++; y = M;
+      }
+      grp.forEach(function (i) { var w2 = cw * fs; put(vis[i], M + (cw - w2) / 2, y, w2, page); y += w2 * vis[i].ar + GAP * fs; done[i] = true; });
+      first = false; si += grp.length;
+    }
+    return page + 1;
+  }
+
+  var EXTRA_LAB = { 'blk-planhead': 'Plan header', 'blk-dist': 'Energy distribution by meals and macros', 'blk-medgrid': 'Medical history', 'blk-cg1': 'Progress charts', 'blk-day': 'Daily meal plan' };
+  function blockLabel(id) {
+    if (/^phe-/.test(id)) return 'Progress photos';
+    var b = BLOCKS.filter(function (x) { return x.id === id; })[0];
+    return EXTRA_LAB[id] || (b && b.name) || id;
+  }
+  var ED = null;
+  function pdfDims(portrait) { return portrait ? { PW: 210, PH: 297 } : { PW: 297, PH: 210 }; }
+  function previewURL(c) {
+    try {
+      var w = Math.min(760, c.width), h = Math.max(1, Math.round(c.height * w / c.width)), t = document.createElement('canvas');
+      t.width = w; t.height = h; var cx = t.getContext('2d'); cx.fillStyle = '#fff'; cx.fillRect(0, 0, w, h); cx.drawImage(c, 0, 0, w, h);
+      return t.toDataURL('image/jpeg', 0.82);
+    } catch (e) { return ''; }
+  }
+  function itemH(it) { return it.w * it.ar; }
+
+  function pdfEditor(cap) {
+    return new Promise(function (resolve) {
+      var D = pdfDims(cap.portrait), dlg = $('#ped'), pagesBox = $('#ped-pages');
+      var items = cap.shots.map(function (s) {
+        return { key: s.key, label: s.label, canvas: s.canvas, ar: s.ar, brk: s.brk, grp: s.grp, hide: false, page: 0, x: 0, y: 0, w: 100, prev: previewURL(s.canvas) };
+      });
+      ED = { items: items, pages: 1, sel: null, s: 1, PW: D.PW, PH: D.PH, touched: false, els: [], pageEls: [] };
+      function saved() { return items.every(function (it) { return PDFSET.items[it.key]; }); }
+      function autoLayout() { ED.pages = pdfArrange(items, PDFSET.mode, D.PW, D.PH, PDFSET.margin, PDFSET.gap); ED.touched = false; }
+      if (saved()) {
+        items.forEach(function (it) { var p = PDFSET.items[it.key]; it.page = p.page; it.x = p.x; it.y = p.y; it.w = Math.min(p.w, D.PW); it.hide = p.hide === true; });
+        ED.pages = items.reduce(function (m, it) { return Math.max(m, it.page + 1); }, 1); ED.touched = true;
+      } else autoLayout();
+
+      function persist() {
+        var o = {}; items.forEach(function (it) { o[it.key] = { page: it.page, x: it.x, y: it.y, w: it.w, hide: it.hide }; });
+        PDFSET.items = o; dirty = true;
+      }
+      function readSettings() {
+        PDFSET.margin = clampN($('#ped-m').value, 0, 30, 8); PDFSET.gap = clampN($('#ped-g').value, 0, 30, 4);
+        PDFSET.mode = $('#ped-mode').value === 'fill' ? 'fill' : 'order'; PDFSET.pageNums = $('#ped-pn').checked;
+      }
+      function layoutPx() { var w = pagesBox.clientWidth - 28, h = Math.max(260, window.innerHeight - 150); ED.s = Math.max(0.5, Math.min(w / D.PW, h / D.PH, 4)); }
+
+      function overlaps() {
+        var bad = {}, vis = items.filter(function (i) { return !i.hide; });
+        for (var a = 0; a < vis.length; a++) for (var b = a + 1; b < vis.length; b++) {
+          var p = vis[a], q = vis[b]; if (p.page !== q.page) continue;
+          var ox = Math.min(p.x + p.w, q.x + q.w) - Math.max(p.x, q.x), oy = Math.min(p.y + itemH(p), q.y + itemH(q)) - Math.max(p.y, q.y);
+          if (ox > 1 && oy > 1) { bad[a] = 1; bad[b] = 1; bad[p.key] = 1; bad[q.key] = 1; }
+        }
+        return bad;
+      }
+      function style(it, node) {
+        var s = ED.s; node.style.left = it.x * s + 'px'; node.style.top = it.y * s + 'px'; node.style.width = it.w * s + 'px'; node.style.height = itemH(it) * s + 'px';
+      }
+      function mark() {
+        var bad = overlaps(), n = 0, out = 0;
+        items.forEach(function (it) {
+          if (it.hide) return;
+          var o = !!bad[it.key], off = it.x < -0.01 || it.y < -0.01 || it.x + it.w > D.PW + 0.01 || it.y + itemH(it) > D.PH + 0.01;
+          if (o) n++; if (off) out++;
+          if (it.node) { it.node.classList.toggle('ov', o); it.node.classList.toggle('off', off); }
+        });
+        var st = $('#ped-warn'); st.textContent = (n ? n + ' blocks overlap. ' : '') + (out ? out + ' blocks go outside the page.' : '');
+        st.hidden = !(n || out);
+      }
+      function ensurePages() { var m = 1; items.forEach(function (i) { if (!i.hide) m = Math.max(m, i.page + 1); }); ED.pages = Math.max(ED.pages, m); }
+      function build() {
+        layoutPx(); pagesBox.replaceChildren(); ED.pageEls = [];
+        ensurePages();
+        for (var p = 0; p < ED.pages; p++) {
+          var wrap = el('div', 'ped-pw'), lab = el2('div', 'ped-pl', 'Page ' + (p + 1)), pg = el('div', 'ped-pg');
+          pg.style.width = D.PW * ED.s + 'px'; pg.style.height = D.PH * ED.s + 'px';
+          var m = el('div', 'ped-mg'); m.style.inset = PDFSET.margin * ED.s + 'px'; pg.appendChild(m);
+          pg.dataset.p = String(p); wrap.appendChild(lab); wrap.appendChild(pg); pagesBox.appendChild(wrap); ED.pageEls.push(pg);
+        }
+        items.forEach(function (it) {
+          it.node = null; if (it.hide) return;
+          var n = el('div', 'ped-it', { tabindex: '0', role: 'button', 'aria-label': it.label }), img = el('img', null, { alt: '', draggable: 'false' });
+          if (it.prev) img.src = it.prev;
+          var hd = el('div', 'ped-h', { title: 'Drag to resize' }), tg = el2('span', 'ped-t', it.label);
+          n.appendChild(img); n.appendChild(tg); n.appendChild(hd); style(it, n); it.node = n;
+          n.addEventListener('pointerdown', function (e) { if (e.target === hd) startResize(e, it); else startDrag(e, it); });
+          n.addEventListener('keydown', function (e) { onKey(e, it); });
+          ED.pageEls[Math.min(it.page, ED.pageEls.length - 1)].appendChild(n);
+        });
+        sync();
+      }
+      function select(it) { ED.sel = it; items.forEach(function (i) { if (i.node) i.node.classList.toggle('sel', i === it); }); panel(); }
+      function pageAt(y) {
+        var best = 0, bd = 1e9;
+        ED.pageEls.forEach(function (pg, i) { var r = pg.getBoundingClientRect(); var d = y < r.top ? r.top - y : (y > r.bottom ? y - r.bottom : 0); if (d < bd) { bd = d; best = i; } });
+        return best;
+      }
+      function snapV(v, edges) { for (var i = 0; i < edges.length; i++) if (Math.abs(v - edges[i][0]) < 1.5) return edges[i][1]; return v; }
+      function place(it, x, y) {
+        var M = PDFSET.margin, h = itemH(it);
+        x = snapV(x, [[M, M], [D.PW - M - it.w, D.PW - M - it.w], [(D.PW - it.w) / 2, (D.PW - it.w) / 2]]);
+        y = snapV(y, [[M, M], [D.PH - M - h, D.PH - M - h]]);
+        it.x = Math.round(Math.max(0, Math.min(D.PW - it.w, x)) * 10) / 10; it.y = Math.round(Math.max(0, Math.min(D.PH - h, y)) * 10) / 10;
+      }
+      function startDrag(e, it) {
+        if (e.pointerType === 'mouse' && e.button !== 0) return;
+        e.preventDefault(); select(it); ED.touched = true;
+        var r = it.node.getBoundingClientRect(), ox = (e.clientX - r.left) / ED.s, oy = (e.clientY - r.top) / ED.s;
+        it.node.classList.add('drag');
+        function mv(ev) {
+          var pg = pageAt(ev.clientY), pr = ED.pageEls[pg].getBoundingClientRect();
+          it.page = pg; place(it, (ev.clientX - pr.left) / ED.s - ox, (ev.clientY - pr.top) / ED.s - oy);
+          if (it.node.parentNode !== ED.pageEls[pg]) ED.pageEls[pg].appendChild(it.node);
+          style(it, it.node); mark(); panelValues();
+        }
+        function up() { document.removeEventListener('pointermove', mv); document.removeEventListener('pointerup', up); it.node.classList.remove('drag'); persist(); sync(); }
+        document.addEventListener('pointermove', mv); document.addEventListener('pointerup', up);
+      }
+      function resizeTo(it, w) {
+        var maxW = Math.min(D.PW - it.x, (D.PH - it.y) / it.ar);
+        it.w = Math.round(Math.max(15, Math.min(maxW, w)) * 10) / 10;
+      }
+      function startResize(e, it) {
+        if (e.pointerType === 'mouse' && e.button !== 0) return;
+        e.preventDefault(); e.stopPropagation(); select(it); ED.touched = true;
+        var sx = e.clientX, w0 = it.w;
+        function mv(ev) { resizeTo(it, w0 + (ev.clientX - sx) / ED.s); style(it, it.node); mark(); panelValues(); }
+        function up() { document.removeEventListener('pointermove', mv); document.removeEventListener('pointerup', up); persist(); sync(); }
+        document.addEventListener('pointermove', mv); document.addEventListener('pointerup', up);
+      }
+      function onKey(e, it) {
+        var st = e.shiftKey ? 5 : 1, c = false;
+        if (e.key === 'ArrowLeft') { place(it, it.x - st, it.y); c = true; }
+        else if (e.key === 'ArrowRight') { place(it, it.x + st, it.y); c = true; }
+        else if (e.key === 'ArrowUp') { place(it, it.x, it.y - st); c = true; }
+        else if (e.key === 'ArrowDown') { place(it, it.x, it.y + st); c = true; }
+        else if (e.key === '+' || e.key === '=') { resizeTo(it, it.w + st); c = true; }
+        else if (e.key === '-') { resizeTo(it, it.w - st); c = true; }
+        if (c) { e.preventDefault(); ED.touched = true; style(it, it.node); mark(); panelValues(); persist(); }
+      }
+
+      function panelValues() {
+        var it = ED.sel; if (!it) return;
+        $('#ped-x').value = it.x; $('#ped-y').value = it.y; $('#ped-w').value = it.w; $('#ped-pgn').value = it.page + 1;
+      }
+      function panel() {
+        var it = ED.sel, box = $('#ped-sel');
+        box.hidden = !it; $('#ped-nosel').hidden = !!it;
+        if (!it) return;
+        $('#ped-selname').textContent = it.label; panelValues();
+      }
+      function sync() {
+        /* blocks list */
+        var ls = $('#ped-list'); ls.replaceChildren();
+        items.forEach(function (it) {
+          var lb = el('label', 'chk'), cb = el('input', null, { type: 'checkbox' });
+          cb.checked = !it.hide;
+          cb.addEventListener('change', function () { it.hide = !cb.checked; ED.touched = true; if (it.hide && ED.sel === it) ED.sel = null; persist(); build(); });
+          lb.appendChild(cb); lb.appendChild(document.createTextNode(' ' + it.label)); if (!it.hide) lb.appendChild(el2('span', 'ped-pp', 'p. ' + (it.page + 1)));
+          ls.appendChild(lb);
+        });
+        mark();
+        var sel = ED.sel; if (sel && sel.node) sel.node.classList.add('sel');
+      }
+      function nudgeWidth(frac) { var it = ED.sel; if (!it) return; resizeTo(it, (D.PW - 2 * PDFSET.margin) * frac); ED.touched = true; style(it, it.node); mark(); panelValues(); persist(); }
+
+      /* controls */
+      $('#ped-m').value = PDFSET.margin; $('#ped-g').value = PDFSET.gap; $('#ped-mode').value = PDFSET.mode; $('#ped-pn').checked = PDFSET.pageNums;
+      ED.sel = null; panel();
+      var rearm = twoStep($('#ped-auto'), 'Re-arrange automatically', 'Replace my manual changes?');
+      var cleanup = [];
+      function on(sel, ev, fn) { var n = $(sel); n.addEventListener(ev, fn); cleanup.push(function () { n.removeEventListener(ev, fn); }); }
+      function applyAuto() { readSettings(); items.forEach(function (i) { i.hide = false; }); autoLayout(); persist(); build(); select(null); }
+      on('#ped-auto', 'click', function () { if (ED.touched && !rearm.isArmed()) { rearm.arm(); return; } rearm.reset(); applyAuto(); });
+      on('#ped-mode', 'change', function () { readSettings(); persist(); });
+      ['#ped-m', '#ped-g'].forEach(function (s) { on(s, 'change', function () { readSettings(); if (!ED.touched) { autoLayout(); persist(); } build(); }); });
+      on('#ped-pn', 'change', function () { readSettings(); persist(); });
+      on('#ped-addpage', 'click', function () { ED.pages++; build(); });
+      on('#ped-rmempty', 'click', function () {
+        var used = {}; items.forEach(function (i) { if (!i.hide) used[i.page] = 1; });
+        var map = {}, n = 0; for (var p = 0; p < ED.pages; p++) if (used[p]) map[p] = n++;
+        items.forEach(function (i) { i.page = map[i.page] !== undefined ? map[i.page] : 0; }); ED.pages = Math.max(1, n); persist(); build();
+      });
+      function num(sel, fn) { on(sel, 'change', function () { var it = ED.sel; if (!it) return; ED.touched = true; fn(it, Number($(sel).value)); style(it, it.node); mark(); panelValues(); persist(); sync(); }); }
+      num('#ped-x', function (it, v) { place(it, isFinite(v) ? v : it.x, it.y); });
+      num('#ped-y', function (it, v) { place(it, it.x, isFinite(v) ? v : it.y); });
+      num('#ped-w', function (it, v) { if (isFinite(v)) resizeTo(it, v); });
+      on('#ped-pgn', 'change', function () {
+        var it = ED.sel; if (!it) return; var v = Math.round(clampN($('#ped-pgn').value, 1, 99, 1)) - 1;
+        ED.touched = true; it.page = v; if (v + 1 > ED.pages) ED.pages = v + 1; place(it, it.x, it.y); persist(); build(); select(it);
+      });
+      [['#ped-w1', 1], ['#ped-w2', 0.5], ['#ped-w3', 1 / 3], ['#ped-w23', 2 / 3]].forEach(function (w) { on(w[0], 'click', function () { nudgeWidth(w[1]); }); });
+      on('#ped-ctr', 'click', function () { var it = ED.sel; if (!it) return; ED.touched = true; place(it, (D.PW - it.w) / 2, it.y); style(it, it.node); mark(); panelValues(); persist(); });
+      on('#ped-hide', 'click', function () { var it = ED.sel; if (!it) return; it.hide = true; ED.sel = null; ED.touched = true; persist(); build(); panel(); });
+      on('#ped-pages', 'click', function (e) { if (e.target === pagesBox || /ped-pg|ped-pw|ped-mg/.test(e.target.className || '')) { ED.sel = null; build(); } });
+      var rz = function () { build(); }; window.addEventListener('resize', rz); cleanup.push(function () { window.removeEventListener('resize', rz); });
+
+      function close(action) {
+        readSettings(); persist(); rearm.reset(); cleanup.forEach(function (f) { f(); }); dlg.hidden = true; document.body.classList.remove('ped-open');
+        var vis = items.filter(function (i) { return !i.hide; }).sort(function (a, b) { return a.page - b.page || a.y - b.y || a.x - b.x; });
+        resolve({ action: action, items: vis, pages: ED.pages, D: D });
+      }
+      on('#ped-go', 'click', function () { close('go'); });
+      on('#ped-back', 'click', function () { close('back'); });
+      on('#ped-cancel', 'click', function () { close('cancel'); });
+      dlg.hidden = false; document.body.classList.add('ped-open');
+      build();
+    });
+  }
+
+  async function composePDF(res, cap) {
+    var D = res.D, pdf = new window.jspdf.jsPDF({ orientation: cap.portrait ? 'portrait' : 'landscape', unit: 'mm', format: 'a4', compress: true });
+    var used = {}; res.items.forEach(function (i) { used[i.page] = 1; });
+    var pages = Object.keys(used).map(Number).sort(function (a, b) { return a - b; });
+    if (!pages.length) throw new Error('empty');
+    pages.forEach(function (pg, n) {
+      if (n > 0) pdf.addPage();
+      pdf.setFillColor(255, 255, 255); pdf.rect(0, 0, D.PW, D.PH, 'F');
+      res.items.filter(function (i) { return i.page === pg; }).forEach(function (it) { pdf.addImage(it.canvas.toDataURL('image/png'), 'PNG', it.x, it.y, it.w, it.w * it.ar, undefined, 'FAST'); });
+      if (PDFSET.pageNums) { pdf.setFontSize(8); pdf.setTextColor(110, 120, 112); pdf.text((n + 1) + ' / ' + pages.length, D.PW / 2, D.PH - 3.5, { align: 'center' }); }
+    });
+    return pdf.output('arraybuffer');
+  }
   /* ---------- PDF export: choose sections, boxes, days and plans ---------- */
   var exportScope = null;
   function dayNamesFor(idx) { var p = idx === PL.active ? { days: copyDays(DY.days) } : PL.parts[idx]; return p.days || []; }
@@ -3947,7 +4302,12 @@ div.rich[contenteditable]:empty::before{content:attr(data-ph);opacity:.55;pointe
       var sec = chk(SECS[n], 't1', secOn(n), function (v) { if (v) delete INC['sec' + n]; else INC['sec' + n] = false; markDirty(); syncIncBoxes(); });
       tree.appendChild(sec);
       BLOCKS.filter(function (b) { return b.sec === n; }).forEach(function (b) {
-        tree.appendChild(chk(b.name, 't2', incOn(b.id), function (v) { if (v) delete INC[b.id]; else INC[b.id] = false; markDirty(); syncIncBoxes(); }));
+        var brow = el('div', 'trow'), blab = chk(b.name, 't2', incOn(b.id), function (v) { if (v) delete INC[b.id]; else INC[b.id] = false; markDirty(); syncIncBoxes(); });
+        brow.appendChild(blab);
+        var fsw = el('span', 'fsw'), fsi = el('input', 'fsz', { type: 'number', min: '50', max: '200', step: '5', 'data-b': b.id, 'aria-label': 'Text size (%)' });
+        if (fsFixed(b.id)) { fsi.disabled = true; fsi.placeholder = '–'; fsi.title = 'Charts keep their size'; } else fsi.value = String(PDFSET.blocks[b.id] || 100);
+        fsw.appendChild(fsi); fsw.appendChild(document.createTextNode('%')); brow.appendChild(fsw);
+        tree.appendChild(brow);
         if (b.id === 'blk-days') {
           DY.days.forEach(function (d) { tree.appendChild(chk(d.name || 'Day', 't3', d.inc !== false, function (v) { d.inc = v; markDirty(); if (curDay() === d) renderDays(); })); });
         }
@@ -3960,6 +4320,8 @@ div.rich[contenteditable]:empty::before{content:attr(data-ph);opacity:.55;pointe
       var lb = el('label', 'chk t2'), cb = el('input', null, { type: 'checkbox' }); cb.value = String(i); cb.checked = i === PL.active;
       lb.appendChild(cb); lb.appendChild(document.createTextNode(' ' + planLabel(p, i) + (p.date ? ' (' + fmtDate(p.date) + ')' : ''))); pl.appendChild(lb);
     });
+    $('#pdf-fs-all').value = String(PDFSET.global);
+    var orr = document.querySelector('#pdfdlg input[name="pdf-orient"][value="' + PDFSET.orient + '"]'); if (orr) orr.checked = true;
     $('#pdfdlg-h').textContent = exportScope ? 'Download PDF: ' + SECS[exportScope] : 'Download PDF';
     $('#pdfdlg').hidden = false;
     var f = tree.querySelector('input'); if (f) f.focus();
@@ -3976,6 +4338,10 @@ div.rich[contenteditable]:empty::before{content:attr(data-ph);opacity:.55;pointe
     if (!usable.length) { setStatus('Tick at least one section to export.', true); return; }
     if (usable.indexOf(3) >= 0 && !plans.length) { setStatus('Select at least one plan to export.', true); return; }
     var orient = ($('#pdfdlg input[name="pdf-orient"]:checked') || {}).value === 'portrait' ? 'portrait' : 'landscape';
+    PDFSET.global = clampN($('#pdf-fs-all').value, 50, 200, 100); PDFSET.orient = orient;
+    PDFSET.blocks = {};
+    $$('#pdfdlg-tree .fsz').forEach(function (i) { if (i.disabled) return; var v = clampN(i.value, 50, 200, 100); if (v !== 100) PDFSET.blocks[i.getAttribute('data-b')] = v; });
+    dirty = true;
     $('#pdfdlg').hidden = true; exportPDF({ secs: usable, plans: plans, orient: orient });
   });
 
@@ -3991,7 +4357,7 @@ div.rich[contenteditable]:empty::before{content:attr(data-ph);opacity:.55;pointe
     if (!window.html2canvas || !window.jspdf) { setStatus('The PDF tools did not load. Check your connection and try again.', true); return; }
     btn.disabled = true; btn.textContent = 'Preparing PDF…';
     var origActive = PL.active, origDay = DY.active, origDirty = dirty, origView = VIEW, ph = $('#blk-planhead');
-    var hiddenNodes = [];
+    var hiddenNodes = [], captured = null;
     function hideNode(id) { var n = document.getElementById(id); if (n) { hiddenNodes.push([n, n.style.display]); n.style.display = 'none'; } }
     function restoreHidden() { hiddenNodes.forEach(function (x) { x[0].style.display = x[1]; }); hiddenNodes = []; }
     try {
@@ -3999,12 +4365,16 @@ div.rich[contenteditable]:empty::before{content:attr(data-ph);opacity:.55;pointe
       if (document.fonts && document.fonts.ready) await document.fonts.ready;
 
       var shots = [];
-      async function snap(ids, brk, grp) {
+      var keyCtx = 's', keyCount = {};
+      async function snap(ids, brk, grp, lab) {
         for (var i = 0; i < ids.length; i++) {
-          var node = document.getElementById(ids[i]), canvas, sc = 3;
-          try { canvas = await shoot(node, 3); }
-          catch (err) { sc = 2; canvas = await shoot(node, 2); }
-          shots.push({ canvas: canvas, h: canvas.height / sc, brk: !!(brk && i === 0), grp: grp || null });
+          var node = document.getElementById(ids[i]), canvas, sc = 3, baseW = EXPORT_W, capW = Math.round(baseW * 100 / fsPctFor(ids[i]));
+          var label = lab || blockLabel(ids[i]);
+          EXPORT_W = capW;
+          try { try { canvas = await shoot(node, 3); } catch (err) { sc = 2; canvas = await shoot(node, 2); } }
+          finally { EXPORT_W = baseW; }
+          var kk = keyCtx + '|' + ids[i] + '|' + (lab || ''); keyCount[kk] = (keyCount[kk] || 0) + 1;
+          shots.push({ canvas: canvas, ar: (canvas.height / sc) / capW, label: label, key: kk + '|' + keyCount[kk], brk: !!(brk && i === 0), grp: grp || null });
         }
       }
       var pageBreaks = secs.length > 1 || multiPlan;
@@ -4025,7 +4395,7 @@ div.rich[contenteditable]:empty::before{content:attr(data-ph);opacity:.55;pointe
 
       /* section 1: logo, intro and clinical history */
       if (secs.indexOf(1) >= 0) {
-        var ids1 = [], idsR = [];
+        keyCtx = 's1'; var ids1 = [], idsR = [];
         if (incOn('blk-head')) ids1.push('blk-head');
         var pOn = incOn('blk-medp') && historyHas('mp-', MED_P), fOn = incOn('blk-medf') && historyHas('mf-', MED_F);
         if (pOn || fOn) {
@@ -4045,6 +4415,7 @@ div.rich[contenteditable]:empty::before{content:attr(data-ph);opacity:.55;pointe
 
       /* section 2: progress records and charts (4 per page) */
       if (secs.indexOf(2) >= 0 && hasRecordData()) {
+        keyCtx = 's2';
         renderCharts(true);
         var ids2 = [], recOn = R.some(function (r) { return !recIsEmpty(r); });
         if (recOn && incOn('blk-progress')) ids2.push('blk-progress');
@@ -4075,7 +4446,7 @@ div.rich[contenteditable]:empty::before{content:attr(data-ph);opacity:.55;pointe
       /* section 3: each selected plan */
       if (secs.indexOf(3) >= 0) {
         for (var n = 0; n < plans.length; n++) {
-          var idx = plans[n];
+          var idx = plans[n]; keyCtx = 'p' + idx;
           if (idx !== PL.active) { PL.active = idx; applyPart(PL.parts[idx]); }
           normalizeCells(); stamp();
           var ec = updateEnergy();
@@ -4100,7 +4471,7 @@ div.rich[contenteditable]:empty::before{content:attr(data-ph);opacity:.55;pointe
               var dd = DY.days[di];
               if (dd.inc === false || !dd.meals.some(function (m) { return m.items.some(function (it) { return it.food.trim(); }); })) continue;
               DY.active = di; renderDays(); updateDays(true); stamp();
-              await snap(['blk-day'], true);
+              await snap(['blk-day'], true, null, 'Day: ' + (dd.name || 'Day ' + (di + 1)));
             }
           }
           if (DY.days.some(function (dd) { return dd.meals.some(function (m) { return m.items.some(function (it) { return it.food.trim(); }); }); })) {
@@ -4119,26 +4490,7 @@ div.rich[contenteditable]:empty::before{content:attr(data-ph);opacity:.55;pointe
       }
       if (!shots.length) { setStatus('Nothing to export: the ticked sections have no content yet.', true); return; }
 
-      var jsPDF = window.jspdf.jsPDF;
-      var pdf = new jsPDF({ orientation: portrait ? 'portrait' : 'landscape', unit: 'mm', format: 'a4', compress: true });
-      var PW = portrait ? 210 : 297, PH = portrait ? 297 : 210, M = 8, GAP = 4;
-      var cw = PW - 2 * M, ch = PH - 2 * M, k = cw / EXPORT_W;
-      function bg() { pdf.setFillColor(255, 255, 255); pdf.rect(0, 0, PW, PH, 'F'); }
-      function put(shot, x, y, w, h) { pdf.addImage(shot.canvas.toDataURL('image/png'), 'PNG', x, y, w, h, undefined, 'FAST'); }
-      bg();
-      var y = M, first = true, si = 0;
-      while (si < shots.length) {
-        var s0 = shots[si], grp = [s0];
-        if (s0.grp) while (si + grp.length < shots.length && shots[si + grp.length].grp === s0.grp) grp.push(shots[si + grp.length]);
-        var total = grp.reduce(function (acc, g) { return acc + g.h * k; }, 0) + GAP * (grp.length - 1);
-        var fs = total > ch ? ch / total : 1;
-        if (!first && (s0.brk || y + total * fs > M + ch)) { pdf.addPage(); bg(); y = M; }
-        grp.forEach(function (g) { var h = g.h * k * fs, w2 = cw * fs; put(g, M + (cw - w2) / 2, y, w2, h); y += h + GAP * fs; });
-        first = false; si += grp.length;
-      }
-
-      var res = await deliver(fileStem() + '.pdf', pdf.output('arraybuffer'), 'application/pdf');
-      setStatus(res && res.status === 'saved' ? 'PDF saved.' : 'PDF sent.');
+      captured = { shots: shots, portrait: portrait };
     } catch (err) {
       console.error('EXPORT', err && (err.stack || err));
       var code = err && err.code;
@@ -4156,6 +4508,22 @@ div.rich[contenteditable]:empty::before{content:attr(data-ph);opacity:.55;pointe
       dirty = origDirty;
       btn.disabled = false; btn.textContent = 'Download PDF';
     }
+    if (!captured) return;
+    var lay = await pdfEditor(captured);
+    if (lay.action === 'back') { openExport(exportScope); return; }
+    if (lay.action !== 'go') return;
+    btn.disabled = true; btn.textContent = 'Creating PDF…';
+    try {
+      var bytes = await composePDF(lay, captured);
+      var res = await deliver(fileStem() + '.pdf', bytes, 'application/pdf');
+      setStatus(res && res.status === 'saved' ? 'PDF saved.' : 'PDF sent.');
+    } catch (err2) {
+      console.error('EXPORT', err2 && (err2.stack || err2));
+      var code2 = err2 && err2.code;
+      if (code2 === 'declined') setStatus('Download cancelled.');
+      else if (code2 === 'rate_limited') setStatus('Another save prompt is open. Answer it, then try again.', true);
+      else setStatus('Could not create the PDF. Try again.', true);
+    } finally { btn.disabled = false; btn.textContent = 'Download PDF'; }
   }
 
 
