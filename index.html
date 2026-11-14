@@ -1095,6 +1095,7 @@ body.ped-open{overflow:hidden}
   'use strict';
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  var EXPORT_SC = 2;
   var EXPORT_W = 1200, EXPORT_PORT = false;
 
   /* ---------- icons (explicit colours so they also render in the PDF) ---------- */
@@ -1855,7 +1856,19 @@ body.ped-open{overflow:hidden}
   async function shoot(node, scale) {
     return window.html2canvas(node, {
       scale: scale, backgroundColor: '#ffffff', logging: false, useCORS: false,
-      windowWidth: EXPORT_W + 40, onclone: function (doc) { transformClone(doc); }
+      windowWidth: EXPORT_W + 40, onclone: function (doc) {
+        transformClone(doc);
+        /* html2canvas clones the whole page for every block: keep only the section that holds this block */
+        try {
+          var n = node && node.id ? doc.getElementById(node.id) : null, keep = n, par = n && n.parentNode;
+          while (keep && keep.parentNode && !(keep.parentNode.classList && keep.parentNode.classList.contains('view'))) keep = keep.parentNode;
+          if (keep && keep.parentNode) {
+            var view = keep.parentNode;
+            [].slice.call(view.children).forEach(function (c) { if (c !== keep) c.parentNode.removeChild(c); });
+            [].slice.call(doc.querySelectorAll('.view')).forEach(function (v) { if (v !== view) v.parentNode.removeChild(v); });
+          }
+        } catch (e) { /* keep the full clone */ }
+      }
     });
   }
 
@@ -2243,7 +2256,7 @@ body.ped-open{overflow:hidden}
     };
   }
   function chartSize(canvas, forExport) {
-    if (forExport) return { W: 560, H: 310, dpr: 3 };
+    if (forExport) return { W: 560, H: 310, dpr: 2 };
     var w = Math.max(260, Math.floor(canvas.parentNode.clientWidth - 24)) || 480;
     return { W: w, H: Math.round(Math.min(340, Math.max(230, w * 0.55))), dpr: Math.min(window.devicePixelRatio || 1, 2.5) };
   }
@@ -3404,7 +3417,7 @@ body.ped-open{overflow:hidden}
   }
   function ovUpdate(forExport) {
     var g1 = $('#ov-grid'), g2 = $('#ov-micro-grid'), ga = $('#ov-avg'); if (!g1) return;
-    var ec = energyCalc(), base = ec.base, dpr = forExport ? 3 : Math.min(window.devicePixelRatio || 1, 2.5);
+    var ec = energyCalc(), base = ec.base, dpr = forExport ? 2 : Math.min(window.devicePixelRatio || 1, 2.5);
     g1.replaceChildren(); g2.replaceChildren(); ga.replaceChildren();
     var n = DY.days.length, oc = String(Math.min(n, 4));
     g1.style.setProperty('--oc', oc); g2.style.setProperty('--oc', String(Math.min(n, 5)));
@@ -4390,7 +4403,7 @@ body.ped-open{overflow:hidden}
     pages.forEach(function (pg, n) {
       if (n > 0) pdf.addPage();
       pdf.setFillColor(255, 255, 255); pdf.rect(0, 0, D.PW, D.PH, 'F');
-      res.items.filter(function (i) { return i.page === pg; }).forEach(function (it) { pdf.addImage(it.canvas.toDataURL('image/png'), 'PNG', it.x, it.y, it.w, it.w * it.ar, undefined, 'FAST'); });
+      res.items.filter(function (i) { return i.page === pg; }).forEach(function (it) { pdf.addImage(it.canvas.toDataURL('image/jpeg', 0.93), 'JPEG', it.x, it.y, it.w, it.w * it.ar, undefined, 'FAST'); });
       if (PDFSET.pageNums) { pdf.setFontSize(8); pdf.setTextColor(110, 120, 112); pdf.text((n + 1) + ' / ' + pages.length, D.PW / 2, D.PH - 3.5, { align: 'center' }); }
     });
     return pdf.output('arraybuffer');
@@ -4479,14 +4492,15 @@ body.ped-open{overflow:hidden}
       async function snap(ids, brk, grp, lab) {
         for (var i = 0; i < ids.length; i++) {
           var spec = ids[i], sid = typeof spec === 'string' ? spec : spec.id, rowg = typeof spec === 'string' ? null : (spec.rowg || null), lab0 = typeof spec === 'string' ? lab : (spec.lab || lab);
-          var node = document.getElementById(sid), canvas, sc = 3, baseW = EXPORT_W, capW = Math.round(baseW * 100 / fsPctFor(sid));
+          var node = document.getElementById(sid), canvas, sc = EXPORT_SC, baseW = EXPORT_W, capW = Math.round(baseW * 100 / fsPctFor(sid));
           var label = lab0 || blockLabel(sid);
           EXPORT_W = capW;
-          try { try { canvas = await shoot(node, 3); } catch (err) { sc = 2; canvas = await shoot(node, 2); } }
+          try { try { canvas = await shoot(node, EXPORT_SC); } catch (err) { sc = 1.5; canvas = await shoot(node, 1.5); } }
           finally { EXPORT_W = baseW; }
           var kk = keyCtx + '|' + sid + '|' + (lab0 || ''); keyCount[kk] = (keyCount[kk] || 0) + 1;
           var ar = (canvas.height / sc) / capW, wf = 1, pxW = canvas.width / sc;
           if (Math.abs(pxW - capW) > 2) { ar = canvas.height / canvas.width; wf = Math.min(1, pxW / capW); if (wf > 0.97) wf = 1; }
+          btn.textContent = 'Preparing PDF… ' + (shots.length + 1);
           shots.push({ canvas: canvas, ar: ar, wf: wf, rowg: rowg, label: label, key: kk + '|' + keyCount[kk], brk: !!(brk && i === 0), grp: grp || null });
         }
       }
